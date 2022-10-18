@@ -8,36 +8,59 @@ const Board = () => {
     { name: 'IN REVIEW', id: 3 },
     { name: 'DONE', id: 4 }
   ])
-  const [events] = useState([
+
+  const [events, setEvents] = useState([
     {
       title: 'Todo 1',
-      status: 1
+      status: 1,
+      type: 'bugfix',
+      id: 'PMS-1'
     },
     {
       title: 'In Progress 1',
-      status: 2
+      status: 2,
+      type: 'feature',
+      id: 'PMS-2'
     },
     {
       title: 'In Review',
-      status: 3
+      status: 3,
+      type: 'feature',
+      id: 'PMS-6'
     },
     {
       title: 'Done',
-      status: 4
+      status: 4,
+      type: 'refactor',
+      id: 'PMS-5'
     },
     {
       title: 'In Progress 2',
-      status: 2
+      status: 2,
+      type: 'refactor',
+      id: 'PMS-4'
     },
     {
       title: 'Todo 2 ',
-      status: 1
+      status: 1,
+      type: 'bugfix',
+      id: 'PMS-3'
     }
   ])
 
-  const handleDrop = (evt) => {
-    console.log('xxxxxxxxxxxxx')
-    console.log(evt)
+  const handleDrop = (zoneId: number) => {
+    const evtId = localStorage.getItem('dragging')
+    localStorage.removeItem('dragging')
+    if (!evtId) return
+
+    setEvents(() =>
+      events
+        .map((evt) => {
+          if (evt.id === evtId) evt.status = zoneId
+          return evt
+        })
+        .sort((a, b) => (a.id > b.id ? 1 : b.id > a.id ? -1 : 0))
+    )
   }
 
   return (
@@ -57,12 +80,20 @@ const Board = () => {
                 const el = e.target as HTMLElement
                 el.classList.remove('!border-red-500')
               }}
-              onDrop={(e) => handleDrop(e)}
+              onDragOver={(e) => {
+                e.preventDefault()
+              }}
+              onDrop={(e) => {
+                const el = e.target as HTMLElement
+                el.classList.remove('!border-red-500')
+
+                handleDrop(id)
+              }}
             >
               <h2 className="p-2">{name}</h2>
               <div className="grid gap-1">
-                {events.map((events, i) => {
-                  if (events.status == id) return <Event key={i} evt={events} />
+                {events.map((event, i) => {
+                  if (event.status == id) return <Event key={i} evt={event} />
                 })}
               </div>
             </div>
