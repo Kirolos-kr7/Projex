@@ -1,5 +1,11 @@
+import Sidebar from './components/Sidebar'
+
 const App = () => {
-  return <div className="text-5xl font-semibold">Hello World!</div>
+  return (
+    <div className="flex ">
+      <Sidebar />
+    </div>
+  )
 }
 
 export default App
