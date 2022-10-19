@@ -8,7 +8,7 @@ import Priority from './Priority'
 const Event = ({ task }: { task: Task }) => {
   return (
     <button
-      className="ring-it  rounded-sm bg-gray-800/75 p-2 text-left"
+      className="rounded-sm bg-gray-800/75 p-2 text-left"
       draggable="true"
       onDragStart={(e) => {
         const el = e.target as HTMLElement

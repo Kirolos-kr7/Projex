@@ -8,7 +8,8 @@ body {
 }
 
 .page-title {
-  @apply text-3xl font-semibold;
+  @apply mb-7 text-3xl font-semibold;
+  font-family: 'Michroma';
 }
 
 .scroller::-webkit-scrollbar {
@@ -27,6 +28,12 @@ body {
   @apply h-4 rounded-lg bg-gray-600;
 }
 
-.ring-it {
-  @apply outline-none ring-red-600 focus-visible:ring-2;
+input[type='text'],
+button,
+a {
+  @apply outline-none ring-red-600/80 focus-visible:ring-2;
+}
+
+input[type='text'] {
+  @apply -m-px w-full rounded-sm border border-gray-800 bg-gray-900 p-2;
 }

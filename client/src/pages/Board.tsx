@@ -1,13 +1,16 @@
 import { useState } from 'react'
 import Task from '../components/Board/Task'
 import { Task as TaskType } from '../types'
+import Add from '@iconify-icons/ic/add'
+import { Icon } from '@iconify/react/dist/offline'
+import Editable from '../components/UI/Editable'
 
 const Board = () => {
   const [states] = useState([
-    { name: 'TO DO', id: 1 },
-    { name: 'IN PROGRESS', id: 2 },
-    { name: 'IN REVIEW', id: 3 },
-    { name: 'DONE', id: 4 }
+    { name: 'To Do', id: 1 },
+    { name: 'In Progress', id: 2 },
+    { name: 'In Review', id: 3 },
+    { name: 'Done', id: 4 }
   ])
 
   const [tasks, setTasks] = useState<TaskType[]>([
@@ -74,10 +77,11 @@ const Board = () => {
     <div>
       <h1 className="page-title">Board</h1>
 
-      <div className="[&>*]:min-w-[280px] scroller [&>*]:p-1 [&>*]:h-[calc(100vh-120px)] [&>*]:rounded-md [&>*]:bg-gray-900 [&>*]:border [&>*]:border-transparent -m-1 mt-8 flex max-w-full items-center gap-5 overflow-x-auto p-1 pb-2">
+      <div className="[&>*]:min-w-[280px] scroller [&>*]:p-1 [&>*]:rounded-md [&>*]:bg-gray-900 [&>*]:border [&>*]:border-transparent -m-1 flex max-w-full items-start gap-5 overflow-x-auto p-1 pb-2">
         {states.map(({ name, id }) => {
           return (
             <div
+              className="transition-all"
               key={id}
               onDragEnter={(e) => {
                 const el = e.target as HTMLElement
@@ -97,12 +101,16 @@ const Board = () => {
                 handleDrop(id)
               }}
             >
-              <h2 className="p-2">{name}</h2>
+              <Editable val={name} />
+              {/* <h2 className="p-2">{name}</h2> */}
               <div className="grid gap-1">
                 {tasks.map((task, i) => {
                   if (task.status == id) return <Task key={i} task={task} />
                 })}
               </div>
+              <button className="mt-1 flex w-full items-center gap-1 rounded-sm p-3 text-gray-400 hover:bg-zinc-800">
+                <Icon icon={Add} width="24px" /> Create Task
+              </button>
             </div>
           )
         })}
