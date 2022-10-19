@@ -83,20 +83,22 @@ const Board = () => {
             <div
               className="transition-all"
               key={id}
-              onDragEnter={(e) => {
-                const el = e.target as HTMLElement
-                el.classList.add('!border-red-500')
-              }}
-              onDragLeave={(e) => {
-                const el = e.target as HTMLElement
-                el.classList.remove('!border-red-500')
-              }}
+              id={`dropzone_${id}`}
               onDragOver={(e) => {
                 e.preventDefault()
+                document
+                  .querySelector(`#dropzone_${id}`)
+                  ?.classList.add('!border-red-500')
               }}
-              onDrop={(e) => {
-                const el = e.target as HTMLElement
-                el.classList.remove('!border-red-500')
+              onDragLeave={() => {
+                document
+                  .querySelector(`#dropzone_${id}`)
+                  ?.classList.remove('!border-red-500')
+              }}
+              onDrop={() => {
+                document
+                  .querySelector(`#dropzone_${id}`)
+                  ?.classList.remove('!border-red-500')
 
                 handleDrop(id)
               }}
