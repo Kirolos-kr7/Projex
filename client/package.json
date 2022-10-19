@@ -10,9 +10,10 @@
     "lint": "eslint . --ext .tsx,.ts,.cjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@iconify-icons/heroicons": "^1.2.5",
     "@iconify-icons/ic": "^1.2.10",
     "@iconify-icons/line-md": "^1.2.16",
-    "@iconify-icons/mdi": "^1.2.32",
+    "@iconify-icons/ph": "^1.2.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

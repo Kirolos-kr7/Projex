@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import Event from '../components/Board/Event'
+import Task from '../components/Board/Task'
+import { Task as TaskType } from '../types'
 
 const Board = () => {
   const [states] = useState([
@@ -9,41 +10,47 @@ const Board = () => {
     { name: 'DONE', id: 4 }
   ])
 
-  const [events, setEvents] = useState([
+  const [tasks, setTasks] = useState<TaskType[]>([
     {
       title: 'Todo 1',
       status: 1,
       type: 'bugfix',
+      priority: 'low',
       id: 'PMS-1'
     },
     {
       title: 'In Progress 1',
       status: 2,
       type: 'feature',
+      priority: 'critical',
       id: 'PMS-2'
     },
     {
       title: 'In Review',
       status: 3,
       type: 'feature',
+      priority: 'lowest',
       id: 'PMS-6'
     },
     {
       title: 'Done',
       status: 4,
       type: 'refactor',
+      priority: 'highest',
       id: 'PMS-5'
     },
     {
       title: 'In Progress 2',
       status: 2,
       type: 'refactor',
+      priority: 'trivial',
       id: 'PMS-4'
     },
     {
       title: 'Todo 2 ',
       status: 1,
       type: 'bugfix',
+      priority: 'medium',
       id: 'PMS-3'
     }
   ])
@@ -53,11 +60,11 @@ const Board = () => {
     localStorage.removeItem('dragging')
     if (!evtId) return
 
-    setEvents(() =>
-      events
-        .map((evt) => {
-          if (evt.id === evtId) evt.status = zoneId
-          return evt
+    setTasks(() =>
+      tasks
+        .map((task) => {
+          if (task.id === evtId) task.status = zoneId
+          return task
         })
         .sort((a, b) => (a.id > b.id ? 1 : b.id > a.id ? -1 : 0))
     )
@@ -92,8 +99,8 @@ const Board = () => {
             >
               <h2 className="p-2">{name}</h2>
               <div className="grid gap-1">
-                {events.map((event, i) => {
-                  if (event.status == id) return <Event key={i} evt={event} />
+                {tasks.map((task, i) => {
+                  if (task.status == id) return <Task key={i} task={task} />
                 })}
               </div>
             </div>
