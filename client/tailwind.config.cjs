@@ -10,6 +10,10 @@ module.exports = {
       colors: {
         gray: colors.neutral,
         neutral: colors.gray
+      },
+      fontFamily: {
+        michroma: ['Michroma', 'Arial'],
+        poppins: ['Poppins', 'Michroma']
       }
     }
   },

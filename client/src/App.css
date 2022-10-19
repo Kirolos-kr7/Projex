@@ -3,13 +3,11 @@
 @tailwind utilities;
 
 body {
-  @apply bg-gray-800 font-mono text-white;
-  font-family: 'Poppins';
+  @apply font-poppins bg-gray-800 text-white;
 }
 
 .page-title {
-  @apply mb-7 text-3xl font-semibold;
-  font-family: 'Michroma';
+  @apply font-michroma mb-7 text-3xl font-semibold;
 }
 
 .scroller::-webkit-scrollbar {
