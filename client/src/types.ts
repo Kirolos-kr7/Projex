@@ -8,6 +8,7 @@ export type TaskPriority =
   | 'highest'
   | 'critical'
   | 'blocker'
+export type UserRole = 'adminstrator' | 'user'
 
 export interface Task {
   type: TaskType
@@ -21,4 +22,11 @@ export interface Repo {
   origin: string
   name: string
   updatedAt: Date
+}
+
+export interface Member {
+  name: string
+  email: string
+  role: UserRole
+  id: number
 }

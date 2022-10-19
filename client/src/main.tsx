@@ -6,6 +6,7 @@ import Project from './pages/Project'
 import Board from './pages/Board'
 import Code from './pages/Code'
 import './App.css'
+import Team from './pages/Team'
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
           <Route path="/" element={<Project />}></Route>
           <Route path="/board" element={<Board />}></Route>
           <Route path="/code" element={<Code />}></Route>
+          <Route path="/team" element={<Team />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>
