@@ -14,6 +14,7 @@
     "@iconify-icons/ic": "^1.2.10",
     "@iconify-icons/line-md": "^1.2.16",
     "@iconify-icons/ph": "^1.2.2",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
