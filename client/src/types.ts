@@ -16,3 +16,9 @@ export interface Task {
   id: string
   priority: TaskPriority
 }
+
+export interface Repo {
+  origin: string
+  name: string
+  updatedAt: Date
+}
