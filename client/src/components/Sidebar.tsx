@@ -33,8 +33,8 @@ const Sidebar = () => {
         }`}
       >
         <h1
-          className={`py-5 font-mono text-3xl font-semibold transition-all ${
-            isExpanded && '-mb-1 !text-4xl'
+          className={`font-michroma flex h-[82px] items-center px-1 text-xl font-semibold transition-all ${
+            isExpanded && '!text-4xl'
           }`}
         >
           PMS
