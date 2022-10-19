@@ -4,6 +4,7 @@ import { Task as TaskType } from '../types'
 import Add from '@iconify-icons/ic/add'
 import { Icon } from '@iconify/react/dist/offline'
 import Editable from '../components/UI/Editable'
+import Search from '../components/UI/Search'
 
 const Board = () => {
   const [states] = useState([
@@ -73,9 +74,17 @@ const Board = () => {
     )
   }
 
+  const handleParentDragging = (id: string | number, val = 'false') => {
+    document.querySelector(`#dropzone_${id}`)?.setAttribute('draggable', val)
+  }
+
   return (
     <div>
       <h1 className="page-title">Board</h1>
+
+      <div className="mb-2 flex items-center justify-between ">
+        <Search placeholder="Search names or emails" />
+      </div>
 
       <div className="[&>*]:min-w-[280px] scroller [&>*]:p-1 [&>*]:rounded-md [&>*]:bg-gray-900 [&>*]:border [&>*]:border-transparent -m-1 flex max-w-full items-start gap-5 overflow-x-auto p-1 pb-2">
         {states.map(({ name, id }) => {
@@ -102,8 +111,14 @@ const Board = () => {
 
                 handleDrop(id)
               }}
+              onDragEnd={() => handleParentDragging(id)}
             >
-              <Editable val={name} />
+              <div
+                onMouseDown={() => handleParentDragging(id, 'true')}
+                onMouseUp={() => handleParentDragging(id)}
+              >
+                <Editable val={name} />
+              </div>
               {/* <h2 className="p-2">{name}</h2> */}
               <div className="grid gap-1">
                 {tasks.map((task, i) => {
