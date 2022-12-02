@@ -5,6 +5,7 @@ import Layout from './Layout'
 import Project from './pages/Project'
 import Board from './pages/Board'
 import Code from './pages/Code'
+import Settings from './pages/Settings'
 import './App.css'
 import Team from './pages/Team'
 
@@ -17,6 +18,7 @@ export default function App() {
           <Route path="/board" element={<Board />}></Route>
           <Route path="/code" element={<Code />}></Route>
           <Route path="/team" element={<Team />}></Route>
+          <Route path="/settings" element={<Settings />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>

@@ -3,7 +3,7 @@ import Check from '@iconify-icons/ic/check'
 import Close from '@iconify-icons/ic/close'
 import { Icon } from '@iconify/react/dist/offline'
 
-const Editable = ({ val }: { val: string }) => {
+const Editable = ({ val, live }: { val: string; live: boolean }) => {
   const [isEditing, setIsEditing] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const applyRef = useRef<HTMLButtonElement>(null)
@@ -30,18 +30,31 @@ const Editable = ({ val }: { val: string }) => {
   return (
     <div className="relative mb-1">
       {!isEditing && (
-        <h2 className="p-2 uppercase" onClick={() => setIsEditing(true)}>
+        <h2
+          className="p-2 uppercase"
+          onClick={() => live && setIsEditing(true)}
+        >
           {val}
         </h2>
       )}
       {isEditing && (
-        <>
-          <input type="text" ref={inputRef} defaultValue={val} />
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            setIsEditing(false)
+          }}
+        >
+          <input
+            className="editable-input"
+            type="text"
+            ref={inputRef}
+            defaultValue={val}
+          />
           <div className="absolute right-0 mt-1.5 flex items-center gap-1.5">
             <button
               ref={applyRef}
               className="grid h-7 w-7 place-content-center rounded-sm bg-gray-700 shadow-md"
-              onClick={() => setIsEditing(false)}
+              type="submit"
             >
               <Icon icon={Check} width="20px" className="pointer-events-none" />
             </button>
@@ -49,11 +62,12 @@ const Editable = ({ val }: { val: string }) => {
               ref={closeRef}
               className="grid h-7 w-7 place-content-center rounded-sm bg-gray-700 shadow-md"
               onClick={() => setIsEditing(false)}
+              type="button"
             >
               <Icon icon={Close} width="20px" className="pointer-events-none" />
             </button>
           </div>
-        </>
+        </form>
       )}
     </div>
   )

@@ -1,9 +1,14 @@
 import { useState } from 'react'
-import { Member } from '../types'
+import { Member, UserRole } from '../types'
 import Search from '../components/UI/Search'
+import DropDown from '../components/UI/DropDown'
+import Popup from '../components/UI/Popup'
+import AddMember from '../components/AddMember'
 
 const Team = () => {
-  const [members] = useState<Member[]>([
+  const [searchValue, setSearchValue] = useState('')
+  const [popupOpened, setPopupOpened] = useState(false)
+  const [members, setMembers] = useState<Member[]>([
     {
       id: 1,
       name: 'Kirolos Rafaat',
@@ -24,6 +29,13 @@ const Team = () => {
     }
   ])
 
+  const [roles] = useState<UserRole[]>([
+    'adminstrator',
+    'user',
+    'person',
+    'human'
+  ])
+
   const getUserICon = (name: string) => {
     name = name.trim()
     const arr = name.split(' ')
@@ -33,13 +45,30 @@ const Team = () => {
     return name[0]
   }
 
+  const getfilteredMembers = () => {
+    if (searchValue == '') return members
+
+    return members.filter((mamber) => {
+      return (
+        mamber.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+        mamber.email.toLowerCase().includes(searchValue.toLowerCase()) ||
+        mamber.role.toLowerCase().includes(searchValue.toLowerCase())
+      )
+    })
+  }
+
   return (
     <div>
       <h1 className="page-title">Team</h1>
 
       <div className="mb-2 flex items-center justify-between ">
-        <Search placeholder="Search names or emails" />
-        <button className="base">Add Member</button>
+        <Search
+          placeholder="Search members"
+          update={(val) => setSearchValue(val)}
+        />
+        <button className="base" onClick={() => setPopupOpened(true)}>
+          Add Member
+        </button>
       </div>
 
       <div className="rounded-md bg-gray-900 p-3">
@@ -52,7 +81,7 @@ const Team = () => {
             </tr>
           </thead>
           <tbody>
-            {members.map(({ id, name, email, role }) => {
+            {getfilteredMembers().map(({ id, name, email, role }) => {
               return (
                 <tr key={id}>
                   <td className="flex items-center gap-2 py-1.5">
@@ -62,13 +91,42 @@ const Team = () => {
                     <h3>{name}</h3>
                   </td>
                   <td>{email}</td>
-                  <td className="capitalize">{role}</td>
+                  <td>
+                    <DropDown
+                      selected={role}
+                      options={roles}
+                      fn={(value) =>
+                        setMembers((curr) => {
+                          return curr?.map((m: Member) => {
+                            if (m.id === id) return { ...m, role: value }
+                            return m
+                          })
+                        })
+                      }
+                    />
+                  </td>
                 </tr>
               )
             })}
           </tbody>
         </table>
       </div>
+
+      {popupOpened && (
+        <Popup title="Add Member" closePopup={() => setPopupOpened(false)}>
+          <AddMember
+            roles={roles}
+            add={(user) => {
+              setMembers((curr) => {
+                curr.push(user)
+                return curr
+              })
+              setPopupOpened(false)
+            }}
+            cancel={() => setPopupOpened(false)}
+          />
+        </Popup>
+      )}
     </div>
   )
 }

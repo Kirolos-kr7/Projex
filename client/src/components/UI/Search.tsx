@@ -1,16 +1,22 @@
 import { useRef, useState } from 'react'
-import Search from '@iconify-icons/ic/search'
+import SearchIcon from '@iconify-icons/ic/search'
 import Close from '@iconify-icons/ic/close'
 import { Icon } from '@iconify/react/dist/offline'
 
-const Editable = ({ placeholder = 'Search' }: { placeholder?: string }) => {
+const Search = ({
+  placeholder = 'Search',
+  update
+}: {
+  placeholder?: string
+  update?: (val: string) => void
+}) => {
   const [isEmpty, setIsEmpty] = useState(true)
   const inputRef = useRef<HTMLInputElement>(null)
 
   return (
     <div className="relative">
       <Icon
-        icon={Search}
+        icon={SearchIcon}
         width="22px"
         className="absolute top-[7.5px] left-[7px]"
       />
@@ -23,13 +29,18 @@ const Editable = ({ placeholder = 'Search' }: { placeholder?: string }) => {
           const el = e.target as HTMLInputElement
           if (el.value == '') setIsEmpty(true)
           else setIsEmpty(false)
+
+          if (update) update(el.value)
         }}
       />
       {!isEmpty && (
         <button
-          className="absolute top-[7.5px] right-[7px]"
+          className="absolute top-[7.5px] right-[7px] rounded-md"
           onClick={() => {
-            if (inputRef.current) inputRef.current.value = ''
+            if (inputRef.current) {
+              inputRef.current.value = ''
+              setIsEmpty(true)
+            }
           }}
         >
           <Icon icon={Close} width="22px" />
@@ -39,4 +50,4 @@ const Editable = ({ placeholder = 'Search' }: { placeholder?: string }) => {
   )
 }
 
-export default Editable
+export default Search

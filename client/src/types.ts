@@ -8,7 +8,7 @@ export type TaskPriority =
   | 'highest'
   | 'critical'
   | 'blocker'
-export type UserRole = 'adminstrator' | 'user'
+export type UserRole = 'adminstrator' | 'user' | 'human' | 'person'
 
 export interface Task {
   type: TaskType
@@ -29,4 +29,13 @@ export interface Member {
   email: string
   role: UserRole
   id: number
+}
+
+export interface DropDown {
+  selected: any
+  options: any[]
+  fn?: (value?: any) => void
+  key?: string
+  value?: string
+  className?: string
 }

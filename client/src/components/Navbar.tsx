@@ -1,4 +1,4 @@
-import UserMenu from './UserManu'
+import UserMenu from '../components/UserMenu'
 
 const Navbar = () => {
   return (

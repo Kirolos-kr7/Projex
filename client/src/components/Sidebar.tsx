@@ -27,7 +27,7 @@ const Sidebar = () => {
 
   return typeof isExpanded == 'boolean' ? (
     <aside
-      className={`flex min-h-screen min-w-[70px] flex-col items-center bg-gray-900 transition-all ${
+      className={`group relative flex min-h-screen min-w-[70px] flex-col items-center bg-gray-900 transition-all ${
         isExpanded && '!min-w-[250px]'
       }`}
     >
@@ -64,7 +64,7 @@ const Sidebar = () => {
           </Link>
         </li>
         <li>
-          <Link to="/" className=" ring-inset" title="Settings">
+          <Link to="/settings" className=" ring-inset" title="Settings">
             <Icon icon={Settings} width="28" />
             {isExpanded && 'Settings'}
           </Link>
@@ -73,7 +73,7 @@ const Sidebar = () => {
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         title={isExpanded ? 'Contract' : 'Expand'}
-        className={` mb-5 rounded-full text-red-400 ring-inset transition-all  ${
+        className={` absolute bottom-5 -right-3 rounded-full bg-red-800 text-red-400 opacity-0 ring-inset transition-all focus-visible:opacity-100 group-hover:opacity-100 ${
           isExpanded && 'rotate-180'
         }`}
       >

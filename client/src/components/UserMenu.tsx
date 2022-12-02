@@ -1,5 +1,5 @@
-import Account from '@iconify-icons/line-md/account'
-import Logout from '@iconify-icons/line-md/arrow-align-left'
+import Account from '@iconify-icons/ic/account-box'
+import Logout from '@iconify-icons/ic/twotone-log-out'
 import { Icon } from '@iconify/react/dist/offline'
 import { useState } from 'react'
 
