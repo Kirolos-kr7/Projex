@@ -1,11 +1,15 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { Member, UserRole } from '../types'
 import Search from '../components/UI/Search'
 import DropDown from '../components/UI/DropDown'
 import Popup from '../components/UI/Popup'
 import AddMember from '../components/AddMember'
+import { UserContext } from '../UserContext'
 
 const Team = () => {
+  const { user } = useContext(UserContext)
+  console.log(user)
+
   const [searchValue, setSearchValue] = useState('')
   const [popupOpened, setPopupOpened] = useState(false)
   const [members, setMembers] = useState<Member[]>([
@@ -66,7 +70,7 @@ const Team = () => {
           placeholder="Search members"
           update={(val) => setSearchValue(val)}
         />
-        <button className="base" onClick={() => setPopupOpened(true)}>
+        <button className="btn base" onClick={() => setPopupOpened(true)}>
           Add Member
         </button>
       </div>
