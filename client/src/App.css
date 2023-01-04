@@ -54,10 +54,6 @@ button.danger {
   @apply bg-brand-200 hover:bg-brand-200/70;
 }
 
-.settings-grid li button {
-  @apply bg-brand-800 hover:!bg-brand-800 w-full rounded-md border border-gray-800 px-5 py-10 transition-all;
-}
-
 .nav-links a.active {
   @apply text-red-400;
 }

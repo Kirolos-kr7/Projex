@@ -9,9 +9,14 @@ const Settings = () => {
     <div>
       <h1 className="page-title">Settings</h1>
 
-      <ul className="settings-grid mt-10 grid grid-cols-4 gap-5">
+      <ul className="mt-10 grid grid-cols-5 gap-5">
         <li>
-          <button onClick={() => setPopupOpened(true)}>Create New User</button>
+          <button
+            className="btn w-full !px-5 !py-10"
+            onClick={() => setPopupOpened(true)}
+          >
+            Create New User
+          </button>
         </li>
       </ul>
 
