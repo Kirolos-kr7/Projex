@@ -2,14 +2,20 @@ import { Request, Response } from 'express'
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 import { RegisterSchema, LoginSchema } from '../schemas/user.schema'
-import { signJwt } from '../utils/jwt'
+import { verifyJwt, signJwt } from '../utils/jwt'
+import { authExpiration } from '..'
 
 const prisma = new PrismaClient()
 
 export const User = async (req: Request, res: Response) => {
-  const user = await prisma.user.findFirst()
+  const token = req.cookies.authToken
+  if (!token) return res.sendStatus(403)
 
-  res.send({ user: { ...user, password: undefined } })
+  // @ts-ignore
+  const isValid = verifyJwt(token)
+
+  if (isValid) res.send({ token })
+  else res.sendStatus(403)
 }
 
 export const Register = async (req: Request, res: Response) => {
@@ -31,6 +37,7 @@ export const Register = async (req: Request, res: Response) => {
       data: {
         name: req.body.name,
         email: req.body.email,
+        role: req.body.role,
         password: hashedPass
       }
     })
@@ -41,12 +48,12 @@ export const Register = async (req: Request, res: Response) => {
     res.cookie('auth', token, {
       secure: true,
       httpOnly: true,
-      maxAge: 3600 * 24 * 3
+      maxAge: authExpiration
     })
 
     return res.status(200).json({ token, user: cred })
   } catch (err) {
-    res.status(400).send(err)
+    res.status(400).send({ err })
   }
 }
 
@@ -71,15 +78,25 @@ export const Login = async (req: Request, res: Response) => {
       const cred = { ...user, password: undefined }
       const token = signJwt(cred)
 
-      res.cookie('auth', token, {
+      res.cookie('authToken', token, {
         secure: true,
         httpOnly: true,
-        maxAge: 3600 * 8
+        maxAge: authExpiration
       })
 
       return res.status(200).json({ token, user: cred })
     })
   } catch (err) {
-    res.status(400).send(err)
+    res.status(400).send({ err })
+  }
+}
+
+export const Logout = async (req: Request, res: Response) => {
+  try {
+    res.clearCookie('authToken')
+
+    return res.status(200).send()
+  } catch (err) {
+    res.status(400).send({ err })
   }
 }
