@@ -1,28 +1,45 @@
 import Account from '@iconify-icons/ic/account-box'
 import Logout from '@iconify-icons/ic/twotone-log-out'
 import { Icon } from '@iconify/react/dist/offline'
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { UserContext } from '../UserContext'
+import useAxios from '../hooks/useAxios'
+import { Link } from 'react-router-dom'
 
 const UserMenu = () => {
+  const { setUser } = useContext(UserContext)
   const [isOpened, setIsOpened] = useState(false)
+
+  useEffect(() => {
+    document.addEventListener('mouseup', handleMouseEvent)
+    return () => document.removeEventListener('mouseup', handleMouseEvent)
+  }, [])
 
   const toggle = () => {
     if (!isOpened) {
       setIsOpened(true)
-      document.addEventListener('mousedown', handleMouseEvent)
       return
     }
     setIsOpened(false)
   }
 
   const handleMouseEvent = (e: MouseEvent) => {
-    if (
-      e.target != document.getElementById('user_menu') &&
-      e.target != document.getElementById('user_img')
-    ) {
+    const path = e.composedPath() as [HTMLElement]
+    const menuBtn = document.getElementById('user_menu')
+    const menuOptions = document.getElementById('opt_menu')
+
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    if (!path.includes(menuBtn!) && !path.includes(menuOptions!)) {
       setIsOpened(false)
-      document.removeEventListener('mousedown', handleMouseEvent)
     }
+  }
+
+  const logout = async () => {
+    await useAxios({
+      method: 'post',
+      path: '/auth/logout'
+    })
+    setUser(null)
   }
 
   return (
@@ -38,20 +55,31 @@ const UserMenu = () => {
           className="w-inherit h-inherit rounded-[inherit]"
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsIlzGp1laQheiAAjrbJJ3pasHLjMBnIUEZg&usqp=CAU"
           alt="user image"
-          onClick={() => toggle()}
+          onClick={toggle}
         />
       </button>
 
       {isOpened && (
-        <ul className="absolute right-0 flex w-[200px] flex-col overflow-hidden rounded-md bg-gray-900/80">
+        <ul
+          id="opt_menu"
+          className="absolute right-0 flex w-[200px] flex-col overflow-hidden rounded-md border border-gray-700 bg-gray-900"
+        >
           <li>
-            <button className="flex w-full items-center gap-1.5 border-b border-gray-700/80  p-2 text-left text-sm transition-colors hover:bg-gray-700">
-              <Icon icon={Account} width="20px" />
-              Account
-            </button>
+            <Link to="/account">
+              <button
+                className="flex w-full items-center gap-1.5 rounded-t-md border-b border-gray-700 p-2  text-left text-sm ring-inset transition-colors hover:bg-gray-700"
+                onClick={toggle}
+              >
+                <Icon icon={Account} width="20px" />
+                Account
+              </button>
+            </Link>
           </li>
           <li>
-            <button className="flex w-full  items-center gap-1.5 p-2 text-left  text-sm text-red-500/80 transition-colors hover:bg-gray-700/80">
+            <button
+              className="flex w-full items-center gap-1.5 rounded-b-md p-2 text-left text-sm  text-red-500 ring-inset transition-colors hover:bg-gray-700"
+              onClick={logout}
+            >
               <Icon icon={Logout} width="20px" />
               Logout
             </button>
