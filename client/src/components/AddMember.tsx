@@ -37,7 +37,7 @@ const AddMember = ({
         add({ name: values[0], email: values[1], role: role, id: Date.now() })
       }}
     >
-      <label className="mb-1 block text-sm text-gray-400" htmlFor="name">
+      <label className="label" htmlFor="name">
         Name
       </label>
       <input
@@ -48,7 +48,7 @@ const AddMember = ({
         required
         autoFocus
       />
-      <label className="mb-1 block text-sm text-gray-400" htmlFor="email">
+      <label className="label" htmlFor="email">
         Email
       </label>
       <input
@@ -58,7 +58,7 @@ const AddMember = ({
         id="email"
         required
       />
-      <label className="mb-1 block text-sm text-gray-400">Role</label>
+      <label className="label">Role</label>
       <DropDown
         className="mb-3 !w-full !bg-gray-900"
         selected={role}
@@ -69,8 +69,8 @@ const AddMember = ({
       />
 
       <div className="mt-3 flex items-center justify-end gap-2">
-        <button className="base">Save</button>
-        <button className="base danger" type="reset" onClick={() => cancel()}>
+        <button className="btn">Save</button>
+        <button className="btn danger" type="reset" onClick={() => cancel()}>
           Cancel
         </button>
       </div>

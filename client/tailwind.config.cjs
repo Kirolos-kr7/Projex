@@ -9,7 +9,14 @@ module.exports = {
     extend: {
       colors: {
         gray: colors.neutral,
-        neutral: colors.gray
+        neutral: colors.gray,
+        brand: {
+          100: '#c7493a',
+          200: '#a33327',
+          700: '#242424',
+          800: '#1d1d1d',
+          900: '#1a1a1a'
+        }
       },
       fontFamily: {
         michroma: ['Michroma', 'Arial'],

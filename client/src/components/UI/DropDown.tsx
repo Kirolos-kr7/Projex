@@ -30,7 +30,7 @@ const DropDown = (props: DropDownType) => {
         type="button"
         ref={btn}
         className={
-          'mb-1.5 flex items-center justify-between gap-2 rounded-md bg-gray-800/80 px-3 py-2 capitalize transition-colors hover:bg-gray-700/60 ' +
+          'mb-1.5 flex items-center justify-between gap-2 rounded-md bg-gray-800 px-3 py-2 capitalize transition-colors hover:bg-gray-700/60 ' +
           className
         }
         onClick={() => (isOpened ? setIsOpened(false) : setIsOpened(true))}
