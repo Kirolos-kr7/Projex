@@ -10,6 +10,7 @@ import AuthRouter from './routes/auth.route'
 const app = express()
 const port = process.env.PORT || 8080
 const prisma = new PrismaClient()
+export const authExpiration = 3600 * 1000 * 8
 
 const main = async () => {
   await prisma.$connect()
@@ -20,7 +21,7 @@ const main = async () => {
 
   app.use(
     cors({
-      origin: ['localhost:3000'],
+      origin: 'http://localhost:3000',
       credentials: true
     })
   )
