@@ -1,7 +1,8 @@
 import Project from '@iconify-icons/ic/twotone-home'
 import Board from '@iconify-icons/ic/twotone-space-dashboard'
 import Code from '@iconify-icons/ic/twotone-code'
-import Team from '@iconify-icons/ic/twotone-people-alt'
+import Team from '@iconify-icons/mdi/person-group-outline'
+import Roles from '@iconify-icons/mdi/security-account-outline'
 import Arrow from '@iconify-icons/ic/twotone-arrow-circle-right'
 import Settings from '@iconify-icons/ic/twotone-settings'
 import { Icon } from '@iconify/react/dist/offline'
@@ -42,29 +43,35 @@ const Sidebar = () => {
         className={`nav-links mt-5 flex w-full flex-1 flex-col items-center [&>li>a]:flex  [&>li>a]:w-full [&>li>a]:items-center [&>li>a]:gap-2 [&>li>a]:border-b [&>li>a]:border-gray-800 [&>li>a]:py-3 [&>li>a]:px-5 [&>li>a]:transition-colors [&>li>a]:sm:px-8 [&>li:last-of-type>a]:border-b-0 [&>li>a:hover]:bg-red-900/5 [&>li>a:hover]:text-red-400 [&>li]:w-full`}
       >
         <li>
-          <NavLink to="/" className=" ring-inset" title="Project">
+          <NavLink to="/" className="ring-inset" title="Project">
             <Icon icon={Project} width="28" /> {isExpanded && 'Project'}
           </NavLink>
         </li>
         <li>
-          <NavLink to="/board" className=" ring-inset" title="Board">
+          <NavLink to="/board" className="ring-inset" title="Board">
             <Icon icon={Board} width="28" /> {isExpanded && 'Board'}
           </NavLink>
         </li>
         <li>
-          <NavLink to="/code" className=" ring-inset" title="Code">
+          <NavLink to="/code" className="ring-inset" title="Code">
             <Icon icon={Code} width="28" />
             {isExpanded && 'Code'}
           </NavLink>
         </li>
         <li>
-          <NavLink to="/team" className=" ring-inset" title="Team">
+          <NavLink to="/team" className="ring-inset" title="Team">
             <Icon icon={Team} width="28" />
             {isExpanded && 'Team'}
           </NavLink>
         </li>
         <li>
-          <NavLink to="/settings" className=" ring-inset" title="Settings">
+          <NavLink to="/roles" className="ring-inset" title="Roles">
+            <Icon icon={Roles} width="28" />
+            {isExpanded && 'Roles'}
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/settings" className="ring-inset" title="Settings">
             <Icon icon={Settings} width="28" />
             {isExpanded && 'Settings'}
           </NavLink>
