@@ -16,6 +16,7 @@ import Settings from './pages/Settings'
 import Auth from './pages/Auth'
 import './App.css'
 import Team from './pages/Team'
+import Roles from './pages/Roles'
 import useAxios from './hooks/useAxios'
 import { UserContext } from './UserContext'
 import Account from './pages/Account'
@@ -58,6 +59,7 @@ export default function App() {
               <Route path="/board" element={<Board />}></Route>
               <Route path="/code" element={<Code />}></Route>
               <Route path="/team" element={<Team />}></Route>
+              <Route path="/roles" element={<Roles />}></Route>
               <Route path="/settings" element={<Settings />}></Route>
             </Route>
           </Routes>

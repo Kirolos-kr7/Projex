@@ -10,6 +10,12 @@ export type TaskPriority =
   | 'blocker'
 export type UserRole = 'adminstrator' | 'user' | 'human' | 'person'
 
+export interface Roles {
+  role: UserRole
+  privileges: string[]
+  id: number
+}
+
 export interface Task {
   type: TaskType
   title: string
