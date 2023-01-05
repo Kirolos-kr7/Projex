@@ -60,7 +60,7 @@ const AddMember = ({
       />
       <label className="label">Role</label>
       <DropDown
-        className="mb-3 !w-full !bg-gray-900"
+        className="!bg-brand-900 -m-px mb-3 !w-full !px-3.5 !py-2.5"
         selected={role}
         options={roles}
         fn={(value) => {
