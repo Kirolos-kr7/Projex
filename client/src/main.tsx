@@ -1,45 +1,22 @@
 import ReactDOM from 'react-dom/client'
-import { useEffect, useState } from 'react'
-import jwt_decode from 'jwt-decode'
-import {
-  Navigate,
-  redirect,
-  createBrowserRouter,
-  RouterProvider
-} from 'react-router-dom'
-import useAxios from './hooks/useAxios'
+import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { UserContext } from './UserContext'
 
-import Project from './pages/Project'
+import './App.css'
 import Layout from './Layout'
+import Toastify from './components/Toast'
+import useUser from './hooks/useUser'
 import Account from './pages/Account'
+import Auth from './pages/Auth'
 import Board from './pages/Board'
 import Code from './pages/Code'
-import Settings from './pages/Settings'
-import Auth from './pages/Auth'
-import Team from './pages/Team'
+import Project from './pages/Project'
 import Roles from './pages/Roles'
-import './App.css'
+import Settings from './pages/Settings'
+import Team from './pages/Team'
 
 export default function App() {
-  const [isPending, setIsPending] = useState(true)
-  const [user, setUser] = useState<any>()
-
-  useEffect(() => {
-    const auth = async () => {
-      const { ok, data } = await useAxios({ path: '/auth/me' })
-      setIsPending(false)
-
-      if (data.token) {
-        const decoded = jwt_decode(data.token)
-        setUser(decoded)
-      }
-
-      if (ok) redirect('/')
-      else redirect('/auth')
-    }
-    auth()
-  }, [])
+  const { user, setUser, pending } = useUser()
 
   const router = createBrowserRouter([
     {
@@ -83,9 +60,13 @@ export default function App() {
   ])
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
-      {!isPending && <RouterProvider router={router} />}
-    </UserContext.Provider>
+    <>
+      <UserContext.Provider value={{ user, setUser }}>
+        {!pending && <RouterProvider router={router} />}
+      </UserContext.Provider>
+
+      <Toastify></Toastify>
+    </>
   )
 }
 
