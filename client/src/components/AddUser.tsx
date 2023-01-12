@@ -1,22 +1,34 @@
-import { useState } from 'react'
-import { UserRole } from '../types'
+import { useEffect, useState } from 'react'
+import { Role } from '../types'
 import DropDown from './UI/DropDown'
+import useAxios from '../hooks/useAxios'
 
 type addFunc = ({
   name,
   email,
-  role,
-  id
+  roleId,
+  password,
+  confirmPassword
 }: {
-  name: any
-  email: any
-  role: any
-  id: number
+  name: string
+  email: string
+  roleId: number
+  password: string
+  confirmPassword: string
 }) => void
 
 const AddMember = ({ add, cancel }: { add: addFunc; cancel: () => void }) => {
-  const [role, setRole] = useState('user')
-  const roles: UserRole[] = ['adminstrator', 'user', 'person', 'human']
+  const [role, setRole] = useState<Role>({ role: 'user', id: 2, master: false })
+  const [roles, setRoles] = useState<Role[]>([])
+
+  const getData = async () => {
+    const { data: r } = await useAxios({ path: '/roles' })
+    setRoles(r)
+  }
+
+  useEffect(() => {
+    getData()
+  }, [])
 
   return (
     <form
@@ -27,7 +39,13 @@ const AddMember = ({ add, cancel }: { add: addFunc; cancel: () => void }) => {
         const data = new FormData(e.target as HTMLFormElement)
         const values = [...data.values()]
 
-        add({ name: values[0], email: values[1], role: role, id: Date.now() })
+        add({
+          name: values[0] as string,
+          email: values[1] as string,
+          password: values[2] as string,
+          confirmPassword: values[3] as string,
+          roleId: role.id
+        })
       }}
     >
       <label className="label" htmlFor="name">
@@ -74,8 +92,9 @@ const AddMember = ({ add, cancel }: { add: addFunc; cancel: () => void }) => {
       <label className="label">Role</label>
       <DropDown
         className="!bg-brand-900 -m-px mb-3 !w-full !px-3.5 !py-2.5"
-        selected={role}
+        selected={role.role}
         options={roles}
+        keyValue="role"
         fn={(value) => {
           setRole(value)
         }}

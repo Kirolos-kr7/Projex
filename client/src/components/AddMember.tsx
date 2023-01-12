@@ -1,29 +1,19 @@
 import { useState } from 'react'
-import { UserRole } from '../types'
+import { Role, Member } from '../types'
 import DropDown from './UI/DropDown'
 
-type addFunc = ({
-  name,
-  email,
-  role,
-  id
-}: {
-  name: any
-  email: any
-  role: any
-  id: number
-}) => void
+type addFunc = ({ name, email, role, id }: Member) => void
 
 const AddMember = ({
   roles,
   add,
   cancel
 }: {
-  roles: UserRole[]
+  roles: Role[]
   add: addFunc
   cancel: () => void
 }) => {
-  const [role, setRole] = useState('user')
+  const [role, setRole] = useState<Role>({ role: 'user', id: 2, master: false })
 
   return (
     <form
@@ -34,7 +24,13 @@ const AddMember = ({
         const data = new FormData(e.target as HTMLFormElement)
         const values = [...data.values()]
 
-        add({ name: values[0], email: values[1], role: role, id: Date.now() })
+        add({
+          name: values[0] as string,
+          email: values[1] as string,
+          role: role,
+          roleId: role.id,
+          id: Date.now()
+        })
       }}
     >
       <label className="label" htmlFor="name">
@@ -61,8 +57,9 @@ const AddMember = ({
       <label className="label">Role</label>
       <DropDown
         className="!bg-brand-900 -m-px mb-3 !w-full !px-3.5 !py-2.5"
-        selected={role}
+        selected={role.role}
         options={roles}
+        keyValue="role"
         fn={(value) => {
           setRole(value)
         }}
