@@ -7,20 +7,35 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User{
-  @@map(name: "users")
-
-  id String  @id @default(uuid())
-  name String  @db.VarChar(255)
-  email String @unique
-  password String
-  role RoleEnumType? @default(user)
+model User {
+  id        String   @id @default(uuid())
+  name      String   @db.VarChar(255)
+  email     String   @unique
+  password  String
+  role      Role     @relation(fields: [roleId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  roleId    Int
+
+  @@map(name: "users")
 }
 
-enum RoleEnumType {
-  user
-  admin
+model Role {
+  role      String      @unique
+  id        Int         @id @default(autoincrement())
+  privilege Privilege[]
+  User      User[]
+  master    Boolean     @default(false)
+  createdAt DateTime    @default(now())
+
+  @@map(name: "roles")
 }
 
+model Privilege {
+  name   String @unique
+  id     Int    @id @default(autoincrement())
+  Role   Role?  @relation(fields: [roleId], references: [id])
+  roleId Int?
+
+  @@map(name: "privileges")
+}
