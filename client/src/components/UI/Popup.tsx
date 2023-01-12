@@ -18,9 +18,9 @@ const Popup = ({
         onClick={() => closePopup()}
       />
 
-      <div className="relative z-10 max-h-[80vh] rounded-md border border-gray-700 bg-gray-800 p-3">
+      <div className="relative z-10  max-h-[80vh] rounded-md border border-gray-700 bg-gray-800 p-3">
         <div className="flex items-center justify-between">
-          <h1 className="w-[95vw] text-xl font-medium sm:w-[300px] md:w-[40rem]">
+          <h1 className="w-[75vw] text-xl font-medium sm:w-[300px] md:w-[30rem]">
             {title}
           </h1>
           <button className="rounded-md p-1" onClick={() => closePopup()}>

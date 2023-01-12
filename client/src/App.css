@@ -32,6 +32,10 @@ a {
   @apply outline-none ring-red-600 focus-visible:ring-2;
 }
 
+button {
+  @apply select-none;
+}
+
 input {
   @apply bg-brand-900 -m-px w-full rounded-md border border-gray-800 p-2;
 }
@@ -42,7 +46,7 @@ input.editable-input {
 
 @layer components {
   .btn {
-    @apply rounded-md bg-gray-800 px-3 py-2.5 text-sm transition-colors hover:bg-gray-700/60;
+    @apply rounded-md bg-gray-800 px-3 py-2.5 text-sm transition-colors hover:bg-gray-700/60 disabled:bg-gray-400;
   }
 
   .label {
@@ -51,9 +55,9 @@ input.editable-input {
 }
 
 button.danger {
-  @apply bg-brand-200 hover:bg-brand-200/70;
+  @apply bg-brand-200 hover:bg-brand-200/80 disabled:bg-red-400;
 }
 
 .nav-links a.active {
-  @apply text-red-400;
+  @apply bg-black/20 text-red-400 hover:bg-black/40;
 }
