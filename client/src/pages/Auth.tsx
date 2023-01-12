@@ -4,20 +4,24 @@ import { Icon } from '@iconify/react/dist/offline'
 import { FormEvent, FormEventHandler, useContext, useState } from 'react'
 import useAxios from '../hooks/useAxios'
 import { UserContext } from '../UserContext'
+import { toast } from 'react-toastify'
+import Button from '../components/UI/Button'
 
 const Auth = () => {
   const [inputShown, setInputShown] = useState('password')
+  const [pending, setPending] = useState(false)
   const { setUser } = useContext(UserContext)
 
   const login: FormEventHandler<HTMLFormElement> = async (
     e: FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault()
+    setPending(true)
 
-    const data = new FormData(e.target as HTMLFormElement)
-    const [email, password] = [...data.values()]
+    const dataF = new FormData(e.target as HTMLFormElement)
+    const [email, password] = [...dataF.values()]
 
-    const { ok, data: user } = await useAxios({
+    const { ok, data } = await useAxios({
       method: 'post',
       path: '/auth/login',
       body: {
@@ -26,7 +30,11 @@ const Auth = () => {
       }
     })
 
-    if (ok) setUser(user)
+    setPending(false)
+
+    if (ok) return setUser(data)
+    if (data?.err?.name == 'ZodError') toast.error(data.err.issues[0].message)
+    else toast.error(data?.message)
   }
 
   return (
@@ -60,7 +68,7 @@ const Auth = () => {
             />
             <button
               type="button"
-              className="absolute right-0 mr-0.5 rounded-r px-3 py-2"
+              className="absolute right-0 mr-0.5 rounded-r px-3 py-2 "
               onClick={() =>
                 setInputShown((val) =>
                   val == 'password' ? 'text' : 'password'
@@ -74,7 +82,9 @@ const Auth = () => {
               )}
             </button>
           </div>
-          <button className="btn danger">Submit</button>
+          <Button type="danger" pending={pending}>
+            Submit
+          </Button>
         </form>
       </div>
     </div>
