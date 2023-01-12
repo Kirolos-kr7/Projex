@@ -1,20 +1,24 @@
-import express, { type Request, type Response } from 'express'
+import { PrismaClient } from '@prisma/client'
 import cookieParser from 'cookie-parser'
+import express, {
+  type NextFunction,
+  type Request,
+  type Response
+} from 'express'
 const morgan = require('morgan')
 const cors = require('cors')
 require('dotenv').config()
 
-import { PrismaClient } from '@prisma/client'
 import AuthRouter from './routes/auth.route'
+import RolesRouter from './routes/roles.route'
+import UserRouter from './routes/user.route'
 
 const app = express()
 const port = process.env.PORT || 8080
-const prisma = new PrismaClient()
 export const authExpiration = 3600 * 1000 * 8
+const prisma = new PrismaClient()
 
 const main = async () => {
-  await prisma.$connect()
-
   app.use(express.json())
   app.use(cookieParser())
   if (process.env.NODE_ENV === 'development') app.use(morgan('dev'))
@@ -26,7 +30,18 @@ const main = async () => {
     })
   )
 
+  app.use(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const x = await prisma.$queryRaw`SELECT 1`
+      if (x) next()
+    } catch (error) {
+      return res.sendStatus(503)
+    }
+  })
+
   app.use('/api/auth', AuthRouter)
+  app.use('/api/roles', RolesRouter)
+  app.use('/api/user', UserRouter)
 
   app.all('*', (req: Request, res: Response) => {
     res.status(404).send(`Route ${req.originalUrl} not found`)
@@ -37,8 +52,6 @@ const main = async () => {
   })
 }
 
-main()
-  .catch((err) => {
-    throw err
-  })
-  .finally(async () => await prisma.$disconnect())
+main().catch((err) => {
+  throw err
+})

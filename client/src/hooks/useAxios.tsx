@@ -1,20 +1,21 @@
-import axios, { AxiosResponse } from 'axios'
+import axios, { AxiosError, AxiosResponse } from 'axios'
+import { toast } from 'react-toastify'
 
 interface AxiosRequest {
   method?: string
-  withoutBase?: boolean
+  excludeBase?: boolean
   path: string
   body?: any
 }
 
 const useAxios = async ({
   method = 'get',
-  withoutBase = false,
+  excludeBase = false,
   path,
   body
 }: AxiosRequest) => {
   let response: AxiosResponse
-  const url = !withoutBase ? 'http://localhost:8080/api' + path : path
+  const url = !excludeBase ? 'http://localhost:8080/api' + path : path
 
   try {
     response = await axios({
@@ -28,10 +29,14 @@ const useAxios = async ({
     })
 
     const { data, statusText } = response
+    console.log(data)
 
     return { data, ok: statusText === 'OK' }
   } catch (error) {
-    return { err: error, pending: false }
+    if ((error as AxiosError).response?.status == 503)
+      toast.error('Database is offline')
+    else toast.error((error as AxiosError).message)
+    return { data: null, ok: false }
   }
 }
 
