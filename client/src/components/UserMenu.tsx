@@ -7,7 +7,7 @@ import useAxios from '../hooks/useAxios'
 import { Link } from 'react-router-dom'
 
 const UserMenu = () => {
-  const { setUser } = useContext(UserContext)
+  const { user, setUser } = useContext(UserContext)
   const [isOpened, setIsOpened] = useState(false)
 
   useEffect(() => {
@@ -46,26 +46,32 @@ const UserMenu = () => {
     <div className="relative -mb-2">
       <button
         id="user_menu"
-        className={`h-10 w-10 rounded-full outline-none ring-gray-500 transition-all focus-visible:ring ${
+        className={`flex items-center gap-2 rounded-full outline-none ring-gray-500 transition-all focus-visible:ring ${
           isOpened && 'ring'
         }`}
+        onClick={toggle}
       >
         <img
           id="user_img"
-          className="w-inherit h-inherit rounded-[inherit]"
+          className="h-10 w-10 rounded-full"
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsIlzGp1laQheiAAjrbJJ3pasHLjMBnIUEZg&usqp=CAU"
           alt="user image"
-          onClick={toggle}
         />
+        {user.name && (
+          <p className="mr-2 block whitespace-nowrap text-xs">
+            Hey,{' '}
+            <span className="font-semibold">{user?.name?.split(' ')[0]}</span>
+          </p>
+        )}
       </button>
 
       {isOpened && (
         <ul
           id="opt_menu"
-          className="absolute right-0 flex w-[200px] flex-col overflow-hidden rounded-md border border-gray-700 bg-gray-900"
+          className="absolute right-0 mt-2 flex w-[200px] flex-col overflow-hidden rounded-md border border-gray-700 bg-gray-900"
         >
           <li>
-            <Link to="/account">
+            <Link to="/account" tabIndex={-1}>
               <button
                 className="flex w-full items-center gap-1.5 rounded-t-md border-b border-gray-700 p-2  text-left text-sm ring-inset transition-colors hover:bg-gray-700"
                 onClick={toggle}

@@ -29,7 +29,6 @@ const useAxios = async ({
     })
 
     const { data, statusText } = response
-    console.log(data)
 
     return { data, ok: statusText === 'OK' }
   } catch (error) {

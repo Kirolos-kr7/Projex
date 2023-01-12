@@ -32,7 +32,7 @@ const Auth = () => {
 
     setPending(false)
 
-    if (ok) return setUser(data)
+    if (ok) return setUser(data.user)
     if (data?.err?.name == 'ZodError') toast.error(data.err.issues[0].message)
     else toast.error(data?.message)
   }
