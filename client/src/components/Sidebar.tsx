@@ -33,11 +33,11 @@ const Sidebar = () => {
       }`}
     >
       <h1
-        className={`font-michroma flex h-[82px] items-center px-1 text-xl font-semibold transition-all ${
-          isExpanded && '!text-4xl'
+        className={`font-michroma flex h-[82px] items-center px-1 text-lg font-semibold transition-all ${
+          isExpanded && '!text-3xl'
         }`}
       >
-        PMS
+        DASH
       </h1>
       <ul
         className={`nav-links mt-5 flex w-full flex-1 flex-col items-center [&>li>a]:flex  [&>li>a]:w-full [&>li>a]:items-center [&>li>a]:gap-2 [&>li>a]:border-b [&>li>a]:border-gray-800 [&>li>a]:py-3 [&>li>a]:px-5 [&>li>a]:transition-colors [&>li>a]:sm:px-8 [&>li:last-of-type>a]:border-b-0 [&>li>a:hover]:bg-red-900/5 [&>li>a:hover]:text-red-400 [&>li]:w-full`}
