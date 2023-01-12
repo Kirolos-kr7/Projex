@@ -8,12 +8,13 @@ export type TaskPriority =
   | 'highest'
   | 'critical'
   | 'blocker'
-export type UserRole = 'adminstrator' | 'user' | 'human' | 'person'
+export type UserRole = 'adminstrator' | 'user'
 
-export interface Roles {
+export interface Role {
   role: UserRole
-  privileges: string[]
+  privileges?: string[]
   id: number
+  master: boolean
 }
 
 export interface Task {
@@ -33,7 +34,8 @@ export interface Repo {
 export interface Member {
   name: string
   email: string
-  role: UserRole
+  role: Role
+  roleId: number
   id: number
 }
 
@@ -41,7 +43,6 @@ export interface DropDown {
   selected: any
   options: any[]
   fn?: (value?: any) => void
-  key?: string
-  value?: string
+  keyValue?: any
   className?: string
 }
