@@ -4,12 +4,13 @@ import { useEffect, useRef, useState } from 'react'
 import { DropDown as DropDownType } from '../../types'
 
 const DropDown = (props: DropDownType) => {
-  const { options, selected, fn, className } = props
+  const { options, selected, keyValue, fn, className } = props
 
   const [isOpened, setIsOpened] = useState(false)
   const btn = useRef(null)
   const menu = useRef(null)
-  const filteredVals = () => options.filter((v) => v != selected)
+  const filteredVals = () =>
+    options.filter((v) => (keyValue ? v[keyValue] : v) != selected)
   useEffect(() => {
     if (isOpened) document.addEventListener('mousedown', handleClickAway)
     return () => document.removeEventListener('mousedown', handleClickAway)
@@ -46,7 +47,7 @@ const DropDown = (props: DropDownType) => {
       >
         {filteredVals().map((v) => {
           return (
-            <li key={v} className="group">
+            <li key={keyValue ? v[keyValue] : v} className="group">
               <button
                 type="button"
                 className="block w-full bg-gray-800 px-2 py-1.5 text-left capitalize ring-inset transition-colors hover:bg-gray-700 focus-visible:ring-1 group-first-of-type:rounded-t-md group-last-of-type:rounded-b-md"
@@ -55,7 +56,7 @@ const DropDown = (props: DropDownType) => {
                   setIsOpened(false)
                 }}
               >
-                {v}
+                {keyValue ? v[keyValue] : v}
               </button>
             </li>
           )
