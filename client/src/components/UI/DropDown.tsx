@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { DropDown as DropDownType } from '../../types'
 
 const DropDown = (props: DropDownType) => {
-  const { options, selected, keyValue, fn, className } = props
+  const { options, selected, keyValue, keyName, fn, className } = props
 
   const [isOpened, setIsOpened] = useState(false)
   const btn = useRef(null)
@@ -56,7 +56,7 @@ const DropDown = (props: DropDownType) => {
                   setIsOpened(false)
                 }}
               >
-                {keyValue ? v[keyValue] : v}
+                {keyName ? v[keyName] : keyValue ? v[keyValue] : v}
               </button>
             </li>
           )

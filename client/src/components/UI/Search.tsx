@@ -5,16 +5,18 @@ import { Icon } from '@iconify/react/dist/offline'
 
 const Search = ({
   placeholder = 'Search',
+  className,
   update
 }: {
   placeholder?: string
+  className?: string
   update?: (val: string) => void
 }) => {
   const [isEmpty, setIsEmpty] = useState(true)
   const inputRef = useRef<HTMLInputElement>(null)
 
   return (
-    <div className="relative">
+    <div className={`relative w-72 ${className}`}>
       <Icon
         icon={SearchIcon}
         width="22px"
@@ -23,7 +25,7 @@ const Search = ({
       <input
         ref={inputRef}
         type="text"
-        className="w-72 rounded-md px-9 text-sm"
+        className="w-full rounded-md px-9 text-sm"
         placeholder={placeholder}
         onInput={(e) => {
           const el = e.target as HTMLInputElement

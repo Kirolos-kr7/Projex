@@ -1,19 +1,24 @@
 import axios, { AxiosError, AxiosResponse } from 'axios'
 import { toast } from 'react-toastify'
 
-interface AxiosRequest {
+type UseAxiosResponse = Promise<{ data: any; ok: boolean }>
+interface UseAxiosOptions {
   method?: string
   excludeBase?: boolean
-  path: string
   body?: any
 }
 
-const useAxios = async ({
-  method = 'get',
-  excludeBase = false,
-  path,
-  body
-}: AxiosRequest) => {
+async function useAxios(path: string): UseAxiosResponse
+function useAxios(path: string, options: UseAxiosOptions): UseAxiosResponse
+
+async function useAxios(
+  path: string,
+  options?: UseAxiosOptions
+): UseAxiosResponse {
+  const method = options?.method || 'get',
+    excludeBase = options?.excludeBase || false,
+    body = options?.body || null
+
   let response: AxiosResponse
   const url = !excludeBase ? 'http://localhost:8080/api' + path : path
 

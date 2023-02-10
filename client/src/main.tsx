@@ -14,6 +14,9 @@ import Project from './pages/Project'
 import Roles from './pages/Roles'
 import Settings from './pages/Settings'
 import Team from './pages/Team'
+import ERR from './pages/ERR'
+import Notes from './pages/Notes'
+import Logs from './pages/Logs'
 
 export default function App() {
   const { user, setUser, pending } = useUser()
@@ -21,11 +24,13 @@ export default function App() {
   const router = createBrowserRouter([
     {
       path: '/auth',
-      element: user ? <Navigate to="/" /> : <Auth />
+      element: user ? <Navigate to="/" /> : <Auth />,
+      errorElement: <ERR />
     },
     {
       path: '',
       element: user ? <Layout /> : <Navigate to="/auth" />,
+      errorElement: <ERR />,
       children: [
         {
           path: '/',
@@ -50,6 +55,14 @@ export default function App() {
         {
           path: '/roles',
           element: <Roles />
+        },
+        {
+          path: '/notes',
+          element: <Notes />
+        },
+        {
+          path: '/logs',
+          element: <Logs />
         },
         {
           path: '/settings',

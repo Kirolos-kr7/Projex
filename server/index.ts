@@ -12,6 +12,9 @@ require('dotenv').config()
 import AuthRouter from './routes/auth.route'
 import RolesRouter from './routes/roles.route'
 import UserRouter from './routes/user.route'
+import NotesRouter from './routes/notes.route'
+import LogsRouter from './routes/logs.route'
+import TasksRouter from './routes/tasks.route'
 
 const app = express()
 const port = process.env.PORT || 8080
@@ -42,6 +45,9 @@ const main = async () => {
   app.use('/api/auth', AuthRouter)
   app.use('/api/roles', RolesRouter)
   app.use('/api/user', UserRouter)
+  app.use('/api/notes', NotesRouter)
+  app.use('/api/logs', LogsRouter)
+  app.use('/api/tasks', TasksRouter)
 
   app.all('*', (req: Request, res: Response) => {
     res.status(404).send(`Route ${req.originalUrl} not found`)

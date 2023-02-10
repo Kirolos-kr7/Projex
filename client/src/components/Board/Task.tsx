@@ -2,10 +2,16 @@ import Bug from '@iconify-icons/ic/twotone-bug-report'
 import Clean from '@iconify-icons/ic/twotone-cleaning-services'
 import Feature from '@iconify-icons/ic/twotone-auto-awesome'
 import { Icon } from '@iconify/react/dist/offline'
-import { Task } from '../../types'
+import { type Task } from '../../../../node_modules/@prisma/client'
 import Priority from './Priority'
 
-const Event = ({ task }: { task: Task }) => {
+const Event = ({
+  task,
+  dragStarted
+}: {
+  task: Task
+  dragStarted: (id: string) => void
+}) => {
   return (
     <button
       className="rounded-sm bg-gray-800/75 p-2 text-left"
@@ -13,7 +19,7 @@ const Event = ({ task }: { task: Task }) => {
       onDragStart={(e) => {
         const el = e.target as HTMLElement
         el.classList.add('opacity-40')
-        localStorage.setItem('dragging', task.id)
+        dragStarted(task.id)
       }}
       onDragEnd={(e) =>
         (e.target as HTMLElement).classList.remove('opacity-40')

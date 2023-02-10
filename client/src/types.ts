@@ -1,13 +1,13 @@
-export type TaskType = 'bugfix' | 'feature' | 'refactor'
-export type TaskPriority =
-  | 'trivial'
-  | 'low'
-  | 'lowest'
-  | 'medium'
-  | 'high'
-  | 'highest'
-  | 'critical'
-  | 'blocker'
+// export type TaskType = 'bugfix' | 'feature' | 'refactor'
+// export type TaskPriority =
+//   | 'trivial'
+//   | 'low'
+//   | 'lowest'
+//   | 'medium'
+//   | 'high'
+//   | 'highest'
+//   | 'critical'
+//   | 'blocker'
 export type UserRole = 'adminstrator' | 'user'
 
 export interface Role {
@@ -17,13 +17,13 @@ export interface Role {
   master: boolean
 }
 
-export interface Task {
-  type: TaskType
-  title: string
-  status: number
-  id: string
-  priority: TaskPriority
-}
+// export interface Task {
+//   type: TaskType
+//   title: string
+//   status: number
+//   id: string
+//   priority: TaskPriority
+// }
 
 export interface Repo {
   origin: string
@@ -31,12 +31,12 @@ export interface Repo {
   updatedAt: Date
 }
 
-export interface Member {
+export interface User {
   name: string
   email: string
-  role: Role
+  role?: Role
   roleId: number
-  id: number
+  id: string
 }
 
 export interface DropDown {
@@ -44,5 +44,22 @@ export interface DropDown {
   options: any[]
   fn?: (value?: any) => void
   keyValue?: any
+  keyName?: any
   className?: string
+}
+
+export interface Note {
+  id: string
+  content: string
+  createdAt: Date
+  authorId: string
+  author: User
+}
+
+export interface Log {
+  id: number
+  type: string
+  message: string
+  createdAt: Date
+  userId: string
 }

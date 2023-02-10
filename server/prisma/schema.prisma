@@ -12,30 +12,102 @@ model User {
   name      String   @db.VarChar(255)
   email     String   @unique
   password  String
-  role      Role     @relation(fields: [roleId], references: [id])
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @default(now()) @updatedAt
   roleId    Int
+  Notes     Notes[]
+  role      Role     @relation(fields: [roleId], references: [id])
+  Logs      Logs[]
+  Task      Task[]
 
-  @@map(name: "users")
+  @@map("users")
 }
 
 model Role {
   role      String      @unique
   id        Int         @id @default(autoincrement())
-  privilege Privilege[]
-  User      User[]
   master    Boolean     @default(false)
   createdAt DateTime    @default(now())
+  privilege Privilege[]
+  User      User[]
 
-  @@map(name: "roles")
+  @@map("roles")
 }
 
 model Privilege {
   name   String @unique
   id     Int    @id @default(autoincrement())
-  Role   Role?  @relation(fields: [roleId], references: [id])
   roleId Int?
+  Role   Role?  @relation(fields: [roleId], references: [id])
 
-  @@map(name: "privileges")
+  @@map("privileges")
+}
+
+model Notes {
+  id        Int      @id @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now())
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+
+  @@map("notes")
+}
+
+enum LogType {
+  notes
+  roles
+  auth
+}
+
+model Logs {
+  id        Int      @id @default(autoincrement())
+  type      LogType
+  message   String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+
+  @@map("logs")
+}
+
+enum TaskPriority {
+  trivial
+  low
+  lowest
+  medium
+  high
+  highest
+  critical
+  blocker
+}
+
+enum TaskType {
+  bugfix
+  feature
+  refactor
+  other
+}
+
+model TaskStatus {
+  id    String @id
+  name  String @unique
+  order Int
+  Task  Task[]
+
+  @@map("task status")
+}
+
+model Task {
+  id           String       @id @default(uuid())
+  title        String
+  taskStatus   TaskStatus   @relation(fields: [status], references: [id])
+  priority     TaskPriority
+  type         TaskType
+  assignedTo   User         @relation(fields: [assignedToId], references: [id])
+  assignedToId String
+  status       String
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @default(now()) @updatedAt
+
+  @@map("tasks")
 }

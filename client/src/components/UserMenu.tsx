@@ -35,25 +35,24 @@ const UserMenu = () => {
   }
 
   const logout = async () => {
-    await useAxios({
-      method: 'post',
-      path: '/auth/logout'
+    await useAxios('/auth/logout', {
+      method: 'post'
     })
     setUser(null)
   }
 
   return (
-    <div className="relative -mb-2">
+    <div className="relative">
       <button
         id="user_menu"
-        className={`flex items-center gap-2 rounded-full outline-none ring-gray-500 transition-all focus-visible:ring ${
+        className={`flex items-center gap-2 rounded-full outline-none transition-all focus-visible:ring ${
           isOpened && 'ring'
         }`}
         onClick={toggle}
       >
         <img
           id="user_img"
-          className="h-10 w-10 rounded-full"
+          className="h-10 w-10 rounded-full shadow"
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsIlzGp1laQheiAAjrbJJ3pasHLjMBnIUEZg&usqp=CAU"
           alt="user image"
         />

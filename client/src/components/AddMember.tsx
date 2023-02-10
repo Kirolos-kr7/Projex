@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { Role, Member } from '../types'
+import { Role, User } from '../types'
 import DropDown from './UI/DropDown'
 
-type addFunc = ({ name, email, role, id }: Member) => void
+type addFunc = ({ name, email, role, id }: User) => void
 
 const AddMember = ({
   roles,

@@ -9,7 +9,7 @@ const useUser = () => {
 
   useEffect(() => {
     const auth = async () => {
-      const { ok, data } = await useAxios({ path: '/auth/me' })
+      const { ok, data } = await useAxios('/auth/me')
       setPending(false)
 
       if (data?.token) {

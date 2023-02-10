@@ -21,9 +21,8 @@ const Auth = () => {
     const dataF = new FormData(e.target as HTMLFormElement)
     const [email, password] = [...dataF.values()]
 
-    const { ok, data } = await useAxios({
+    const { ok, data } = await useAxios('/auth/login', {
       method: 'post',
-      path: '/auth/login',
       body: {
         email,
         password

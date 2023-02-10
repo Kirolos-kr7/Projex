@@ -6,8 +6,8 @@ import { useEffect, useState } from 'react'
 import useAxios from '../hooks/useAxios'
 
 import { Icon } from '@iconify/react/dist/offline'
-import Privileges from '@iconify-icons/ic/list'
-import Delete from '@iconify-icons/ic/delete'
+import Privileges from '@iconify-icons/mdi/list-status'
+import Delete from '@iconify-icons/mdi/delete'
 
 const Roles = () => {
   const [searchValue, setSearchValue] = useState('')
@@ -15,8 +15,9 @@ const Roles = () => {
   const [roles, setRoles] = useState<Role[]>([])
 
   const getRoles = async () => {
-    const { data } = await useAxios({ path: '/roles' })
+    const { data } = await useAxios('/roles')
     setRoles(data)
+    console.log(data)
   }
 
   useEffect(() => {
@@ -61,16 +62,26 @@ const Roles = () => {
             {getFilteredRoles().map(({ role, id, privileges, master }) => {
               return (
                 <tr key={id}>
-                  <td className="flex items-center gap-2 py-1.5">{role}</td>
+                  <td className="flex items-center gap-2 py-1.5 capitalize">
+                    {role}
+                  </td>
                   <td className="text-xs">{privileges?.join(', ') || '--'}</td>
                   <td>
-                    <div className="flex items-center gap-2">
-                      <button className="rounded-md bg-green-600 p-1.5">
-                        <Icon icon={Privileges} />
+                    <div className="-mx-1">
+                      <button className="icon-btn">
+                        <Icon
+                          icon={Privileges}
+                          className="text-green-600"
+                          width="20"
+                        />
                       </button>
                       {!master && (
-                        <button className="rounded-md bg-red-600 p-1.5">
-                          <Icon icon={Delete} />
+                        <button className="icon-btn">
+                          <Icon
+                            icon={Delete}
+                            className="text-red-600"
+                            width="20"
+                          />
                         </button>
                       )}
                     </div>
@@ -82,25 +93,27 @@ const Roles = () => {
         </table>
       </div>
 
-      {popupOpened && (
-        <Popup title="Add Role" closePopup={() => setPopupOpened(false)}>
-          <AddRole
-            add={({ role }) => {
-              setRoles((curr) => {
-                curr.push({
-                  role,
-                  id: Date.now(),
-                  privileges: [],
-                  master: false
-                })
-                return curr
+      <Popup
+        title="Add Role"
+        open={popupOpened}
+        closePopup={() => setPopupOpened(false)}
+      >
+        <AddRole
+          add={({ role }) => {
+            setRoles((curr) => {
+              curr.push({
+                role,
+                id: Date.now(),
+                privileges: [],
+                master: false
               })
-              setPopupOpened(false)
-            }}
-            cancel={() => setPopupOpened(false)}
-          />
-        </Popup>
-      )}
+              return curr
+            })
+            setPopupOpened(false)
+          }}
+          cancel={() => setPopupOpened(false)}
+        />
+      </Popup>
     </div>
   )
 }

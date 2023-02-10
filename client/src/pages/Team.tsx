@@ -1,42 +1,29 @@
 import { useEffect, useState } from 'react'
-import { Member, Role } from '../types'
+import { User, Role } from '../types'
 import Search from '../components/UI/Search'
 import DropDown from '../components/UI/DropDown'
-import Popup from '../components/UI/Popup'
-import AddMember from '../components/AddMember'
-// import { UserContext } from '../UserContext'
 import useAxios from '../hooks/useAxios'
 import { Icon } from '@iconify/react/dist/offline'
 import Delete from '@iconify-icons/mdi/delete-outline'
+import { getUserICon } from '../utils/helper'
 
 const Team = () => {
-  // const { user } = useContext(UserContext)
-  // console.log(user)
-
   const [searchValue, setSearchValue] = useState('')
-  const [popupOpened, setPopupOpened] = useState(false)
-  const [members, setMembers] = useState<Member[]>([])
+  const [members, setMembers] = useState<User[]>([])
+  const [selected, setSelected] = useState<boolean[]>([false, false])
   const [roles, setRoles] = useState<Role[]>([])
 
   const getData = async () => {
-    const { data: m } = await useAxios({ path: '/user/all' })
-    const { data: r } = await useAxios({ path: '/roles' })
+    const { data: m } = await useAxios('/user/all')
+    const { data: r } = await useAxios('/roles')
     setMembers(m)
+    // setSelected(members.map(() => false))
     setRoles(r)
   }
 
   useEffect(() => {
     getData()
   }, [])
-
-  const getUserICon = (name: string) => {
-    name = name.trim()
-    const arr = name.split(' ')
-    if (arr.length > 1) return arr[0][0] + arr[1][0]
-    else if (name.length > 1) return name[0] + name[1]
-
-    return name[0]
-  }
 
   const getFilteredMembers = () => {
     if (searchValue == '') return members
@@ -49,6 +36,8 @@ const Team = () => {
     })
   }
 
+  const getUsersSelection = (): boolean => selected.every((v) => v)
+
   return (
     <div>
       <h1 className="page-title">Team</h1>
@@ -58,15 +47,27 @@ const Team = () => {
           placeholder="Search members"
           update={(val) => setSearchValue(val)}
         />
-        <button className="btn base" onClick={() => setPopupOpened(true)}>
-          Add Member
-        </button>
       </div>
 
-      <div className="rounded-md bg-gray-900 p-3">
+      <div className="rounded-md, bg-gray-900 p-3">
         <table className="w-full">
           <thead className="text-xs text-gray-400">
             <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  className="w-auto accent-pink-700"
+                  name=""
+                  id=""
+                  checked={getUsersSelection()}
+                  onChange={() => {
+                    setSelected((prev) => {
+                      if (prev.every((v) => v)) return prev.map(() => false)
+                      return prev.map(() => true)
+                    })
+                  }}
+                />
+              </td>
               <td className="pb-2">Name</td>
               <td className="pb-2">Email</td>
               <td className="pb-2">Role</td>
@@ -74,9 +75,23 @@ const Team = () => {
             </tr>
           </thead>
           <tbody>
-            {getFilteredMembers().map(({ id, name, email, role }) => {
+            {getFilteredMembers().map(({ id, name, email, role }, i) => {
               return (
                 <tr key={id}>
+                  <td>
+                    <input
+                      type="checkbox"
+                      className="w-auto accent-pink-700"
+                      name=""
+                      id=""
+                      onChange={() => {
+                        setSelected((prev) => {
+                          return prev.map((p, x) => (x == i ? !p : p))
+                        })
+                      }}
+                      checked={selected[i]}
+                    />
+                  </td>
                   <td className="flex items-center gap-2 py-1.5">
                     <span className="grid h-8 w-8 place-content-center rounded-full bg-red-700 text-xs uppercase">
                       {getUserICon(name)}
@@ -86,12 +101,12 @@ const Team = () => {
                   <td>{email}</td>
                   <td>
                     <DropDown
-                      selected={role.role}
+                      selected={role?.role}
                       options={roles}
                       keyValue="role"
                       fn={(value) =>
                         setMembers((curr) => {
-                          return curr?.map((m: Member) => {
+                          return curr?.map((m: User) => {
                             if (m.id === id) return { ...m, role: value }
                             return m
                           })
@@ -112,22 +127,6 @@ const Team = () => {
           </tbody>
         </table>
       </div>
-
-      {popupOpened && (
-        <Popup title="Add Member" closePopup={() => setPopupOpened(false)}>
-          <AddMember
-            roles={roles}
-            add={(user) => {
-              setMembers((curr) => {
-                curr.push(user)
-                return curr
-              })
-              setPopupOpened(false)
-            }}
-            cancel={() => setPopupOpened(false)}
-          />
-        </Popup>
-      )}
     </div>
   )
 }

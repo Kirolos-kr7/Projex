@@ -7,3 +7,5 @@ export const signJwt = (payload: JwtPayload) =>
   })
 
 export const verifyJwt = (token: string) => jwt.verify(token, 'alex')
+
+export const decodeJwt = (token: string) => jwt.decode(token)

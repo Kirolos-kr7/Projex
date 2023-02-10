@@ -22,35 +22,32 @@ const Settings = () => {
         </li>
       </ul>
 
-      {popupOpened && (
-        <div>
-          <Popup
-            title="Create New User"
-            closePopup={() => setPopupOpened(false)}
-          >
-            <AddUser
-              add={async (user) => {
-                const { ok, data } = await useAxios({
-                  path: '/user/add',
-                  body: user,
-                  method: 'post'
-                })
+      <div>
+        <Popup
+          title="Create New User"
+          open={popupOpened}
+          closePopup={() => setPopupOpened(false)}
+        >
+          <AddUser
+            add={async (user) => {
+              const { ok, data } = await useAxios('/user/add', {
+                body: user,
+                method: 'post'
+              })
 
-                if (ok) {
-                  toast.success(data.message)
-                  setPopupOpened(false)
-                  return
-                }
+              if (ok) {
+                toast.success(data.message)
+                setPopupOpened(false)
+                return
+              }
 
-                if (data?.name == 'ZodError')
-                  toast.error(data.issues[0].message)
-                else toast.error(data.message)
-              }}
-              cancel={() => setPopupOpened(false)}
-            ></AddUser>
-          </Popup>
-        </div>
-      )}
+              if (data?.name == 'ZodError') toast.error(data.issues[0].message)
+              else toast.error(data.message)
+            }}
+            cancel={() => setPopupOpened(false)}
+          ></AddUser>
+        </Popup>
+      </div>
     </div>
   )
 }

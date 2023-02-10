@@ -3,7 +3,15 @@ import Check from '@iconify-icons/ic/check'
 import Close from '@iconify-icons/ic/close'
 import { Icon } from '@iconify/react/dist/offline'
 
-const Editable = ({ val, live }: { val: string; live: boolean }) => {
+const Editable = ({
+  val,
+  live,
+  save
+}: {
+  val: string
+  live: boolean
+  save: (value: string) => void
+}) => {
   const [isEditing, setIsEditing] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const applyRef = useRef<HTMLButtonElement>(null)
@@ -41,6 +49,8 @@ const Editable = ({ val, live }: { val: string; live: boolean }) => {
         <form
           onSubmit={(e) => {
             e.preventDefault()
+            save(inputRef.current?.value as string)
+
             setIsEditing(false)
           }}
         >

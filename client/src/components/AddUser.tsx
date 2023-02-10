@@ -22,7 +22,7 @@ const AddMember = ({ add, cancel }: { add: addFunc; cancel: () => void }) => {
   const [roles, setRoles] = useState<Role[]>([])
 
   const getData = async () => {
-    const { data: r } = await useAxios({ path: '/roles' })
+    const { data: r } = await useAxios('/roles')
     setRoles(r)
   }
 
@@ -37,13 +37,15 @@ const AddMember = ({ add, cancel }: { add: addFunc; cancel: () => void }) => {
         e.preventDefault()
 
         const data = new FormData(e.target as HTMLFormElement)
-        const values = [...data.values()]
+        const [name, email, password, confirmPassword] = [
+          ...data.values()
+        ] as string[]
 
         add({
-          name: values[0] as string,
-          email: values[1] as string,
-          password: values[2] as string,
-          confirmPassword: values[3] as string,
+          name,
+          email,
+          password,
+          confirmPassword,
           roleId: role.id
         })
       }}

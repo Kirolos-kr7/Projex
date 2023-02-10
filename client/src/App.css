@@ -10,12 +10,24 @@ body {
   @apply font-michroma mb-7 text-3xl font-semibold;
 }
 
-.scroller::-webkit-scrollbar {
-  @apply h-2.5 w-2.5 bg-gray-800;
+.sidebar-scroller {
+  overflow-y: overlay;
 }
 
-.scroller::-webkit-scrollbar-thumb {
-  @apply h-4 rounded-lg bg-gray-600;
+.sidedialog-scroller {
+  overflow-x: overlay;
+}
+
+.sidebar-scroller::-webkit-scrollbar {
+  @apply h-1 w-1 bg-gray-900;
+}
+
+.sidebar-scroller::-webkit-scrollbar-thumb {
+  @apply bg-gray-900;
+}
+
+.sidebar-scroller:hover::-webkit-scrollbar-thumb {
+  @apply bg-gray-600;
 }
 
 ::-webkit-scrollbar {
@@ -28,15 +40,22 @@ body {
 
 input,
 button,
+textarea,
+path,
 a {
-  @apply outline-none ring-red-600 focus-visible:ring-2;
+  @apply outline-none ring-red-400/60 focus-visible:ring-2;
+}
+
+textarea {
+  min-height: 135px;
 }
 
 button {
   @apply select-none;
 }
 
-input {
+input,
+textarea {
   @apply bg-brand-900 -m-px w-full rounded-md border border-gray-800 p-2;
 }
 
@@ -46,7 +65,11 @@ input.editable-input {
 
 @layer components {
   .btn {
-    @apply rounded-md bg-gray-800 px-3 py-2.5 text-sm transition-colors hover:bg-gray-700/60 disabled:bg-gray-400;
+    @apply rounded-md bg-gray-800 px-3 py-2.5 text-sm transition-colors hover:bg-gray-700/60 disabled:cursor-not-allowed disabled:bg-gray-500;
+  }
+
+  .icon-btn {
+    @apply -mx-0.5 rounded-full p-2 text-sm transition-colors hover:bg-gray-700/60;
   }
 
   .label {
@@ -59,5 +82,27 @@ button.danger {
 }
 
 .nav-links a.active {
-  @apply bg-black/20 text-red-400 hover:bg-black/40;
+  @apply bg-red-600 text-white hover:bg-red-600/80 hover:!text-white;
+}
+
+dialog::backdrop {
+  background: #00000050;
+  backdrop-filter: blur(1px);
+}
+
+.water_wave_back {
+  animation: wave-back 1.6s infinite linear;
+}
+.water_wave_front {
+  animation: wave-front 0.9s infinite linear;
+}
+@keyframes wave-front {
+  100% {
+    transform: translate(-50%, 0);
+  }
+}
+@keyframes wave-back {
+  100% {
+    transform: translate(50%, 0);
+  }
 }
