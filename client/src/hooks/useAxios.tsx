@@ -1,15 +1,18 @@
-import axios, { AxiosError, AxiosResponse } from 'axios'
+import axios, { AxiosError, AxiosResponse, Method } from 'axios'
 import { toast } from 'react-toastify'
 
 type UseAxiosResponse = Promise<{ data: any; ok: boolean }>
 interface UseAxiosOptions {
-  method?: string
+  method?: Method
   excludeBase?: boolean
   body?: any
 }
 
 async function useAxios(path: string): UseAxiosResponse
-function useAxios(path: string, options: UseAxiosOptions): UseAxiosResponse
+async function useAxios(
+  path: string,
+  options: UseAxiosOptions
+): UseAxiosResponse
 
 async function useAxios(
   path: string,
