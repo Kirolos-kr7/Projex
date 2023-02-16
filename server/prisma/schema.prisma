@@ -57,6 +57,7 @@ enum LogType {
   notes
   roles
   auth
+  tasks
 }
 
 model Logs {

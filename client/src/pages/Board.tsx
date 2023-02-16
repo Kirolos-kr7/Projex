@@ -38,23 +38,23 @@ const Board = () => {
     getTaskStatuses()
   }, [])
 
-  const handleDrop = (zoneId: string) => {
+  const handleDrop = async (zoneId: string) => {
     const evtId = dragging
     setDragging('')
     if (!evtId) return
 
-    console.log(evtId)
+    const { data, ok } = await useAxios('/tasks/change-status', {
+      method: 'patch',
+      body: {
+        taskId: evtId,
+        statusId: zoneId
+      }
+    })
 
-    setTasks(
-      (p) =>
-        p &&
-        p
-          .map((task) => {
-            if (task.id === evtId) task.status = zoneId
-            return task
-          })
-          .sort((a: any, b: any) => (a.id > b.id ? 1 : b.id > a.id ? -1 : 0))
-    )
+    if (ok) {
+      toast.success(data)
+      getTasks()
+    } else toast.error(data)
   }
 
   // const handleParentDragging = (id: string | number, val = 'false') => {
