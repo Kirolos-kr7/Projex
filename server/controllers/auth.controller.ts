@@ -1,11 +1,9 @@
 import { Request, Response } from 'express'
-import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 import { LoginSchema } from '../schemas/user.schema'
 import { verifyJwt, signJwt } from '../utils/jwt'
 import { authExpiration } from '..'
-
-const prisma = new PrismaClient()
+import prisma from '../prisma/prisma.client'
 
 export const User = async (req: Request, res: Response) => {
   const token = req.cookies.authToken

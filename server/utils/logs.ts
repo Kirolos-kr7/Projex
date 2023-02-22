@@ -1,5 +1,5 @@
-import { PrismaClient, LogType } from '@prisma/client'
-const prisma = new PrismaClient()
+import prisma from '../prisma/prisma.client'
+import { LogType } from '@prisma/client'
 
 export const logThis = async (
   type: LogType,
