@@ -4,6 +4,7 @@ import useAxios from '../hooks/useAxios'
 import { toast } from 'react-toastify'
 import Log from '../components/Log'
 import dayjs from 'dayjs'
+import PageHeader from '../components/UI/PageHeader'
 
 const Logs = () => {
   const [logs, setLogs] = useState<any>()
@@ -29,7 +30,7 @@ const Logs = () => {
 
   return (
     <>
-      <h1 className="page-title">Logs</h1>
+      <PageHeader title="Logs" sub="Track what's going on with the app" />
 
       <div className="mt-10 flex flex-col">
         {logs &&

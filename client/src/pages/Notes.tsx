@@ -10,6 +10,7 @@ import GridView from '@iconify-icons/mdi/view-module'
 import ListView from '@iconify-icons/mdi/view-sequential'
 import ConfirmationDialog from '../components/Dialogs/ConfirmationDialog'
 import { toast } from 'react-toastify'
+import PageHeader from '../components/UI/PageHeader'
 
 const Notes = () => {
   // const [searchValue, setSearchValue] = useState('')
@@ -64,8 +65,8 @@ const Notes = () => {
   }
 
   return (
-    <div>
-      <h1 className="page-title">Notes</h1>
+    <>
+      <PageHeader title="Notes" sub="Keep in touch with the team" />
 
       <div className="mb-2 flex items-center justify-between">
         <Search
@@ -113,7 +114,7 @@ const Notes = () => {
       <Popup title="Delete Note" open={deletePopup} closePopup={cancel}>
         <ConfirmationDialog accept={deleteNote} cancel={cancel} />
       </Popup>
-    </div>
+    </>
   )
 }
 

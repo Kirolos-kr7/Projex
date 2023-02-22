@@ -12,6 +12,7 @@ import SideDialog from '../components/SideDialog'
 import NewTask from '../components/NewTask'
 import useAxios from '../hooks/useAxios'
 import { toast } from 'react-toastify'
+import PageHeader from '../components/UI/PageHeader'
 
 const Board = () => {
   const [popupOpened, setPopupOpened] = useState(false)
@@ -92,8 +93,8 @@ const Board = () => {
   }
 
   return (
-    <div>
-      <h1 className="page-title">Board</h1>
+    <>
+      <PageHeader title="Board" sub="Work the tasks" />
 
       <div className="mb-2 flex items-center justify-between ">
         <Search placeholder="Search tasks" />
@@ -189,7 +190,7 @@ const Board = () => {
           />
         </SideDialog>
       )}
-    </div>
+    </>
   )
 }
 

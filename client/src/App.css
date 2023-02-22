@@ -6,10 +6,6 @@ body {
   @apply font-poppins bg-[#101010] text-white;
 }
 
-.page-title {
-  @apply font-michroma mb-7 text-3xl font-semibold;
-}
-
 .sidebar-scroller {
   overflow-y: overlay;
 }

@@ -6,6 +6,7 @@ import useAxios from '../hooks/useAxios'
 import { Icon } from '@iconify/react/dist/offline'
 import Delete from '@iconify-icons/mdi/delete-outline'
 import { getUserICon } from '../utils/helper'
+import PageHeader from '../components/UI/PageHeader'
 
 const Team = () => {
   const [searchValue, setSearchValue] = useState('')
@@ -39,8 +40,8 @@ const Team = () => {
   const getUsersSelection = (): boolean => selected.every((v) => v)
 
   return (
-    <div>
-      <h1 className="page-title">Team</h1>
+    <>
+      <PageHeader title="Team" sub="Manage your teammates" />
 
       <div className="mb-2 flex items-center justify-between ">
         <Search
@@ -127,7 +128,7 @@ const Team = () => {
           </tbody>
         </table>
       </div>
-    </div>
+    </>
   )
 }
 

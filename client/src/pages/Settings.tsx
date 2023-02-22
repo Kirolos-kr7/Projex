@@ -3,13 +3,14 @@ import AddUser from '../components/AddUser'
 import Popup from '../components/UI/Popup'
 import useAxios from '../hooks/useAxios'
 import { toast } from 'react-toastify'
+import PageHeader from '../components/UI/PageHeader'
 
 const Settings = () => {
   const [popupOpened, setPopupOpened] = useState(false)
 
   return (
-    <div>
-      <h1 className="page-title">Settings</h1>
+    <>
+      <PageHeader title="Settings" sub="Twaek it the way you like" />
 
       <ul className="mt-10 grid grid-cols-5 gap-5">
         <li>
@@ -48,7 +49,7 @@ const Settings = () => {
           ></AddUser>
         </Popup>
       </div>
-    </div>
+    </>
   )
 }
 

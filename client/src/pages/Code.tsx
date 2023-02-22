@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Repo from '../components/Board/Repo'
 import { Repo as RepoType } from '../types'
+import PageHeader from '../components/UI/PageHeader'
 
 const Code = () => {
   const [repos] = useState<RepoType[]>([
@@ -22,8 +23,8 @@ const Code = () => {
   ])
 
   return (
-    <div>
-      <h1 className="page-title">Code</h1>
+    <>
+      <PageHeader title="Code" sub="Live Repos" />
 
       <div className="rounded-md bg-gray-900 p-3">
         <h2>Repositories</h2>
@@ -34,7 +35,7 @@ const Code = () => {
           })}
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

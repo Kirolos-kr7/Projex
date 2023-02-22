@@ -8,6 +8,7 @@ import useAxios from '../hooks/useAxios'
 import { Icon } from '@iconify/react/dist/offline'
 import Privileges from '@iconify-icons/mdi/list-status'
 import Delete from '@iconify-icons/mdi/delete'
+import PageHeader from '../components/UI/PageHeader'
 
 const Roles = () => {
   const [searchValue, setSearchValue] = useState('')
@@ -36,8 +37,8 @@ const Roles = () => {
   }
 
   return (
-    <div>
-      <h1 className="page-title">Roles</h1>
+    <>
+      <PageHeader title="Roles" sub="Who can do What!!" />
 
       <div className="mb-2 flex items-center justify-between ">
         <Search
@@ -114,7 +115,7 @@ const Roles = () => {
           cancel={() => setPopupOpened(false)}
         />
       </Popup>
-    </div>
+    </>
   )
 }
 
