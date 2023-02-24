@@ -35,7 +35,7 @@ const Event = ({
         <Priority p={priority} />
         <div className="h-5 w-5 rounded-full">
           <img
-            title={assignedTo?.name}
+            title={assignedTo?.userName}
             id="user_img"
             className="w-inherit h-inherit rounded-[inherit]"
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsIlzGp1laQheiAAjrbJJ3pasHLjMBnIUEZg&usqp=CAU"

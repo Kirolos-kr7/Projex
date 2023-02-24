@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react'
-import { Role } from '../types'
+import { type Role } from '../../../node_modules/@prisma/client'
 import DropDown from './UI/DropDown'
 import useAxios from '../hooks/useAxios'
 
 type addFunc = ({
-  name,
+  userName,
+  fullName,
   email,
   roleId,
   password,
   confirmPassword
 }: {
-  name: string
+  userName: string
+  fullName: string
   email: string
   roleId: number
   password: string
@@ -37,12 +39,13 @@ const AddMember = ({ add, cancel }: { add: addFunc; cancel: () => void }) => {
         e.preventDefault()
 
         const data = new FormData(e.target as HTMLFormElement)
-        const [name, email, password, confirmPassword] = [
+        const [userName, fullName, email, password, confirmPassword] = [
           ...data.values()
         ] as string[]
 
         add({
-          name,
+          userName,
+          fullName,
           email,
           password,
           confirmPassword,
@@ -50,20 +53,25 @@ const AddMember = ({ add, cancel }: { add: addFunc; cancel: () => void }) => {
         })
       }}
     >
-      <label className="label" htmlFor="name">
-        Name
-      </label>
+      <label htmlFor="userName">User Name</label>
       <input
         className="mb-3 px-3 text-sm"
         type="text"
-        name="name"
-        id="name"
+        name="username"
+        id="username"
         required
         autoFocus
       />
-      <label className="label" htmlFor="email">
-        Email
-      </label>
+      <label htmlFor="fullName">Full Name</label>
+      <input
+        className="mb-3 px-3 text-sm"
+        type="text"
+        name="fullname"
+        id="fullname"
+        required
+        autoFocus
+      />
+      <label htmlFor="email">Email</label>
       <input
         className="mb-3 px-3 text-sm"
         type="email"
@@ -71,9 +79,7 @@ const AddMember = ({ add, cancel }: { add: addFunc; cancel: () => void }) => {
         id="email"
         required
       />
-      <label className="label" htmlFor="password">
-        Password
-      </label>
+      <label htmlFor="password">Password</label>
       <input
         className="mb-3 px-3 text-sm"
         type="password"
@@ -81,9 +87,7 @@ const AddMember = ({ add, cancel }: { add: addFunc; cancel: () => void }) => {
         id="password"
         required
       />
-      <label className="label" htmlFor="confirmPassword">
-        Confirm Password
-      </label>
+      <label htmlFor="confirmPassword">Confirm Password</label>
       <input
         className="mb-3 px-3 text-sm"
         type="password"
@@ -91,7 +95,7 @@ const AddMember = ({ add, cancel }: { add: addFunc; cancel: () => void }) => {
         id="confirmPassword"
         required
       />
-      <label className="label">Role</label>
+      <label>Role</label>
       <DropDown
         className="!bg-brand-900 -m-px mb-3 !w-full !px-3.5 !py-2.5"
         selected={role.role}

@@ -2,7 +2,10 @@ import Search from '../components/UI/Search'
 import NoteCard from '../components/NoteCard'
 import { useState, useEffect } from 'react'
 import useAxios from '../hooks/useAxios'
-import { Note } from '../types'
+import {
+  type Notes as Note,
+  type User
+} from '../../../node_modules/@prisma/client'
 import Popup from '../components/UI/Popup'
 import NoteDialog from '../components/Dialogs/NoteDialog'
 import { Icon } from '@iconify/react/dist/offline'
@@ -19,9 +22,9 @@ const Notes = () => {
   const [view, setView] = useState('Grid')
   const [pending, setPending] = useState(true)
   const [editing, setEditing] = useState(false)
-  const [onEdit, setOnEdit] = useState<Note>()
-  const [onDelete, setOnDelete] = useState<Note>()
-  const [notes, setNotes] = useState<Note[]>()
+  const [onEdit, setOnEdit] = useState<Note & { author: User }>()
+  const [onDelete, setOnDelete] = useState<Note & { author: User }>()
+  const [notes, setNotes] = useState<(Note & { author: User })[]>()
 
   const getNotes = async () => {
     setPopupOpened(false)
@@ -35,7 +38,7 @@ const Notes = () => {
     getNotes()
   }, [])
 
-  const editNote = async (id: string) => {
+  const editNote = async (id: number) => {
     setEditing(true)
     setPopupOpened(true)
     setOnEdit(notes?.find((n) => n.id == id))

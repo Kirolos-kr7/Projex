@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Log as LogType } from '../types'
+import { type Logs as LogType } from '../../../node_modules/@prisma/client'
 import useAxios from '../hooks/useAxios'
 import { toast } from 'react-toastify'
 import Log from '../components/Log'

@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from 'react'
 import { DropDown as DropDownType } from '../../types'
 
 const DropDown = (props: DropDownType) => {
-  const { options, selected, keyValue, keyName, fn, className } = props
+  const { options, selected, keyValue, keyName, fn, className, disabled } =
+    props
 
   const [isOpened, setIsOpened] = useState(false)
   const btn = useRef(null)
@@ -34,7 +35,10 @@ const DropDown = (props: DropDownType) => {
           'mb-1.5 flex items-center justify-between gap-2 rounded-md bg-gray-800 px-3 py-2 capitalize transition-colors hover:bg-gray-700/60 ' +
           className
         }
-        onClick={() => (isOpened ? setIsOpened(false) : setIsOpened(true))}
+        onClick={() => {
+          if (disabled) return
+          isOpened ? setIsOpened(false) : setIsOpened(true)
+        }}
       >
         {selected} <Icon icon={Chevron} width="20px" />
       </button>

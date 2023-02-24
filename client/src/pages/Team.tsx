@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { User, Role } from '../types'
+import { type Role, type User } from '../../../node_modules/@prisma/client'
+
 import Search from '../components/UI/Search'
 import DropDown from '../components/UI/DropDown'
 import useAxios from '../hooks/useAxios'
@@ -10,7 +11,7 @@ import PageHeader from '../components/UI/PageHeader'
 
 const Team = () => {
   const [searchValue, setSearchValue] = useState('')
-  const [members, setMembers] = useState<User[]>([])
+  const [members, setMembers] = useState<(User & { role: Role })[]>([])
   const [selected, setSelected] = useState<boolean[]>([false, false])
   const [roles, setRoles] = useState<Role[]>([])
 
@@ -29,9 +30,10 @@ const Team = () => {
   const getFilteredMembers = () => {
     if (searchValue == '') return members
 
-    return members.filter(({ name, email }) => {
+    return members.filter(({ userName, fullName, email }) => {
       return (
-        name.toLowerCase().includes(searchValue.toLowerCase()) ||
+        userName.toLowerCase().includes(searchValue.toLowerCase()) ||
+        fullName.toLowerCase().includes(searchValue.toLowerCase()) ||
         email.toLowerCase().includes(searchValue.toLowerCase())
       )
     })
@@ -58,8 +60,6 @@ const Team = () => {
                 <input
                   type="checkbox"
                   className="w-auto accent-pink-700"
-                  name=""
-                  id=""
                   checked={getUsersSelection()}
                   onChange={() => {
                     setSelected((prev) => {
@@ -76,15 +76,13 @@ const Team = () => {
             </tr>
           </thead>
           <tbody>
-            {getFilteredMembers().map(({ id, name, email, role }, i) => {
+            {getFilteredMembers().map(({ id, fullName, email, role }, i) => {
               return (
                 <tr key={id}>
                   <td>
                     <input
                       type="checkbox"
                       className="w-auto accent-pink-700"
-                      name=""
-                      id=""
                       onChange={() => {
                         setSelected((prev) => {
                           return prev.map((p, x) => (x == i ? !p : p))
@@ -95,9 +93,9 @@ const Team = () => {
                   </td>
                   <td className="flex items-center gap-2 py-1.5">
                     <span className="grid h-8 w-8 place-content-center rounded-full bg-red-700 text-xs uppercase">
-                      {getUserICon(name)}
+                      {getUserICon(fullName)}
                     </span>
-                    <h3>{name}</h3>
+                    <h3>{fullName}</h3>
                   </td>
                   <td>{email}</td>
                   <td>

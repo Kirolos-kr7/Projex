@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { Log as LogType } from '../types'
+import { type Logs as LogType } from '../../../node_modules/@prisma/client'
 
 const Log = ({ log, last }: { log: LogType; last: boolean }) => {
   const { message, createdAt } = log

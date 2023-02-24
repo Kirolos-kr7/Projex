@@ -1,4 +1,8 @@
-import { Note as NoteType } from '../types'
+import {
+  type Notes as NoteType,
+  type User
+} from '../../../node_modules/@prisma/client'
+
 import * as dayjs from 'dayjs'
 import RelativeTime from 'dayjs/plugin/relativeTime'
 import { getUserICon } from '../utils/helper'
@@ -15,9 +19,9 @@ const Note = ({
   editNote,
   deleteNote
 }: {
-  note: NoteType
-  editNote: (id: string) => void
-  deleteNote: (id: string) => void
+  note: NoteType & { author: User }
+  editNote: (id: number) => void
+  deleteNote: (id: number) => void
 }) => {
   const { content, createdAt, author, authorId, id } = note
   const { user } = useContext(UserContext)
@@ -35,9 +39,9 @@ const Note = ({
       <div className="flex items-center justify-between">
         <span
           className="grid h-2.5 w-2.5 place-content-center rounded-full bg-red-600 p-3.5 text-xs"
-          title={author.name}
+          title={author.userName}
         >
-          {getUserICon(author.name)}
+          {getUserICon(author.userName)}
         </span>
 
         {authorId == user.id && (

@@ -1,8 +1,7 @@
 import { Request, Response } from 'express'
-import { PrismaClient } from '@prisma/client'
+import prisma from '../prisma/prisma.client'
 import { logThis } from '../utils/logs'
 import { getUserId } from '../utils/helper'
-const prisma = new PrismaClient()
 
 export const GetTasks = async (req: Request, res: Response) => {
   try {

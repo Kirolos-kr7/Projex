@@ -1,14 +1,17 @@
 import { FormEvent, useState } from 'react'
 import useAxios from '../../hooks/useAxios'
 import { toast } from 'react-toastify'
-import { Note } from '../../types'
+import {
+  type Notes as Note,
+  type User
+} from '../../../../node_modules/@prisma/client'
 
 const AddNote = ({
   note,
   done,
   cancel
 }: {
-  note: Note | undefined
+  note: (Note & { author: User }) | undefined
   done: () => void
   cancel: () => void
 }) => {
@@ -66,9 +69,7 @@ const AddNote = ({
         {err && (
           <span className="mb-2 rounded-md bg-red-800 p-2.5 ">{err}</span>
         )}
-        <label className="label" htmlFor="note">
-          Note
-        </label>
+        <label htmlFor="note">Note</label>
         <textarea
           className="px-3 text-sm"
           name="note"

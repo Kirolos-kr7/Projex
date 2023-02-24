@@ -1,8 +1,17 @@
 import { useState } from 'react'
-import { Role, User } from '../types'
+import { type Role } from '../../../node_modules/@prisma/client'
 import DropDown from './UI/DropDown'
 
-type addFunc = ({ name, email, role, id }: User) => void
+type addFunc = ({
+  name,
+  email,
+  role
+}: {
+  name: string
+  email: string
+  role: Role
+  roleId: number
+}) => void
 
 const AddMember = ({
   roles,
@@ -28,14 +37,11 @@ const AddMember = ({
           name: values[0] as string,
           email: values[1] as string,
           role: role,
-          roleId: role.id,
-          id: Date.now()
+          roleId: role.id
         })
       }}
     >
-      <label className="label" htmlFor="name">
-        Name
-      </label>
+      <label htmlFor="name">Name</label>
       <input
         className="mb-3 px-3 text-sm"
         type="text"
@@ -44,9 +50,7 @@ const AddMember = ({
         required
         autoFocus
       />
-      <label className="label" htmlFor="email">
-        Email
-      </label>
+      <label htmlFor="email">Email</label>
       <input
         className="mb-3 px-3 text-sm"
         type="email"
@@ -54,7 +58,7 @@ const AddMember = ({
         id="email"
         required
       />
-      <label className="label">Role</label>
+      <label>Role</label>
       <DropDown
         className="!bg-brand-900 -m-px mb-3 !w-full !px-3.5 !py-2.5"
         selected={role.role}
