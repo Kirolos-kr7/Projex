@@ -1,19 +1,30 @@
 import Account from '@iconify-icons/ic/account-box'
 import Logout from '@iconify-icons/ic/twotone-log-out'
 import { Icon } from '@iconify/react/dist/offline'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { UserContext } from '../UserContext'
 import useAxios from '../hooks/useAxios'
 import { Link } from 'react-router-dom'
+import { type User } from '../../../node_modules/@prisma/client'
 
 const UserMenu = () => {
-  const { user, setUser } = useContext(UserContext)
+  const { user, setUser }: { user: User; setUser: (val: User | null) => void } =
+    useContext(UserContext)
   const [isOpened, setIsOpened] = useState(false)
+  const imgRef = useRef<HTMLImageElement | null>(null)
 
   useEffect(() => {
     document.addEventListener('mouseup', handleMouseEvent)
     return () => document.removeEventListener('mouseup', handleMouseEvent)
   }, [])
+
+  useEffect(() => {
+    if (!imgRef.current) return
+    const el: HTMLImageElement = imgRef.current
+    el.src = user.hasProfileImage
+      ? `/storage/users/${user.id}.webp`
+      : '/profile-picture.jpg'
+  }, [user])
 
   const toggle = () => {
     if (!isOpened) {
@@ -53,13 +64,12 @@ const UserMenu = () => {
         <img
           id="user_img"
           className="h-10 w-10 rounded-full shadow"
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsIlzGp1laQheiAAjrbJJ3pasHLjMBnIUEZg&usqp=CAU"
+          ref={imgRef}
           alt="user image"
         />
-        {user.name && (
+        {user.userName && (
           <p className="mr-2 block whitespace-nowrap text-xs">
-            Hey,{' '}
-            <span className="font-semibold">{user?.name?.split(' ')[0]}</span>
+            Hey, <span className="font-semibold">{user.userName}</span>
           </p>
         )}
       </button>

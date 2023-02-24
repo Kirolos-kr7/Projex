@@ -6,6 +6,7 @@ interface UseAxiosOptions {
   method?: Method
   excludeBase?: boolean
   body?: any
+  headers?: any
 }
 
 async function useAxios(path: string): UseAxiosResponse
@@ -20,7 +21,8 @@ async function useAxios(
 ): UseAxiosResponse {
   const method = options?.method || 'get',
     excludeBase = options?.excludeBase || false,
-    body = options?.body || null
+    body = options?.body || null,
+    headers = options?.headers || null
 
   let response: AxiosResponse
   const url = !excludeBase ? 'http://localhost:8080/api' + path : path
@@ -33,7 +35,8 @@ async function useAxios(
       validateStatus: function (status) {
         return status < 500
       },
-      withCredentials: true
+      withCredentials: true,
+      headers
     })
 
     const { data, statusText } = response

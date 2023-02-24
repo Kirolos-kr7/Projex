@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import prisma from './prisma/prisma.client'
 import cookieParser from 'cookie-parser'
 import express, {
   type NextFunction,
@@ -19,10 +19,10 @@ import TasksRouter from './routes/tasks.route'
 const app = express()
 const port = process.env.PORT || 8080
 export const authExpiration = 3600 * 1000 * 8
-const prisma = new PrismaClient()
 
 const main = async () => {
   app.use(express.json())
+  app.use(express.urlencoded({ extended: true }))
   app.use(cookieParser())
   if (process.env.NODE_ENV === 'development') app.use(morgan('dev'))
 
