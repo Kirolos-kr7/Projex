@@ -55,6 +55,10 @@ textarea {
   @apply bg-brand-900 -m-px w-full rounded-md border border-gray-800 p-2;
 }
 
+label {
+  @apply mb-1 block text-sm text-gray-400;
+}
+
 input.editable-input {
   @apply !rounded-sm;
 }
@@ -66,10 +70,6 @@ input.editable-input {
 
   .icon-btn {
     @apply -mx-0.5 rounded-full p-2 text-sm transition-colors hover:bg-gray-700/60;
-  }
-
-  .label {
-    @apply mb-1 block text-sm text-gray-400;
   }
 }
 

@@ -13,9 +13,7 @@ const AddRole = ({ add, cancel }: { add: addFunc; cancel: () => void }) => {
         add({ role: values[0] })
       }}
     >
-      <label className="label" htmlFor="role">
-        Role
-      </label>
+      <label>Role</label>
       <input
         className="mb-3 px-3 text-sm"
         type="text"

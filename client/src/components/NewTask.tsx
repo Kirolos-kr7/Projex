@@ -101,9 +101,7 @@ const NewTask = ({
         {step == 1 && (
           <>
             <div>
-              <label className="label" htmlFor="name">
-                Title
-              </label>
+              <label htmlFor="name">Title</label>
               <input
                 className="px-3 text-sm"
                 type="text"
@@ -123,9 +121,7 @@ const NewTask = ({
               />
             </div>
             <div>
-              <label className="label" htmlFor="name">
-                Status
-              </label>
+              <label htmlFor="name">Status</label>
               <DropDown
                 className="w-full"
                 options={taskStatuses}
@@ -140,9 +136,7 @@ const NewTask = ({
               />
             </div>
             <div>
-              <label className="label" htmlFor="name">
-                Priority
-              </label>
+              <label htmlFor="name">Priority</label>
               <DropDown
                 className="w-full"
                 options={priorities}
@@ -155,9 +149,7 @@ const NewTask = ({
               />
             </div>
             <div>
-              <label className="label" htmlFor="name">
-                Type
-              </label>
+              <label htmlFor="name">Type</label>
               <DropDown
                 className="w-full"
                 options={taskTypes}

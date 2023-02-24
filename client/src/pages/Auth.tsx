@@ -42,9 +42,7 @@ const Auth = () => {
         <h1 className="text-brand-100 text-3xl font-black uppercase">Login</h1>
         <form className="mt-5 flex flex-col items-end gap-2" onSubmit={login}>
           <div className="w-full">
-            <label className="label" htmlFor="email">
-              Email
-            </label>
+            <label htmlFor="email">Email</label>
             <input
               className="mb-3 px-3 text-sm "
               type="email"
@@ -55,9 +53,7 @@ const Auth = () => {
             />
           </div>
           <div className="relative w-full">
-            <label className="label" htmlFor="password">
-              Password
-            </label>
+            <label htmlFor="password">Password</label>
             <input
               className="mb-3 px-3 text-sm"
               type={inputShown}
