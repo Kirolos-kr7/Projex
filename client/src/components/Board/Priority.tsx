@@ -14,43 +14,43 @@ const Priority = ({ p }: { p: TaskPriority }) => {
 
   if (p === 'low')
     icon = (
-      <span title="Priority: Low">
+      <span data-tooltip="Priority: Low">
         <Icon icon={Low} className="text-3xl text-indigo-500" />
       </span>
     )
   if (p === 'lowest')
     icon = (
-      <span title="Priority: Lowest">
+      <span data-tooltip="Priority: Lowest">
         <Icon icon={Lowest} className="text-2xl text-indigo-500" />
       </span>
     )
   if (p === 'medium')
     icon = (
-      <span title="Priority: Medium">
+      <span data-tooltip="Priority: Medium">
         <Icon icon={Medium} className="text-2xl text-yellow-500" />
       </span>
     )
   if (p === 'high')
     icon = (
-      <span title="Priority: High">
+      <span data-tooltip="Priority: High">
         <Icon icon={High} className="text-3xl text-red-500" />
       </span>
     )
   if (p === 'highest')
     icon = (
-      <span title="Priority: Highest">
+      <span data-tooltip="Priority: Highest">
         <Icon icon={Highest} className="text-2xl text-red-500" />
       </span>
     )
   if (p === 'critical')
     icon = (
-      <span title="Priority: Critical">
+      <span data-tooltip="Priority: Critical">
         <Icon icon={Critical} className="text-xl text-red-700" />
       </span>
     )
   if (p === 'blocker')
     icon = (
-      <span title="Priority: Block">
+      <span data-tooltip="Priority: Block">
         <Icon icon={Block} className="text-xl text-red-700" />
       </span>
     )
@@ -60,7 +60,11 @@ const Priority = ({ p }: { p: TaskPriority }) => {
       {icon ? (
         icon
       ) : (
-        <span title={p === 'trivial' ? 'Priority: Trivial' : 'Priority: null'}>
+        <span
+          data-tooltip={
+            p === 'trivial' ? 'Priority: Trivial' : 'Priority: null'
+          }
+        >
           {' '}
           <Icon icon={Trivial} className="text-xl text-gray-500" />
         </span>
