@@ -41,7 +41,7 @@ const NewTask = ({
     priority: 'medium',
     type: 'feature',
     title: '',
-    assignedToId: ''
+    assignedToId: null
   })
 
   const getUsers = async () => {
@@ -169,7 +169,7 @@ const NewTask = ({
             <Search placeholder="Search Users" className="!w-full" />
 
             <div className="bg-brand-800 border-brand-700 mt-2 grid grid-cols-3 gap-2 rounded-lg border p-2">
-              {users?.map(({ id, name }) => (
+              {users?.map(({ id, userName, fullName }) => (
                 <button
                   type="button"
                   key={id}
@@ -180,7 +180,7 @@ const NewTask = ({
                     setTask((prev) => {
                       return {
                         ...prev,
-                        assignedToId: task.assignedToId ? '' : id
+                        assignedToId: task.assignedToId == id ? null : id
                       }
                     })
                   }
@@ -188,7 +188,8 @@ const NewTask = ({
                   <span className="grid h-11 w-11 place-content-center rounded-full bg-red-700 uppercase">
                     {getUserICon('KR')}
                   </span>
-                  <p className="text-sm leading-5">{name}</p>
+                  <span className="mt-1 text-sm leading-5">{fullName}</span>
+                  <p className="-mt-1 text-xs text-gray-400">{userName}</p>
                 </button>
               ))}
             </div>
@@ -207,11 +208,7 @@ const NewTask = ({
             <button className="btn" type="button" onClick={() => setStep(1)}>
               Back
             </button>
-            <button
-              className="btn"
-              disabled={!task.assignedToId}
-              onClick={addTask}
-            >
+            <button className="btn" onClick={addTask}>
               Save
             </button>
           </>

@@ -85,14 +85,13 @@ model Task {
   title        String
   priority     TaskPriority
   type         TaskType
-  assignedToId String
+  assignedToId String?
   status       String
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @default(now()) @updatedAt
-  assignedTo   User         @relation(fields: [assignedToId], references: [id])
+  assignedTo   User?        @relation(fields: [assignedToId], references: [id])
   taskStatus   TaskStatus   @relation(fields: [status], references: [id])
 
-  @@index([assignedToId], map: "tasks_assignedToId_fkey")
   @@index([status], map: "tasks_status_fkey")
   @@map("tasks")
 }
