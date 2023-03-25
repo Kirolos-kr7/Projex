@@ -81,7 +81,7 @@ const Notes = () => {
             className="btn !p-2"
             onClick={() => (view == 'Grid' ? setView('List') : setView('Grid'))}
           >
-            <Icon icon={view == 'Grid' ? GridView : ListView} width="22px" />
+            <Icon icon={view != 'Grid' ? GridView : ListView} width="22px" />
           </button>
           <button className="btn base" onClick={() => setPopupOpened(true)}>
             Add Note
