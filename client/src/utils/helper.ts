@@ -6,3 +6,13 @@ export const getUserICon = (fullName: string) => {
 
   return fullName[0]
 }
+
+export const pulseAnim = (el: HTMLElement) => {
+  el.animate(
+    [{ outline: '0px solid #E02424' }, { outline: '10px solid #e0242400' }],
+    {
+      easing: 'ease-out',
+      duration: 750
+    }
+  )
+}
