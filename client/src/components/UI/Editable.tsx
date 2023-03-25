@@ -39,7 +39,7 @@ const Editable = ({
     <div className="relative mb-1">
       {!isEditing && (
         <h2
-          className="p-2 uppercase"
+          className="truncate p-2 uppercase"
           onClick={() => live && setIsEditing(true)}
         >
           {val}
@@ -49,7 +49,9 @@ const Editable = ({
         <form
           onSubmit={(e) => {
             e.preventDefault()
-            save(inputRef.current?.value as string)
+
+            const result = inputRef.current?.value as string
+            save(result)
 
             setIsEditing(false)
           }}
