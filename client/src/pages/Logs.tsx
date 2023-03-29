@@ -7,10 +7,20 @@ import dayjs from 'dayjs'
 import PageHeader from '../components/UI/PageHeader'
 
 const Logs = () => {
-  const [logs, setLogs] = useState<any>()
+  const limit = 7
+  const [logs, setLogs] = useState<any[]>([])
+  const [page, setPage] = useState(40)
+  const [max, setMax] = useState(1)
+  const [isLogging, setIsLogging] = useState(false)
 
   const getLogs = async () => {
-    const { data, ok } = await useAxios('/logs')
+    setIsLogging(true)
+    const { data, ok } = await useAxios('/logs', {
+      params: {
+        page,
+        limit
+      }
+    })
 
     const dates: any = {}
 
@@ -20,13 +30,25 @@ const Logs = () => {
       else dates[day].push(d)
     })
 
-    if (ok) setLogs(dates)
+    if (ok) {
+      setLogs(dates)
+    } else toast.error(data)
+    setIsLogging(false)
+  }
+
+  const getMaxLogs = async () => {
+    const { data, ok } = await useAxios('/logs/max')
+    if (ok) setMax(data / limit)
     else toast.error(data)
   }
 
   useEffect(() => {
-    getLogs()
+    getMaxLogs()
   }, [])
+
+  useEffect(() => {
+    getLogs()
+  }, [page])
 
   return (
     <>
@@ -50,6 +72,32 @@ const Logs = () => {
             )
           })}
       </div>
+      {true && (
+        <div className="flex gap-3">
+          {' '}
+          <button
+            className=" flex h-3 w-3 items-center justify-center rounded-xl
+             bg-red-700 p-3"
+            onClick={() => {
+              setPage((p) => p - 1)
+            }}
+            disabled={isLogging || page == 0}
+          >
+            {'<'}
+          </button>
+          {page} of {max - 1}
+          <button
+            className=" flex h-3 w-3 items-center justify-center rounded-xl bg-red-700
+             p-3 disabled:bg-red-400"
+            onClick={() => {
+              setPage((p) => p + 1)
+            }}
+            disabled={isLogging || page == max - 1}
+          >
+            {'>'}
+          </button>
+        </div>
+      )}
     </>
   )
 }

@@ -1,8 +1,9 @@
 import { Router } from 'express'
-import { GetAll } from '../controllers/logs.controller'
+import { GetAll, GetMaxLogs } from '../controllers/logs.controller'
 
 const LogsRouter = Router()
 
 LogsRouter.get('/', GetAll)
+LogsRouter.get('/max', GetMaxLogs)
 
 export default LogsRouter
