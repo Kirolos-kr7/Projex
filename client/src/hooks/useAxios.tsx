@@ -7,6 +7,7 @@ interface UseAxiosOptions {
   excludeBase?: boolean
   body?: any
   headers?: any
+  params: any
 }
 
 async function useAxios(path: string): UseAxiosResponse
@@ -22,6 +23,7 @@ async function useAxios(
   const method = options?.method || 'get',
     excludeBase = options?.excludeBase || false,
     body = options?.body || null,
+    params = options?.params || null,
     headers = options?.headers || null
 
   let response: AxiosResponse
@@ -32,6 +34,7 @@ async function useAxios(
       method,
       url,
       data: body,
+      params,
       validateStatus: function (status) {
         return status < 500
       },
