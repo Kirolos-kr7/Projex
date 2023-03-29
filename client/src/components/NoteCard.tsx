@@ -28,7 +28,7 @@ const Note = ({
 
   return (
     <div className="bg-brand-800 border-brand-700 flex flex-col gap-1.5 rounded-md border p-3">
-      <p className="flex-1 whitespace-pre-wrap">{content}</p>
+      <p className="flex-1 whitespace-pre-wrap break-all">{content}</p>
       <span
         className="inline-block text-sm text-gray-400"
         title={new Date(createdAt).toUTCString()}
