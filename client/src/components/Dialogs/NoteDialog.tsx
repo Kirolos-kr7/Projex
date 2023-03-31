@@ -1,10 +1,10 @@
 import { FormEvent, useState } from 'react'
-import useAxios from '../../hooks/useAxios'
 import { toast } from 'react-toastify'
 import {
   type Notes as Note,
   type User
 } from '../../../../node_modules/@prisma/client'
+import { trpc } from '../../utils/trpc'
 
 const AddNote = ({
   note,
@@ -30,37 +30,23 @@ const AddNote = ({
     const form = e.target as HTMLFormElement
     const formData = new FormData(form)
     const [content] = [...formData.values()]
-    let data0, ok0
 
-    if (note) {
-      const { data, ok } = await useAxios('/notes', {
-        method: 'put',
-        body: {
-          noteId: note?.id,
-          content
-        }
-      })
-
-      data0 = data
-      ok0 = ok
-    } else {
-      const { data, ok } = await useAxios('/notes', {
-        method: 'post',
-        body: {
-          content
-        }
-      })
-
-      data0 = data
-      ok0 = ok
-    }
-
-    if (ok0) {
-      toast.success(data0)
+    try {
+      if (note) {
+        await trpc.notes.edit.mutate({
+          content: content as string,
+          noteId: note.id
+        })
+        toast.success('Updated note sucessfully')
+      } else {
+        await trpc.notes.create.mutate(content as string)
+        toast.success('Added note sucessfully')
+      }
       form.reset()
       done()
-    } else if (data0.name == 'ZodError') setErr(data0.issues[0].message)
-    else setErr(data0)
+    } catch (err: any) {
+      setErr(err)
+    }
   }
 
   return (

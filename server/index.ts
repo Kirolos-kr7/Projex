@@ -10,9 +10,7 @@ const cors = require('cors')
 require('dotenv').config()
 
 import AuthRouter from './routes/auth.route'
-import RolesRouter from './routes/roles.route'
 import UserRouter from './routes/user.route'
-import NotesRouter from './routes/notes.route'
 import TasksRouter from './routes/tasks.route'
 
 import { createContext, appRouter } from './trpc'
@@ -45,9 +43,7 @@ const main = async () => {
   })
 
   app.use('/api/auth', AuthRouter)
-  app.use('/api/roles', RolesRouter)
   app.use('/api/user', UserRouter)
-  app.use('/api/notes', NotesRouter)
   app.use('/api/tasks', TasksRouter)
 
   app.use(

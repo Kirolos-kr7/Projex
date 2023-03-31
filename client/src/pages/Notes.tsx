@@ -1,7 +1,6 @@
 import Search from '../components/UI/Search'
 import NoteCard from '../components/NoteCard'
 import { useState, useEffect } from 'react'
-import useAxios from '../hooks/useAxios'
 import {
   type Notes as Note,
   type User
@@ -12,8 +11,9 @@ import { Icon } from '@iconify/react/dist/offline'
 import GridView from '@iconify-icons/mdi/view-module'
 import ListView from '@iconify-icons/mdi/view-sequential'
 import ConfirmationDialog from '../components/Dialogs/ConfirmationDialog'
-import { toast } from 'react-toastify'
 import PageHeader from '../components/UI/PageHeader'
+import { trpc } from '../utils/trpc'
+import { toast } from 'react-toastify'
 
 const Notes = () => {
   // const [searchValue, setSearchValue] = useState('')
@@ -29,7 +29,7 @@ const Notes = () => {
   const getNotes = async () => {
     setPopupOpened(false)
     setPending(true)
-    const { data } = await useAxios('/notes')
+    const data: any = await trpc.notes.getAll.query()
     setNotes(data)
     setPending(false)
   }
@@ -53,18 +53,15 @@ const Notes = () => {
   }
 
   const deleteNote = async () => {
-    const { data, ok } = await useAxios('/notes', {
-      method: 'delete',
-      body: {
-        noteId: onDelete?.id
-      }
-    })
-
-    if (ok) {
-      toast.success(data)
+    try {
+      if (!onDelete?.id) return
+      await trpc.notes.delete.mutate(onDelete.id)
+      toast.success('Note deleted sucessfully')
       cancel()
-      getNotes()
-    } else toast.error(data)
+    } catch (err: any) {
+      toast.error(err)
+    }
+    getNotes()
   }
 
   return (

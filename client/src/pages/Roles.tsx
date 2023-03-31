@@ -3,11 +3,11 @@ import Search from '../components/UI/Search'
 import Popup from '../components/UI/Popup'
 import AddRole from '../components/AddRole'
 import { useEffect, useState } from 'react'
-import useAxios from '../hooks/useAxios'
 import { Icon } from '@iconify/react/dist/offline'
 import Privileges from '@iconify-icons/mdi/list-status'
 import Delete from '@iconify-icons/mdi/delete'
 import PageHeader from '../components/UI/PageHeader'
+import { trpc } from '../utils/trpc'
 
 const Roles = () => {
   const [searchValue, setSearchValue] = useState('')
@@ -15,9 +15,8 @@ const Roles = () => {
   const [roles, setRoles] = useState<(Role & { privileges: any[] })[]>([])
 
   const getRoles = async () => {
-    const { data } = await useAxios('/roles')
+    const data: any = await trpc.roles.getAll.query()
     setRoles(data)
-    console.log(data)
   }
 
   useEffect(() => {
