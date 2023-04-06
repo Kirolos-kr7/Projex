@@ -10,32 +10,29 @@ import Editable from '../components/UI/Editable'
 import Search from '../components/UI/Search'
 import SideDialog from '../components/SideDialog'
 import NewTask from '../components/NewTask'
-import useAxios from '../hooks/useAxios'
-import { toast } from 'react-toastify'
 import PageHeader from '../components/UI/PageHeader'
 import Priority from '../components/Board/Priority'
 import TaskType from '../components/Board/TaskType'
-import { pulseAnim } from '../utils/helper'
+import { handleError, pulseAnim } from '../utils/helper'
 import Tooltip from '../components/UI/Tooltip'
+import { trpc } from '../utils/trpc'
 
 const Board = () => {
   const [popupOpened, setPopupOpened] = useState(false)
   const [taskStatuses, setTaskStatuses] = useState<TaskStatus[]>([])
   const [tasks, setTasks] = useState<TypeTask[]>([])
   const [taskStatus, setTaskStatus] = useState('')
-  const [dragging, setDragging] = useState('')
+  const [dragging, setDragging] = useState<number | null>()
   const [offset, setOffset] = useState({ x: 0, y: 0 })
 
   const getTasks = async () => {
-    const { data, ok } = await useAxios('/tasks')
-    if (ok) setTasks(data.tasks)
-    else toast.error(data)
+    const data = await trpc.tasks.getAll.query()
+    setTasks(data as any)
   }
 
   const getTaskStatuses = async () => {
-    const { data, ok } = await useAxios('/tasks/statuses')
-    if (ok) setTaskStatuses(data.taskStatuses.reverse())
-    else toast.error(data)
+    const data = await trpc.tasks.getTaskStatuses.query()
+    setTaskStatuses(data as any)
   }
 
   useEffect(() => {
@@ -99,15 +96,16 @@ const Board = () => {
     })
     const dropZoneId = (isIn as HTMLElement)?.dataset.dropzone
 
+    if (!dragging) return
     updateTaskStatus(dropZoneId, dragging)
 
-    setDragging('')
+    setDragging(null)
     setOffset({ x: 0, y: 0 })
   }
 
   const updateTaskStatus = async (
     statusId: string | undefined,
-    taskId: string
+    taskId: number
   ) => {
     if (!statusId) return false
 
@@ -121,19 +119,15 @@ const Board = () => {
       })
     )
 
-    const { data, ok } = await useAxios('/tasks/change-status', {
-      method: 'patch',
-      body: { taskId, statusId }
-    })
-
-    if (ok) {
+    try {
+      await trpc.tasks.changeTaskStatus.mutate({ taskId, statusId })
       const el = document.getElementById(`task_${taskId}`)
       if (!el) return
       pulseAnim(el)
       getTasks()
-    } else toast.error(data)
-
-    return ok
+    } catch (err) {
+      handleError(err)
+    }
   }
 
   const editStatusName = async (id: string, name: string) => {
@@ -144,17 +138,15 @@ const Board = () => {
       })
     )
 
-    const { data, ok } = await useAxios('/tasks/status-name', {
-      method: 'patch',
-      body: { id, name }
-    })
-
-    if (ok) {
+    try {
+      await trpc.tasks.changeStatusName.mutate({ id, name })
       const el = document.getElementById(`status_${id}`)
       if (!el) return
       pulseAnim(el)
       await getTaskStatuses()
-    } else toast.error(data)
+    } catch (err) {
+      handleError(err)
+    }
   }
 
   const close = () => {
@@ -236,7 +228,13 @@ const Board = () => {
                               <TaskType type={type} />
                             </div>
 
-                            <span className="flex-1 text-xs">{id}</span>
+                            <span className="flex-1 text-xs">
+                              {'PMS-' +
+                                new Intl.NumberFormat(undefined, {
+                                  minimumIntegerDigits: 2,
+                                  maximumSignificantDigits: 2
+                                }).format(id)}
+                            </span>
                             <Priority p={priority} />
                             {assignedTo && (
                               <div className="h-5 w-5 rounded-full">

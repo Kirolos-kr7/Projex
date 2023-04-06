@@ -11,7 +11,6 @@ require('dotenv').config()
 
 import AuthRouter from './routes/auth.route'
 import UserRouter from './routes/user.route'
-import TasksRouter from './routes/tasks.route'
 
 import { createContext, appRouter } from './trpc'
 import * as trpcExpress from '@trpc/server/adapters/express'
@@ -44,7 +43,6 @@ const main = async () => {
 
   app.use('/api/auth', AuthRouter)
   app.use('/api/user', UserRouter)
-  app.use('/api/tasks', TasksRouter)
 
   app.use(
     '/trpc',

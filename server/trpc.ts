@@ -1,6 +1,6 @@
 import { inferAsyncReturnType, initTRPC, TRPCError } from '@trpc/server'
 import { CreateExpressContextOptions } from '@trpc/server/adapters/express'
-import { z, number } from 'zod'
+import { z } from 'zod'
 import prisma from './prisma/prisma.client'
 import { getUserId } from './utils/helper'
 import { logThis } from './utils/logs'
@@ -16,7 +16,7 @@ export const router = t.router
 
 const logsRouter = router({
   getAll: publicProcedure
-    .input(z.object({ page: number(), limit: number() }))
+    .input(z.object({ page: z.number(), limit: z.number() }))
     .query(async ({ input }) => {
       const { page = 1, limit = 10 } = input
       const logs = await prisma.logs.findMany({
@@ -123,9 +123,88 @@ const rolesRouter = router({
   })
 })
 
+const tasksRouter = router({
+  getAll: publicProcedure.query(async () => {
+    const tasks = await prisma.task.findMany({
+      include: {
+        assignedTo: true
+      }
+    })
+
+    if (!tasks) throw new TRPCError({ code: 'NOT_FOUND' })
+
+    return tasks
+  }),
+  getTaskStatuses: publicProcedure.query(async () => {
+    const taskStatuses = await prisma.taskStatus.findMany({
+      orderBy: {
+        order: 'desc'
+      }
+    })
+
+    if (!taskStatuses) throw new TRPCError({ code: 'NOT_FOUND' })
+
+    return taskStatuses
+  }),
+  changeStatusName: publicProcedure
+    .input(z.object({ id: z.string(), name: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const { id, name } = input
+      const userId = getUserId(ctx.req)
+
+      const status = await prisma.taskStatus.update({
+        where: { id },
+        data: { name }
+      })
+
+      logThis('tasks', 'Changed status name task w/ id: ' + status.id, userId)
+    }),
+  changeTaskStatus: publicProcedure
+    .input(z.object({ taskId: z.number(), statusId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const { taskId, statusId } = input
+      const userId = getUserId(ctx.req)
+
+      const updatedTask = await prisma.task.update({
+        where: {
+          id: taskId
+        },
+        data: {
+          status: statusId
+        }
+      })
+
+      logThis('tasks', 'Updated task status w/ id: ' + updatedTask.id, userId)
+    }),
+  createTask: publicProcedure
+    .input(
+      z.object({
+        title: z.string().min(2, 'Title must contain at least 2 character(s)'),
+        priority: z.any(),
+        type: z.any(),
+        status: z.string(),
+        assignedToId: z.string().nullable()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const userId = getUserId(ctx.req)
+      const { title, priority, type, status, assignedToId } = input
+
+      console.log(title)
+
+      const newTask = await prisma.task.create({
+        data: { title, priority, status, type, assignedToId }
+      })
+
+      logThis('tasks', 'Added task w/ id: ' + newTask.id, userId)
+    })
+})
+
 export const appRouter = router({
   logs: logsRouter,
   roles: rolesRouter,
-  notes: notesRouter
+  notes: notesRouter,
+  tasks: tasksRouter
 })
+
 export type AppRouter = typeof appRouter

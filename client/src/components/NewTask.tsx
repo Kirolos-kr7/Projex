@@ -7,8 +7,8 @@ import {
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import useAxios from '../hooks/useAxios'
 import Search from './UI/Search'
-import { getUserICon } from '../utils/helper'
-import { toast } from 'react-toastify'
+import { getUserICon, handleError } from '../utils/helper'
+import { trpc } from '../utils/trpc'
 
 const NewTask = ({
   taskStatuses,
@@ -61,14 +61,11 @@ const NewTask = ({
       status: taskStatuses.find((t) => t.name == task.status)?.id
     }
 
-    const { data, ok } = await useAxios('/tasks', {
-      method: 'post',
-      body: newTask
-    })
-
-    if (ok) {
-      toast.success(data)
+    try {
+      await trpc.tasks.createTask.mutate(newTask as any)
       done()
+    } catch (err) {
+      handleError(err)
     }
   }
 
