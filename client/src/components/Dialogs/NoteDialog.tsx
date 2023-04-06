@@ -4,6 +4,7 @@ import {
   type Notes as Note,
   type User
 } from '../../../../node_modules/@prisma/client'
+import { handleError } from '../../utils/helper'
 import { trpc } from '../../utils/trpc'
 
 const AddNote = ({
@@ -33,14 +34,22 @@ const AddNote = ({
 
     try {
       if (note) {
-        await trpc.notes.edit.mutate({
-          content: content as string,
-          noteId: note.id
-        })
-        toast.success('Updated note sucessfully')
+        try {
+          await trpc.notes.edit.mutate({
+            content: content as string,
+            noteId: note.id
+          })
+          toast.success('Updated note sucessfully')
+        } catch (err) {
+          handleError(err)
+        }
       } else {
-        await trpc.notes.create.mutate(content as string)
-        toast.success('Added note sucessfully')
+        try {
+          await trpc.notes.create.mutate(content as string)
+          toast.success('Added note sucessfully')
+        } catch (err) {
+          handleError(err)
+        }
       }
       form.reset()
       done()

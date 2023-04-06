@@ -14,6 +14,7 @@ import ConfirmationDialog from '../components/Dialogs/ConfirmationDialog'
 import PageHeader from '../components/UI/PageHeader'
 import { trpc } from '../utils/trpc'
 import { toast } from 'react-toastify'
+import { handleError } from '../utils/helper'
 
 const Notes = () => {
   // const [searchValue, setSearchValue] = useState('')
@@ -58,8 +59,8 @@ const Notes = () => {
       await trpc.notes.delete.mutate(onDelete.id)
       toast.success('Note deleted sucessfully')
       cancel()
-    } catch (err: any) {
-      toast.error(err)
+    } catch (err) {
+      handleError(err)
     }
     getNotes()
   }
