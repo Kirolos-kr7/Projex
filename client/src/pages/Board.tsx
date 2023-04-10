@@ -173,7 +173,7 @@ const Board = () => {
               key={statusId}
               id={`dropzone_${statusId}`}
               data-dropzone={statusId}
-              className="flex min-w-[280px] flex-col rounded-md border border-transparent bg-gray-900 p-1"
+              className="flex h-min min-w-[280px] flex-col rounded-md border border-transparent bg-gray-900 p-1"
               onMouseEnter={(e) => {
                 if (dragging) e.currentTarget?.classList.add('border-red-500')
               }}
@@ -192,7 +192,7 @@ const Board = () => {
                   save={(name) => editStatusName(statusId, name)}
                 />
               </div>
-              <div className="grid flex-1 gap-1">
+              <div className="grid gap-1">
                 {tasks?.map((task) => {
                   const { id, assignedTo, type, priority, title } =
                     task as TypeTask & { assignedTo?: User }
