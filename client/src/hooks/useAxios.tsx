@@ -7,7 +7,7 @@ interface UseAxiosOptions {
   excludeBase?: boolean
   body?: any
   headers?: any
-  params: any
+  params?: any
 }
 
 async function useAxios(path: string): UseAxiosResponse
