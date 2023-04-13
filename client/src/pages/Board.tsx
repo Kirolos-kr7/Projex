@@ -231,8 +231,7 @@ const Board = () => {
                             <span className="flex-1 text-xs">
                               {'PMS-' +
                                 new Intl.NumberFormat(undefined, {
-                                  minimumIntegerDigits: 2,
-                                  maximumSignificantDigits: 2
+                                  minimumIntegerDigits: 2
                                 }).format(id)}
                             </span>
                             <Priority p={priority} />

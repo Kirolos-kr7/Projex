@@ -150,6 +150,36 @@ const tasksRouter = router({
 
     return taskStatuses
   }),
+  getProjectProgress: publicProcedure.query(async () => {
+    const tasks = await prisma.task.findMany({
+      select: {
+        status: true
+      }
+    })
+
+    const counts = { done: 0, all: 0 }
+
+    for (let i = 0; i < tasks.length; i++) {
+      const { status } = tasks[i]
+      if (status == 'done') counts.done += 1
+      counts.all += 1
+    }
+
+    return counts
+  }),
+  getBoardStatus: publicProcedure.query(async () => {
+    const taskStatuses = await prisma.taskStatus.findMany({
+      select: {
+        name: true,
+        id: true,
+        _count: true
+      }
+    })
+
+    return taskStatuses.map(({ _count, id, name }) => {
+      return { count: _count.Task, name, id }
+    })
+  }),
   changeStatusName: publicProcedure
     .input(z.object({ id: z.string(), name: z.string() }))
     .mutation(async ({ ctx, input }) => {

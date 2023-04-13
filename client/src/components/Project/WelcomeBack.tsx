@@ -6,6 +6,7 @@ const WelcomeBack = () => {
       </p>
       <img
         className="absolute right-0 top-5 w-48 translate-y-4 opacity-0 transition-all duration-500"
+        style={{ filter: 'drop-shadow(6px 6px 10px black)' }}
         onLoad={(e) => {
           const img = e.target as HTMLElement
           img.classList.remove('opacity-0')

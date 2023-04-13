@@ -1,11 +1,20 @@
 import { useEffect, useRef, useState } from 'react'
+import { trpc } from '../../utils/trpc'
 
 const Progress = () => {
   const [counter, setCounter] = useState(0)
-  const percentage = 55
+  let percentage = 55
   const water = useRef<any>()
 
+  const getData = async () => {
+    const { done, all } = await trpc.tasks.getProjectProgress.query()
+    console.log({ done, all })
+    percentage = Math.floor((done / all) * 100)
+  }
+
   useEffect(() => {
+    getData()
+
     const interval = setInterval(() => {
       setCounter((prev) => {
         animate(prev)

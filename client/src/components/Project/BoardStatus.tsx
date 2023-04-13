@@ -1,12 +1,19 @@
+import { useEffect, useState } from 'react'
 import { Tooltip, PieChart, Pie, Cell } from 'recharts'
+import { trpc } from '../../utils/trpc'
 
 const DailyWork = () => {
-  const data = [
-    { name: 'Todo', value: 4, color: '#82ca9d' },
-    { name: 'In Progress', value: 3, color: '#00f00f' },
-    { name: 'In Review', value: 3, color: '#ff0ff0' },
-    { name: 'Done', value: 2, color: '#f0ff0f' }
-  ]
+  const colors = ['#82ca9d', '#00f00f', '#ff0ff0', '#f0ff0f']
+  const [statuses, setStatuses] = useState<{ id: string; name: string }[]>()
+
+  const getBoardStatus = async () => {
+    const data = await trpc.tasks.getBoardStatus.query()
+    setStatuses(data)
+  }
+
+  useEffect(() => {
+    getBoardStatus()
+  }, [])
 
   return (
     <div className="flex flex-col justify-between">
@@ -14,9 +21,9 @@ const DailyWork = () => {
 
       <div className="mx-auto">
         <PieChart width={250} height={250}>
-          <Pie data={data} dataKey="value">
-            {data.map((d) => (
-              <Cell stroke="0" key={d.name} fill={d.color} />
+          <Pie data={statuses} dataKey="count">
+            {statuses?.map(({ name, id }, i) => (
+              <Cell id={id} stroke="0" key={name} fill={colors[i]} />
             ))}
           </Pie>
           <Tooltip />
