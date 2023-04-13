@@ -23,9 +23,19 @@ export const handleError = (err: { name: string; message: string }) => {
   const { name, message } = err
   let errMessage = ''
 
-  if (name == 'TRPCClientError') errMessage = JSON.parse(message)[0].message
+  if (name == 'TRPCClientError' && isJSON(message))
+    errMessage = JSON.parse(message)[0].message
   else errMessage = message
 
   toast.error(errMessage)
   return errMessage
+}
+
+const isJSON = (val: string) => {
+  try {
+    JSON.parse(val)
+    return true
+  } catch (err) {
+    return false
+  }
 }
