@@ -3,9 +3,9 @@ import Logout from '@iconify-icons/ic/twotone-log-out'
 import { Icon } from '@iconify/react/dist/offline'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { UserContext } from '../UserContext'
-import useAxios from '../hooks/useAxios'
 import { Link } from 'react-router-dom'
 import { type User } from '../../../node_modules/@prisma/client'
+import { trpc } from '../utils/trpc'
 
 const UserMenu = () => {
   const { user, setUser }: { user: User; setUser: (val: User | null) => void } =
@@ -36,19 +36,16 @@ const UserMenu = () => {
 
   const handleMouseEvent = (e: MouseEvent) => {
     const path = e.composedPath() as [HTMLElement]
-    const menuBtn = document.getElementById('user_menu')
-    const menuOptions = document.getElementById('opt_menu')
+    const menuBtn = document.getElementById('user_menu') as HTMLElement
+    const menuOptions = document.getElementById('opt_menu') as HTMLElement
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    if (!path.includes(menuBtn!) && !path.includes(menuOptions!)) {
+    if (!path.includes(menuBtn) && !path.includes(menuOptions)) {
       setIsOpened(false)
     }
   }
 
   const logout = async () => {
-    await useAxios('/auth/logout', {
-      method: 'post'
-    })
+    await trpc.auth.logout.query()
     setUser(null)
   }
 

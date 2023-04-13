@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import AddUser from '../components/AddUser'
 import Popup from '../components/UI/Popup'
-import useAxios from '../hooks/useAxios'
 import { toast } from 'react-toastify'
 import PageHeader from '../components/UI/PageHeader'
+import { trpc } from '../utils/trpc'
+import { handleError } from '../utils/helper'
 
 const Settings = () => {
   const [popupOpened, setPopupOpened] = useState(false)
@@ -31,22 +32,16 @@ const Settings = () => {
         >
           <AddUser
             add={async (user) => {
-              const { ok, data } = await useAxios('/user/add', {
-                body: user,
-                method: 'post'
-              })
-
-              if (ok) {
-                toast.success(data.message)
+              try {
+                await trpc.users.create.mutate(user)
+                toast.success('User created')
                 setPopupOpened(false)
-                return
+              } catch (err) {
+                handleError(err)
               }
-
-              if (data?.name == 'ZodError') toast.error(data.issues[0].message)
-              else toast.error(data.message)
             }}
             cancel={() => setPopupOpened(false)}
-          ></AddUser>
+          />
         </Popup>
       </div>
     </>

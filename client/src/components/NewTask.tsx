@@ -5,7 +5,6 @@ import {
   type User
 } from '../../../node_modules/@prisma/client'
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
-import useAxios from '../hooks/useAxios'
 import Search from './UI/Search'
 import { getUserICon, handleError } from '../utils/helper'
 import { trpc } from '../utils/trpc'
@@ -45,8 +44,8 @@ const NewTask = ({
   })
 
   const getUsers = async () => {
-    const { data, ok } = await useAxios('/user/all')
-    if (ok) setUsers(data)
+    const data: any = await trpc.users.getAll.query()
+    setUsers(data)
   }
 
   useEffect(() => {

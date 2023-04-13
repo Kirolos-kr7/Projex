@@ -3,11 +3,11 @@ import { type Role, type User } from '../../../node_modules/@prisma/client'
 
 import Search from '../components/UI/Search'
 import DropDown from '../components/UI/DropDown'
-import useAxios from '../hooks/useAxios'
 import { Icon } from '@iconify/react/dist/offline'
 import Delete from '@iconify-icons/mdi/delete-outline'
 import { getUserICon } from '../utils/helper'
 import PageHeader from '../components/UI/PageHeader'
+import { trpc } from '../utils/trpc'
 
 const Team = () => {
   const [searchValue, setSearchValue] = useState('')
@@ -16,10 +16,9 @@ const Team = () => {
   const [roles, setRoles] = useState<Role[]>([])
 
   const getData = async () => {
-    const { data: m } = await useAxios('/user/all')
-    const { data: r } = await useAxios('/roles')
+    const m: any = await trpc.users.getAll.query()
+    const r: any = await trpc.roles.getAll.query()
     setMembers(m)
-    // setSelected(members.map(() => false))
     setRoles(r)
   }
 

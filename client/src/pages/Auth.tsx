@@ -2,10 +2,11 @@ import On from '@iconify-icons/mdi/eye-outline'
 import Off from '@iconify-icons/mdi/eye-off-outline'
 import { Icon } from '@iconify/react/dist/offline'
 import { FormEvent, FormEventHandler, useContext, useState } from 'react'
-import useAxios from '../hooks/useAxios'
 import { UserContext } from '../UserContext'
-import { toast } from 'react-toastify'
 import Button from '../components/UI/Button'
+import { trpc } from '../utils/trpc'
+import { handleError } from '../utils/helper'
+import jwtDecode from 'jwt-decode'
 
 const Auth = () => {
   const [inputShown, setInputShown] = useState('password')
@@ -19,21 +20,17 @@ const Auth = () => {
     setPending(true)
 
     const dataF = new FormData(e.target as HTMLFormElement)
-    const [email, password] = [...dataF.values()]
+    const [email, password] = [...dataF.values()] as [string, string]
 
-    const { ok, data } = await useAxios('/auth/login', {
-      method: 'post',
-      body: {
-        email,
-        password
-      }
-    })
+    try {
+      const { token } = await trpc.auth.login.mutate({ email, password })
+      const decoded = jwtDecode(token)
+      setUser(decoded)
+    } catch (err) {
+      handleError(err)
+    }
 
     setPending(false)
-
-    if (ok) return setUser(data.user)
-    if (data?.err?.name == 'ZodError') toast.error(data.err.issues[0].message)
-    else toast.error(data?.message)
   }
 
   return (

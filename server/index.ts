@@ -9,7 +9,6 @@ const morgan = require('morgan')
 const cors = require('cors')
 require('dotenv').config()
 
-import AuthRouter from './routes/auth.route'
 import UserRouter from './routes/user.route'
 
 import { createContext, appRouter } from './trpc'
@@ -41,11 +40,10 @@ const main = async () => {
     }
   })
 
-  app.use('/api/auth', AuthRouter)
   app.use('/api/user', UserRouter)
 
   app.use(
-    '/trpc',
+    '/api',
     trpcExpress.createExpressMiddleware({
       router: appRouter,
       createContext

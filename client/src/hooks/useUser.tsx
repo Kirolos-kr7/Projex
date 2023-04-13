@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import useAxios from './useAxios'
 import jwt_decode from 'jwt-decode'
-import { redirect } from 'react-router'
+import { trpc } from '../utils/trpc'
+import { handleError } from '../utils/helper'
 
 const useUser = () => {
   const [pending, setPending] = useState(true)
@@ -9,16 +9,17 @@ const useUser = () => {
 
   useEffect(() => {
     const auth = async () => {
-      const { ok, data } = await useAxios('/auth/me')
-      setPending(false)
+      try {
+        const token = await trpc.auth.me.query()
+        setPending(false)
 
-      if (data?.token) {
-        const decoded = jwt_decode(data.token)
-        setUser(decoded)
+        if (token) {
+          const decoded = jwt_decode(token)
+          setUser(decoded)
+        }
+      } catch (err) {
+        handleError(err)
       }
-
-      if (ok) redirect('/')
-      else redirect('/auth')
     }
     auth()
   }, [])

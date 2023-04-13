@@ -4,9 +4,13 @@ import { z } from 'zod'
 import prisma from './prisma/prisma.client'
 import { getUserId } from './utils/helper'
 import { logThis } from './utils/logs'
+import bcrypt from 'bcryptjs'
+import { signJwt, verifyJwt } from './utils/jwt'
+import { authExpiration } from '.'
 
-export const createContext = ({ req }: CreateExpressContextOptions) => ({
-  req
+export const createContext = ({ req, res }: CreateExpressContextOptions) => ({
+  req,
+  res
 })
 type Context = inferAsyncReturnType<typeof createContext>
 
@@ -200,11 +204,132 @@ const tasksRouter = router({
     })
 })
 
+const usersRouter = router({
+  getAll: publicProcedure.query(async () => {
+    const users = await prisma.user.findMany({
+      include: { role: true },
+      orderBy: { createdAt: 'asc' }
+    })
+
+    if (!users) throw new TRPCError({ code: 'NOT_FOUND' })
+
+    return users
+  }),
+  create: publicProcedure
+    .input(
+      z
+        .object({
+          fullName: z.string().min(3).max(255),
+          userName: z.string().min(2).max(128),
+          email: z.string().email({ message: 'Invalid email address.' }),
+          password: z.string().min(8, {
+            message: "Password can't be less than 8 characters long."
+          }),
+          confirmPassword: z.string().min(8),
+          roleId: z.number()
+        })
+        .superRefine(({ confirmPassword, password }, ctx) => {
+          if (confirmPassword !== password) {
+            ctx.addIssue({
+              code: 'custom',
+              message: 'Passwords does not match.'
+            })
+          }
+        })
+    )
+    .mutation(async ({ input }) => {
+      const isUserExisting = await prisma.user.count({
+        where: {
+          email: input.email
+        }
+      })
+
+      if (isUserExisting > 0)
+        throw new TRPCError({
+          code: 'CONFLICT',
+          message: 'User email already exists'
+        })
+
+      const hashedPass = await bcrypt.hash(input.password, 10)
+
+      await prisma.user.create({
+        data: {
+          fullName: input.fullName,
+          userName: input.userName,
+          email: input.email,
+          roleId: input.roleId,
+          password: hashedPass
+        }
+      })
+    })
+})
+
+const authRouter = router({
+  me: publicProcedure.query(async ({ ctx }) => {
+    const { cookies } = ctx.req
+    const token = cookies.authToken
+    if (!token) return
+
+    const isValid = verifyJwt(token)
+
+    if (isValid) return token
+    else throw new TRPCError({ code: 'FORBIDDEN' })
+  }),
+  login: publicProcedure
+    .input(
+      z.object({
+        email: z.string().email({ message: 'Invalid email address.' }),
+        password: z.string().min(8, {
+          message: "Password can't be less than 8 characters long."
+        })
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const user = await prisma.user.findFirst({
+        where: {
+          email: input.email
+        },
+        include: {
+          role: true
+        }
+      })
+
+      if (!user)
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: 'Email does not exist.'
+        })
+
+      const isMatch = await bcrypt.compare(input.password, user.password)
+
+      if (!isMatch)
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: 'Incorrect password.'
+        })
+
+      const cred = { ...user, password: undefined }
+      const token = signJwt(cred)
+      ctx.res.cookie('authToken', token, {
+        secure: true,
+        httpOnly: true,
+        maxAge: authExpiration
+      })
+
+      return { token }
+    }),
+  logout: publicProcedure.query(async ({ ctx }) => {
+    ctx.res.clearCookie('authToken')
+  })
+})
+
 export const appRouter = router({
   logs: logsRouter,
   roles: rolesRouter,
   notes: notesRouter,
-  tasks: tasksRouter
+  tasks: tasksRouter,
+  users: usersRouter,
+  auth: authRouter
 })
 
 export type AppRouter = typeof appRouter
