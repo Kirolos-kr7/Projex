@@ -36,36 +36,43 @@ const DropDown = (props: DropDownType) => {
           className
         }
         onClick={() => {
-          if (disabled) return
+          if (disabled || options.length == 0) return
           isOpened ? setIsOpened(false) : setIsOpened(true)
         }}
       >
-        {selected} <Icon icon={Chevron} width="20px" />
+        {selected}{' '}
+        <Icon
+          icon={Chevron}
+          width="20px"
+          className={disabled || options.length == 0 ? 'text-gray-500' : ''}
+        />
       </button>
 
-      <ul
-        ref={menu}
-        className={`absolute z-[3] min-w-[180px] overflow-hidden rounded-md bg-gray-800 capitalize shadow-lg ring-1 ring-gray-700 ${
-          !isOpened && 'hidden'
-        }`}
-      >
-        {filteredVals().map((v) => {
-          return (
-            <li key={keyValue ? v[keyValue] : v} className="group">
-              <button
-                type="button"
-                className="block w-full bg-gray-800 px-2 py-1.5 text-left capitalize ring-inset transition-colors hover:bg-gray-700 focus-visible:ring-1 group-first-of-type:rounded-t-md group-last-of-type:rounded-b-md"
-                onClick={() => {
-                  fn?.(v)
-                  setIsOpened(false)
-                }}
-              >
-                {keyName ? v[keyName] : keyValue ? v[keyValue] : v}
-              </button>
-            </li>
-          )
-        })}
-      </ul>
+      {options.length > 0 && (
+        <ul
+          ref={menu}
+          className={`absolute z-[3] min-w-[180px] overflow-hidden rounded-md bg-gray-800 capitalize shadow-lg ring-1 ring-gray-700 ${
+            !isOpened && 'hidden'
+          }`}
+        >
+          {filteredVals().map((v) => {
+            return (
+              <li key={keyValue ? v[keyValue] : v} className="group">
+                <button
+                  type="button"
+                  className="block w-full bg-gray-800 px-2 py-1.5 text-left capitalize ring-inset transition-colors hover:bg-gray-700 focus-visible:ring-1 group-first-of-type:rounded-t-md group-last-of-type:rounded-b-md"
+                  onClick={() => {
+                    fn?.(v)
+                    setIsOpened(false)
+                  }}
+                >
+                  {keyName ? v[keyName] : keyValue ? v[keyValue] : v}
+                </button>
+              </li>
+            )
+          })}
+        </ul>
+      )}
     </div>
   )
 }
