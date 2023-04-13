@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { type Role } from '../../../node_modules/@prisma/client'
 import DropDown from './UI/DropDown'
-import useAxios from '../hooks/useAxios'
+import { trpc } from '../utils/trpc'
 
 type addFunc = ({
   userName,
@@ -20,16 +20,20 @@ type addFunc = ({
 }) => void
 
 const AddMember = ({ add, cancel }: { add: addFunc; cancel: () => void }) => {
-  const [role, setRole] = useState<Role>({ role: 'user', id: 2, master: false })
+  const [role, setRole] = useState<Omit<Role, 'createdAt'>>({
+    role: 'user',
+    id: 2,
+    master: false
+  })
   const [roles, setRoles] = useState<Role[]>([])
 
-  const getData = async () => {
-    const { data: r } = await useAxios('/roles')
-    setRoles(r)
+  const getRoles = async () => {
+    const data: any = await trpc.roles.getAll.query()
+    setRoles(data)
   }
 
   useEffect(() => {
-    getData()
+    getRoles()
   }, [])
 
   return (

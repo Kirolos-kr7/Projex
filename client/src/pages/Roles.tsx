@@ -12,7 +12,9 @@ import { trpc } from '../utils/trpc'
 const Roles = () => {
   const [searchValue, setSearchValue] = useState('')
   const [popupOpened, setPopupOpened] = useState(false)
-  const [roles, setRoles] = useState<(Role & { privileges: any[] })[]>([])
+  const [roles, setRoles] = useState<
+    (Omit<Role, 'createdAt'> & { privileges: any[] })[]
+  >([])
 
   const getRoles = async () => {
     const data: any = await trpc.roles.getAll.query()

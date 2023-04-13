@@ -9,7 +9,7 @@ type addFunc = ({
 }: {
   name: string
   email: string
-  role: Role
+  role: Omit<Role, 'createdAt'>
   roleId: number
 }) => void
 
@@ -18,11 +18,15 @@ const AddMember = ({
   add,
   cancel
 }: {
-  roles: Role[]
+  roles: Omit<Role, 'createdAt'>[]
   add: addFunc
   cancel: () => void
 }) => {
-  const [role, setRole] = useState<Role>({ role: 'user', id: 2, master: false })
+  const [role, setRole] = useState<Omit<Role, 'createdAt'>>({
+    role: 'user',
+    id: 2,
+    master: false
+  })
 
   return (
     <form
