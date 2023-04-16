@@ -32,6 +32,10 @@ const logsRouter = router({
         skip: page * limit
       })
 
+      logs.forEach(({ user }) => {
+        if (user) delete (user as any).password
+      })
+
       if (!logs) throw new TRPCError({ code: 'NOT_FOUND' })
 
       return logs
@@ -66,6 +70,10 @@ const notesRouter = router({
       include: {
         author: true
       }
+    })
+
+    notes.forEach(({ author }) => {
+      if (author) delete (author as any).password
     })
 
     if (!notes) throw new TRPCError({ code: 'NOT_FOUND' })
@@ -150,6 +158,10 @@ const tasksRouter = router({
       include: {
         assignedTo: true
       }
+    })
+
+    tasks.forEach(({ assignedTo }) => {
+      if (assignedTo) delete (assignedTo as any).password
     })
 
     if (!tasks) throw new TRPCError({ code: 'NOT_FOUND' })
