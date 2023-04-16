@@ -1,3 +1,5 @@
+import { type User } from '../../node_modules/@prisma/client'
+
 export interface Repo {
   origin: string
   name: string
@@ -13,3 +15,8 @@ export interface DropDown {
   className?: string
   disabled?: boolean
 }
+
+export type SelectUserBoard = Pick<
+  User,
+  'id' | 'userName' | 'hasProfileImage'
+> & { selected: boolean }

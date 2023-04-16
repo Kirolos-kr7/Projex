@@ -253,13 +253,54 @@ const tasksRouter = router({
       const userId = getUserId(ctx.req)
       const { title, priority, type, status, assignedToId } = input
 
-      console.log(title)
-
       const newTask = await prisma.task.create({
         data: { title, priority, status, type, assignedToId }
       })
 
       logThis('tasks', 'Added task w/ id: ' + newTask.id, userId)
+    }),
+  editTask: publicProcedure
+    .input(
+      z.object({
+        title: z.string().min(2, 'Title must contain at least 2 character(s)'),
+        priority: z.any(),
+        type: z.any(),
+        status: z.string(),
+        assignedToId: z.string().nullable(),
+        id: z.number()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const userId = getUserId(ctx.req)
+      const { title, priority, type, status, assignedToId, id } = input
+
+      const newTask = await prisma.task.update({
+        where: { id },
+        data: { title, priority, status, type, assignedToId }
+      })
+
+      logThis('tasks', 'Added task w/ id: ' + newTask.id, userId)
+    }),
+  delete: publicProcedure
+    .input(
+      z.object({
+        id: z.number({
+          invalid_type_error: 'Invalid task id.',
+          required_error: 'Task id is required.'
+        })
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const userId = getUserId(ctx.req)
+      const { id } = input
+
+      await prisma.task.delete({
+        where: {
+          id
+        }
+      })
+
+      logThis('tasks', 'Deleted task w/ id: ' + id, userId)
     })
 })
 

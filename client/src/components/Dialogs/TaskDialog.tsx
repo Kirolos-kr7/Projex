@@ -1,20 +1,18 @@
-import DropDown from './UI/DropDown'
-import {
-  type TaskStatus,
-  type Task,
-  type User
-} from '../../../node_modules/@prisma/client'
+import DropDown from '../UI/DropDown'
+import { type TaskStatus, type Task, type User } from '@prisma/client'
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
-import Search from './UI/Search'
-import { getUserICon, handleError } from '../utils/helper'
-import { trpc } from '../utils/trpc'
+import Search from '../UI/Search'
+import { getUserICon, handleError } from '../../utils/helper'
+import { trpc } from '../../utils/trpc'
 
-const NewTask = ({
+const TaskDialog = ({
+  task,
   taskStatuses,
   taskStatus,
   done,
   cancel
 }: {
+  task?: Task
   taskStatuses: TaskStatus[]
   taskStatus: string
   done: () => void
@@ -33,9 +31,7 @@ const NewTask = ({
     'critical',
     'blocker'
   ]
-  const [task, setTask] = useState<
-    Pick<Task, 'status' | 'priority' | 'type' | 'title' | 'assignedToId'>
-  >({
+  const [newTask, setNewTask] = useState<Partial<Task>>({
     status: taskStatus || 'todo',
     priority: 'medium',
     type: 'feature',
@@ -49,19 +45,28 @@ const NewTask = ({
   }
 
   useEffect(() => {
+    if (task) {
+      const taskWithCorrectStatus = structuredClone(task)
+      taskWithCorrectStatus.status =
+        taskStatuses.find((t) => t.id == task.status)?.name || taskStatus
+      setNewTask(taskWithCorrectStatus)
+    }
+
     getUsers()
   }, [])
 
-  const addTask = async (e: FormEvent) => {
+  const saveTask = async (e: FormEvent) => {
     e.preventDefault()
 
-    const newTask = {
-      ...task,
-      status: taskStatuses.find((t) => t.name == task.status)?.id
+    const taskProps = {
+      ...newTask,
+      status: taskStatuses.find((t) => t.name == newTask.status)?.id
     }
 
     try {
-      await trpc.tasks.createTask.mutate(newTask as any)
+      taskProps.id
+        ? await trpc.tasks.editTask.mutate(taskProps as any)
+        : await trpc.tasks.createTask.mutate(taskProps as any)
       done()
     } catch (err) {
       handleError(err)
@@ -74,7 +79,7 @@ const NewTask = ({
         <span
           className={`flex h-4 w-4 items-center justify-center rounded-full bg-red-600 p-2.5 text-xs ${
             step == 1 &&
-            'ring-2 ring-orange-400 ring-offset-2 ring-offset-black'
+            'ring-2 ring-orange-400 ring-offset-2 ring-offset-black transition-all'
           }`}
         >
           1
@@ -83,7 +88,7 @@ const NewTask = ({
         <span
           className={`flex h-4 w-4 items-center justify-center rounded-full bg-red-600 p-2.5 text-xs ${
             step == 2 &&
-            'ring-2 ring-orange-400 ring-offset-2 ring-offset-black'
+            'ring-2 ring-orange-400 ring-offset-2 ring-offset-black transition-all'
           }`}
         >
           2
@@ -92,7 +97,7 @@ const NewTask = ({
 
       <form
         className="sidedialog-scroller flex max-h-full flex-1 flex-col gap-3 p-4"
-        onSubmit={addTask}
+        onSubmit={saveTask}
       >
         {step == 1 && (
           <>
@@ -104,9 +109,9 @@ const NewTask = ({
                 name="name"
                 id="name"
                 required
-                value={task.title}
+                value={newTask.title}
                 onChange={(e: ChangeEvent) =>
-                  setTask((prev) => {
+                  setNewTask((prev) => {
                     return {
                       ...prev,
                       title: (e.target as HTMLInputElement).value
@@ -121,11 +126,11 @@ const NewTask = ({
               <DropDown
                 className="w-full"
                 options={taskStatuses}
-                selected={task.status}
+                selected={newTask.status}
                 keyValue="id"
                 keyName="name"
                 fn={(val: TaskStatus) =>
-                  setTask((prev) => {
+                  setNewTask((prev) => {
                     return { ...prev, status: val.name }
                   })
                 }
@@ -136,9 +141,9 @@ const NewTask = ({
               <DropDown
                 className="w-full"
                 options={priorities}
-                selected={task.priority}
+                selected={newTask.priority}
                 fn={(val) =>
-                  setTask((prev) => {
+                  setNewTask((prev) => {
                     return { ...prev, priority: val }
                   })
                 }
@@ -149,9 +154,9 @@ const NewTask = ({
               <DropDown
                 className="w-full"
                 options={taskTypes}
-                selected={task.type}
+                selected={newTask.type}
                 fn={(val) =>
-                  setTask((prev) => {
+                  setNewTask((prev) => {
                     return { ...prev, type: val }
                   })
                 }
@@ -169,14 +174,14 @@ const NewTask = ({
                 <button
                   type="button"
                   key={id}
-                  className={`bg-brand-700 border-brand-800 flex flex-col items-center justify-center gap-1 rounded-md border py-3 px-2 text-center shadow ${
-                    task.assignedToId == id && 'ring ring-red-600'
+                  className={`bg-brand-700 border-brand-800 flex flex-col items-center justify-center gap-1 rounded-md border px-2 py-3 text-center shadow ${
+                    newTask.assignedToId == id && 'ring ring-red-600'
                   }`}
                   onClick={() =>
-                    setTask((prev) => {
+                    setNewTask((prev) => {
                       return {
                         ...prev,
-                        assignedToId: task.assignedToId == id ? null : id
+                        assignedToId: newTask.assignedToId == id ? null : id
                       }
                     })
                   }
@@ -204,7 +209,7 @@ const NewTask = ({
             <button className="btn" type="button" onClick={() => setStep(1)}>
               Back
             </button>
-            <button className="btn" onClick={addTask}>
+            <button className="btn" onClick={saveTask}>
               Save
             </button>
           </>
@@ -218,4 +223,4 @@ const NewTask = ({
   )
 }
 
-export default NewTask
+export default TaskDialog

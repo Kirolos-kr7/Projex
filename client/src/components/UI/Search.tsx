@@ -20,7 +20,7 @@ const Search = ({
       <Icon
         icon={SearchIcon}
         width="22px"
-        className="absolute top-[7.5px] left-[7px]"
+        className="absolute left-[7px] top-[7.5px]"
       />
       <input
         ref={inputRef}
@@ -37,11 +37,12 @@ const Search = ({
       />
       {!isEmpty && (
         <button
-          className="absolute top-[7.5px] right-[7px] rounded-md"
+          className="absolute right-[7px] top-[7.5px] rounded-md"
           onClick={() => {
             if (inputRef.current) {
               inputRef.current.value = ''
               setIsEmpty(true)
+              if (update) update('')
             }
           }}
         >
