@@ -8,7 +8,6 @@ const Progress = () => {
 
   const getData = async () => {
     const { done, all } = await trpc.tasks.getProjectProgress.query()
-    console.log({ done, all })
     percentage = Math.floor((done / all) * 100)
   }
 
@@ -57,13 +56,13 @@ const Progress = () => {
         >
           <svg
             viewBox="0 0 560 20"
-            className="water_wave_back absolute right-0 bottom-full w-[200%] fill-gray-200"
+            className="water_wave_back absolute bottom-full right-0 w-[200%] fill-gray-200"
           >
             <use xlinkHref="#wave"></use>
           </svg>
           <svg
             viewBox="0 0 560 20"
-            className="water_wave_front absolute left-0 bottom-full -mb-px w-[200%] fill-blue-500"
+            className="water_wave_front absolute bottom-full left-0 -mb-px w-[200%] fill-blue-500"
           >
             <use xlinkHref="#wave"></use>
           </svg>
