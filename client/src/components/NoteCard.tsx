@@ -3,7 +3,7 @@ import {
   type User
 } from '../../../node_modules/@prisma/client'
 
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs'
 import RelativeTime from 'dayjs/plugin/relativeTime'
 import { getUserICon } from '../utils/helper'
 import Delete from '@iconify-icons/mdi/delete'

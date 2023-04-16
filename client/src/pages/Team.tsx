@@ -9,9 +9,13 @@ import { getUserICon } from '../utils/helper'
 import PageHeader from '../components/UI/PageHeader'
 import { trpc } from '../utils/trpc'
 
+interface UserWithRole extends User {
+  role?: Role
+}
+
 const Team = () => {
   const [searchValue, setSearchValue] = useState('')
-  const [members, setMembers] = useState<(User & { role: Role })[]>([])
+  const [members, setMembers] = useState<UserWithRole[]>([])
   const [selected, setSelected] = useState<boolean[]>([false, false])
   const [roles, setRoles] = useState<Role[]>([])
 
@@ -103,7 +107,7 @@ const Team = () => {
                       options={roles}
                       keyValue="role"
                       fn={(value) =>
-                        setMembers((curr) => {
+                        setMembers((curr: UserWithRole[]) => {
                           return curr?.map((m: User) => {
                             if (m.id === id) return { ...m, role: value }
                             return m
