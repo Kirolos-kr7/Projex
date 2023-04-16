@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { type Role } from '@prisma/client'
+import { type Role } from '../types'
 import DropDown from './UI/DropDown'
 
 type addFunc = ({

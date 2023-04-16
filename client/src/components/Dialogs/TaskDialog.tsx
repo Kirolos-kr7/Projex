@@ -1,5 +1,5 @@
 import DropDown from '../UI/DropDown'
-import { type TaskStatus, type Task, type User } from '@prisma/client'
+import { type TaskStatus, type Task, type User } from '../../types'
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import Search from '../UI/Search'
 import { getUserICon, handleError } from '../../utils/helper'

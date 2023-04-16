@@ -1,10 +1,6 @@
 import { MouseEvent as MouseEventX, useEffect, useMemo, useState } from 'react'
 import { SelectUserBoard } from '../types'
-import {
-  type Task as TypeTask,
-  type TaskStatus,
-  type User
-} from '@prisma/client'
+import { type Task as TypeTask, type TaskStatus, type User } from '../types'
 import Add from '@iconify-icons/ic/add'
 import { Icon } from '@iconify/react/dist/offline'
 import Editable from '../components/UI/Editable'

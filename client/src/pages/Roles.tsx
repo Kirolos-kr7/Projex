@@ -1,4 +1,4 @@
-import { type Role } from '@prisma/client'
+import { type Role } from '../types'
 import Search from '../components/UI/Search'
 import Popup from '../components/UI/Popup'
 import AddRole from '../components/AddRole'

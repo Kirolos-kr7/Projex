@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { type Role, type User } from '@prisma/client'
+import { type Role, type User } from '../types'
 
 import Search from '../components/UI/Search'
 import DropDown from '../components/UI/DropDown'

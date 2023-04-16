@@ -1,4 +1,4 @@
-import { type TaskPriority } from '@prisma/client'
+import { type TaskPriority } from '../../types'
 import Trivial from '@iconify-icons/ic/outline-circle'
 import Low from '@iconify-icons/ic/sharp-keyboard-arrow-down'
 import Lowest from '@iconify-icons/ic/sharp-keyboard-double-arrow-down'

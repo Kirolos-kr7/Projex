@@ -1,7 +1,7 @@
 import Search from '../components/UI/Search'
 import NoteCard from '../components/NoteCard'
 import { useState, useEffect } from 'react'
-import { type Notes as Note, type User } from '@prisma/client'
+import { type Notes as Note, type User } from '../types'
 import Popup from '../components/UI/Popup'
 import NoteDialog from '../components/Dialogs/NoteDialog'
 import { Icon } from '@iconify/react/dist/offline'

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { type Logs as LogType } from '@prisma/client'
+import { type Logs as LogType } from '../types'
 import Log from '../components/Log'
 import dayjs from 'dayjs'
 import PageHeader from '../components/UI/PageHeader'
