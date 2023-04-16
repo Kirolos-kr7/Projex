@@ -3,7 +3,7 @@ import Clean from '@iconify-icons/ic/twotone-cleaning-services'
 import Feature from '@iconify-icons/ic/twotone-auto-awesome'
 import QM from '@iconify-icons/ic/twotone-question-mark'
 import { Icon } from '@iconify/react/dist/offline'
-import { type TaskType as TT } from '../@prisma/client'
+import { type TaskType as TT } from '@prisma/client'
 
 const TaskType = ({ type }: { type: TT }) => {
   if (type === 'bugfix')
