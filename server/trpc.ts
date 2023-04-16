@@ -370,13 +370,36 @@ const authRouter = router({
   })
 })
 
+const githubRouter = router({
+  repos: publicProcedure.query(async ({ ctx }) => {
+    return [
+      {
+        origin: 'Github',
+        name: 'Bidit Backend',
+        updatedAt: new Date('2/9/2022')
+      },
+      {
+        origin: 'Github',
+        name: 'Bidit Client',
+        updatedAt: new Date()
+      },
+      {
+        origin: 'Github',
+        name: 'Unamed',
+        updatedAt: new Date('10/2/2022')
+      }
+    ]
+  })
+})
+
 export const appRouter = router({
   logs: logsRouter,
   roles: rolesRouter,
   notes: notesRouter,
   tasks: tasksRouter,
   users: usersRouter,
-  auth: authRouter
+  auth: authRouter,
+  github: githubRouter
 })
 
 export type AppRouter = typeof appRouter
