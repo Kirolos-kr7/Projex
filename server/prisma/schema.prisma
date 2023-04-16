@@ -62,6 +62,7 @@ model Notes {
 model Logs {
   id        Int      @id @default(autoincrement())
   message   String
+  createdOn DateTime @default(now()) @db.Date()
   createdAt DateTime @default(now())
   userId    String
   type      LogType

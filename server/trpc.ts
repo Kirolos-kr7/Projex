@@ -39,6 +39,23 @@ const logsRouter = router({
   getMaxLogs: publicProcedure.query(() => {
     const max = prisma.logs.count()
     return max
+  }),
+  dailyProgress: publicProcedure.query(async () => {
+    const logs = await prisma.logs.groupBy({
+      by: ['createdOn'],
+      _count: {
+        createdOn: true
+      },
+      orderBy: {
+        createdOn: 'asc'
+      },
+      take: 7
+    })
+
+    return logs.map(({ createdOn, _count }) => ({
+      createdOn,
+      count: _count.createdOn
+    }))
   })
 })
 
