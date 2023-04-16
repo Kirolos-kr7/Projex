@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { type Role } from '../../../node_modules/@prisma/client'
+import { type Role } from '@prisma/client'
 import DropDown from './UI/DropDown'
 import { trpc } from '../utils/trpc'
 

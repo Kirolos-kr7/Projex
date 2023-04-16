@@ -4,7 +4,7 @@ import { Icon } from '@iconify/react/dist/offline'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { UserContext } from '../UserContext'
 import { Link } from 'react-router-dom'
-import { type User } from '../../../node_modules/@prisma/client'
+import { type User } from '@prisma/client'
 import { trpc } from '../utils/trpc'
 
 const UserMenu = () => {

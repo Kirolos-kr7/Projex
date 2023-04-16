@@ -1,9 +1,6 @@
 import { FormEvent, useState } from 'react'
 import { toast } from 'react-toastify'
-import {
-  type Notes as Note,
-  type User
-} from '../../../../node_modules/@prisma/client'
+import { type Notes as Note, type User } from '../@prisma/client'
 import { handleError } from '../../utils/helper'
 import { trpc } from '../../utils/trpc'
 

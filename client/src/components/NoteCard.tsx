@@ -1,7 +1,4 @@
-import {
-  type Notes as NoteType,
-  type User
-} from '../../../node_modules/@prisma/client'
+import { type Notes as NoteType, type User } from '@prisma/client'
 
 import dayjs from 'dayjs'
 import RelativeTime from 'dayjs/plugin/relativeTime'

@@ -1,4 +1,4 @@
-import { type User } from '../../node_modules/@prisma/client'
+import { type User } from '@prisma/client'
 
 export interface Repo {
   origin: string

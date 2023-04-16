@@ -7,7 +7,7 @@ import {
   useEffect
 } from 'react'
 import { UserContext } from '../UserContext'
-import { type User, type Role } from '../../../node_modules/@prisma/client'
+import { type User, type Role } from '@prisma/client'
 import PageHeader from '../components/UI/PageHeader'
 import DropDown from '../components/UI/DropDown'
 import Button from '../components/UI/Button'

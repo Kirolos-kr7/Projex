@@ -4,7 +4,7 @@ import {
   type Task as TypeTask,
   type TaskStatus,
   type User
-} from '../../../node_modules/@prisma/client'
+} from '@prisma/client'
 import Add from '@iconify-icons/ic/add'
 import { Icon } from '@iconify/react/dist/offline'
 import Editable from '../components/UI/Editable'
