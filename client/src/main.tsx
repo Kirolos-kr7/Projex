@@ -11,7 +11,6 @@ import Auth from './pages/Auth'
 import Board from './pages/Board'
 import Code from './pages/Code'
 import Project from './pages/Project'
-import Roles from './pages/Roles'
 import Settings from './pages/Settings'
 import Team from './pages/Team'
 import ERR from './pages/ERR'
@@ -51,10 +50,6 @@ export default function App() {
         {
           path: '/team',
           element: <Team />
-        },
-        {
-          path: '/roles',
-          element: <Roles />
         },
         {
           path: '/notes',

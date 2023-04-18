@@ -2,7 +2,6 @@ import Project from '@iconify-icons/ic/twotone-home'
 import Board from '@iconify-icons/ic/twotone-space-dashboard'
 import Code from '@iconify-icons/ic/twotone-code'
 import Team from '@iconify-icons/mdi/person-group-outline'
-import Roles from '@iconify-icons/mdi/security-account-outline'
 import Notes from '@iconify-icons/ic/twotone-note-alt'
 import Settings from '@iconify-icons/ic/twotone-settings'
 import Logs from '@iconify-icons/mdi/math-log'
@@ -26,7 +25,7 @@ const Sidebar = ({ isExpanded }: { isExpanded: boolean }) => {
         </h1>
       </div>
       <ul
-        className={`nav-links flex w-full flex-1 flex-col items-center p-2 [&>li>a]:my-1 [&>li>a]:flex [&>li>a]:w-full [&>li>a]:items-center [&>li>a]:gap-2 [&>li>a]:rounded-md [&>li>a]:py-2 [&>li>a]:px-5 [&>li>a]:transition-colors [&>li>a]:sm:px-5 [&>li>a:hover]:bg-red-900/5 [&>li>a:hover]:text-red-400 [&>li]:w-full`}
+        className={`nav-links flex w-full flex-1 flex-col items-center p-2 [&>li>a:hover]:bg-red-900/5 [&>li>a:hover]:text-red-400 [&>li>a]:my-1 [&>li>a]:flex [&>li>a]:w-full [&>li>a]:items-center [&>li>a]:gap-2 [&>li>a]:rounded-md [&>li>a]:px-5 [&>li>a]:py-2 [&>li>a]:transition-colors [&>li>a]:sm:px-5 [&>li]:w-full`}
       >
         <li>
           <NavLink to="/" className="ring-inset" title="Project">
@@ -48,12 +47,6 @@ const Sidebar = ({ isExpanded }: { isExpanded: boolean }) => {
           <NavLink to="/team" className="ring-inset" title="Team">
             <Icon icon={Team} width="28" />
             {isExpanded && 'Team'}
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/roles" className="ring-inset" title="Roles">
-            <Icon icon={Roles} width="28" />
-            {isExpanded && 'Roles'}
           </NavLink>
         </li>
         <li>

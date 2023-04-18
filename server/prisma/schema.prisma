@@ -28,24 +28,13 @@ model User {
 }
 
 model Role {
-  role      String      @unique
-  id        Int         @id @default(autoincrement())
-  master    Boolean     @default(false)
-  createdAt DateTime?   @default(now())
-  privilege Privilege[]
+  role      String    @unique
+  id        Int       @id @default(autoincrement())
+  master    Boolean   @default(false)
+  createdAt DateTime? @default(now())
   User      User[]
 
   @@map("roles")
-}
-
-model Privilege {
-  name   String @unique
-  id     Int    @id @default(autoincrement())
-  roleId Int?
-  Role   Role?  @relation(fields: [roleId], references: [id])
-
-  @@index([roleId], map: "privileges_roleId_fkey")
-  @@map("privileges")
 }
 
 model Notes {
