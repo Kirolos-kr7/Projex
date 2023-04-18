@@ -1,4 +1,7 @@
-import { createContext } from 'react'
+import { Dispatch, SetStateAction, createContext } from 'react'
+import { User, UserWithRole } from './types'
 
-const content: any = null
-export const UserContext = createContext(content)
+export const UserContext = createContext<{
+  user: UserWithRole | null
+  setUser: Dispatch<SetStateAction<User | null>>
+}>({ user: null, setUser: () => null })
