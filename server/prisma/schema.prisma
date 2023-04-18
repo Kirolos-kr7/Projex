@@ -42,7 +42,7 @@ model Notes {
   content   String
   createdAt DateTime @default(now())
   authorId  String
-  author    User     @relation(fields: [authorId], references: [id])
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   @@index([authorId], map: "notes_authorId_fkey")
   @@map("notes")
