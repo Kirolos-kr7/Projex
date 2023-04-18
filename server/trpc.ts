@@ -149,7 +149,21 @@ const rolesRouter = router({
     if (!roles) throw new TRPCError({ code: 'NOT_FOUND' })
 
     return roles
-  })
+  }),
+  changeRole: publicProcedure
+    .input(z.object({ userId: z.string(), roleId: z.number() }))
+    .mutation(async ({ input }) => {
+      const { userId, roleId } = input
+
+      await prisma.user.update({
+        where: {
+          id: userId
+        },
+        data: {
+          roleId
+        }
+      })
+    })
 })
 
 const tasksRouter = router({
@@ -359,6 +373,19 @@ const usersRouter = router({
           email: input.email,
           roleId: input.roleId,
           password: hashedPass
+        }
+      })
+    }),
+  remove: publicProcedure
+    .input(
+      z.object({
+        userId: z.string()
+      })
+    )
+    .mutation(async ({ input }) => {
+      await prisma.user.delete({
+        where: {
+          id: input.userId
         }
       })
     })

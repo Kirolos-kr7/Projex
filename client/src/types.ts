@@ -10,6 +10,10 @@ export type User = {
   hasProfileImage: boolean
 }
 
+export interface UserWithRole extends User {
+  role?: Role
+}
+
 export type Role = {
   role: string
   id: number
