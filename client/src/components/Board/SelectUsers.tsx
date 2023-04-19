@@ -12,7 +12,7 @@ const SelectUsers = ({
     <div className="flex flex-row-reverse items-center">
       {users.map(({ userName, hasProfileImage, id, selected }) => (
         <button
-          className={`-mx-1.5 rounded-full bg-black p-0.5 ${
+          className={`-mx-1.5 rounded-full bg-black p-0.5 transition-shadow ${
             selected ? 'ring' : ''
           }`}
           key={userName}
@@ -31,7 +31,7 @@ const SelectUsers = ({
             >
               U
             </span>
-            ) : (
+          ) : (
             <img
               className="h-8 w-8 rounded-full"
               src={
