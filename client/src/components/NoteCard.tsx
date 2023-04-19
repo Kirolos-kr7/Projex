@@ -40,7 +40,7 @@ const Note = ({
           {getUserICon(author.userName)}
         </span>
 
-        {authorId == user.id && (
+        {authorId == user?.id && (
           <div>
             <button className="icon-btn" onClick={() => deleteNote(id)}>
               <Icon icon={Delete} className="text-red-600" width="20" />

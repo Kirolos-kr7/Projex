@@ -4,12 +4,10 @@ import { Icon } from '@iconify/react/dist/offline'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { UserContext } from '../UserContext'
 import { Link } from 'react-router-dom'
-import { type User } from '../types'
 import { trpc } from '../utils/trpc'
 
 const UserMenu = () => {
-  const { user, setUser }: { user: User; setUser: (val: User | null) => void } =
-    useContext(UserContext)
+  const { user, setUser } = useContext(UserContext)
   const [isOpened, setIsOpened] = useState(false)
   const imgRef = useRef<HTMLImageElement | null>(null)
 
@@ -21,8 +19,8 @@ const UserMenu = () => {
   useEffect(() => {
     if (!imgRef.current) return
     const el: HTMLImageElement = imgRef.current
-    el.src = user.hasProfileImage
-      ? `/storage/users/${user.id}.webp`
+    el.src = user?.hasProfileImage
+      ? `/storage/users/${user?.id}.webp`
       : '/profile-picture.jpg'
   }, [user])
 
@@ -64,9 +62,9 @@ const UserMenu = () => {
           ref={imgRef}
           alt="user image"
         />
-        {user.userName && (
+        {user?.userName && (
           <p className="mr-2 block whitespace-nowrap text-xs">
-            Hey, <span className="font-semibold">{user.userName}</span>
+            Hey, <span className="font-semibold">{user?.userName}</span>
           </p>
         )}
       </button>

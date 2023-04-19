@@ -7,22 +7,24 @@ import {
   useEffect
 } from 'react'
 import { UserContext } from '../UserContext'
-import { type User, type Role } from '../types'
 import PageHeader from '../components/UI/PageHeader'
 import DropDown from '../components/UI/DropDown'
 import Button from '../components/UI/Button'
 import useAxios from '../hooks/useAxios'
 import { toast } from 'react-toastify'
+import { Navigate } from 'react-router-dom'
 
 const Account = () => {
-  const {
-    user,
-    setUser
-  }: { user: User & { role: Role }; setUser: (val: User | null) => void } =
-    useContext(UserContext)
+  const { user, setUser } = useContext(UserContext)
   const imgRef = useRef<HTMLImageElement | null>(null)
   const fileRef = useRef<HTMLInputElement | null>(null)
   const [pending, setPending] = useState(false)
+
+  if (!user) {
+    Navigate({ to: '/auth' })
+    return <></>
+  }
+
   const [userName, setUserName] = useState(user.userName)
   const [fullName, setFullName] = useState(user.fullName)
   const [profileImg, setProfileImg] = useState<File | undefined>()

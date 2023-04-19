@@ -7,6 +7,7 @@ import Button from '../components/UI/Button'
 import { trpc } from '../utils/trpc'
 import { handleError } from '../utils/helper'
 import jwtDecode from 'jwt-decode'
+import { UserWithRole } from '../types'
 
 const Auth = () => {
   const [inputShown, setInputShown] = useState('password')
@@ -24,7 +25,7 @@ const Auth = () => {
 
     try {
       const { token } = await trpc.auth.login.mutate({ email, password })
-      const decoded = jwtDecode(token)
+      const decoded = jwtDecode(token) as UserWithRole
       setUser(decoded)
     } catch (err) {
       handleError(err)
