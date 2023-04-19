@@ -21,10 +21,10 @@ const Auth = () => {
     setPending(true)
 
     const dataF = new FormData(e.target as HTMLFormElement)
-    const [email, password] = [...dataF.values()] as [string, string]
+    const [eou, password] = [...dataF.values()] as [string, string]
 
     try {
-      const { token } = await trpc.auth.login.mutate({ email, password })
+      const { token } = await trpc.auth.login.mutate({ eou, password })
       const decoded = jwtDecode(token) as UserWithRole
       setUser(decoded)
     } catch (err) {
@@ -40,12 +40,12 @@ const Auth = () => {
         <h1 className="text-brand-100 text-3xl font-black uppercase">Login</h1>
         <form className="mt-5 flex flex-col items-end gap-2" onSubmit={login}>
           <div className="w-full">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="eou">Email or username</label>
             <input
-              className="mb-3 px-3 text-sm "
-              type="email"
-              name="email"
-              id="email"
+              className="mb-3 px-3 text-sm autofill:!bg-yellow-200"
+              type="text"
+              name="eou"
+              id="eou"
               required
               autoFocus
             />

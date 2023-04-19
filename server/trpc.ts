@@ -405,17 +405,22 @@ const authRouter = router({
   login: publicProcedure
     .input(
       z.object({
-        email: z.string().email({ message: 'Invalid email address.' }),
+        eou: z.string(),
         password: z.string().min(8, {
           message: "Password can't be less than 8 characters long."
         })
       })
     )
     .mutation(async ({ input, ctx }) => {
-      const user = await prisma.user.findFirst({
-        where: {
-          email: input.email
-        },
+      const { eou, password } = input
+      const where: { email?: string; userName?: string } = {}
+
+      const { success: isEmail } = await z.string().email().safeParseAsync(eou)
+      if (isEmail) where.email = eou
+      else where.userName = eou
+
+      const user = await prisma.user.findUnique({
+        where,
         include: {
           role: true
         }
@@ -424,7 +429,7 @@ const authRouter = router({
       if (!user)
         throw new TRPCError({
           code: 'UNAUTHORIZED',
-          message: 'Email does not exist.'
+          message: 'Provide a correct email or username.'
         })
 
       const isMatch = await bcrypt.compare(input.password, user.password)
