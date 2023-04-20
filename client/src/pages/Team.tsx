@@ -11,6 +11,7 @@ import { trpc } from '../utils/trpc'
 import useAdmin from '../hooks/useAdmin'
 import ConfirmationDialog from '../components/Dialogs/ConfirmationDialog'
 import Popup from '../components/UI/Popup'
+import userStore from '../stores/userStore'
 
 const Team = () => {
   const [deletePopup, setDeletePopup] = useState(false)
@@ -19,11 +20,17 @@ const Team = () => {
   const [selectedUserId, setSelectedUserId] = useState<string | null>()
   const [roles, setRoles] = useState<Role[]>([])
   const isAdmin = useAdmin()
+  const { user } = userStore()
 
   const getRoles = async () => {
     const m: any = await trpc.users.getAll.query()
     const r: any = await trpc.roles.getAll.query()
-    setMembers(m)
+    setMembers(
+      m.sort((x: UserWithRole) => {
+        if (x.id != user?.id) return 1
+        else return -1
+      })
+    )
     setRoles(r)
   }
 
