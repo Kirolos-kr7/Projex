@@ -3,6 +3,7 @@ import Progress from '../components/Project/Progress'
 import BoardStatus from '../components/Project/BoardStatus'
 import WelcomeBack from '../components/Project/WelcomeBack'
 import PageHeader from '../components/UI/PageHeader'
+import LatestNote from '../components/Project/LatestNote'
 
 const Project = () => {
   return (
@@ -17,9 +18,10 @@ const Project = () => {
         <div className="row-span-2 h-[320px]">
           <BoardStatus />
         </div>
-        <div className="col-span-2 row-span-2">x</div>
+        <div className="col-span-2 row-span-2">
+          <LatestNote />
+        </div>
         <DailyWork />
-        <div>x</div>
       </div>
     </>
   )

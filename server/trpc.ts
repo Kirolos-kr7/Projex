@@ -80,6 +80,19 @@ const notesRouter = router({
 
     return notes
   }),
+  getLatest: publicProcedure.query(async ({ input }) => {
+    const note = await prisma.notes.findFirst({
+      orderBy: { createdAt: 'desc' },
+      include: {
+        author: true
+      }
+    })
+
+    if (note) delete (note.author as any).password
+    if (!note) throw new TRPCError({ code: 'NOT_FOUND' })
+
+    return { note }
+  }),
   create: publicProcedure
     .input(
       z

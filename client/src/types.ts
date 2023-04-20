@@ -10,6 +10,10 @@ export type User = {
   hasProfileImage: boolean
 }
 
+export interface NoteWithUser extends Note {
+  author?: User
+}
+
 export interface UserWithRole extends User {
   role?: Role
 }
@@ -67,7 +71,7 @@ export type Task = {
   updatedAt: Date
 }
 
-export type Notes = {
+export type Note = {
   id: number
   content: string
   createdAt: Date

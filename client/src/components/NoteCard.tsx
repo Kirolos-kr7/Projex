@@ -1,4 +1,4 @@
-import { type Notes as NoteType, type User } from '../types'
+import { type Note as NoteType, type User } from '../types'
 import dayjs from 'dayjs'
 import RelativeTime from 'dayjs/plugin/relativeTime'
 import { getUserICon } from '../utils/helper'
