@@ -1,18 +1,18 @@
 import On from '@iconify-icons/mdi/eye-outline'
 import Off from '@iconify-icons/mdi/eye-off-outline'
 import { Icon } from '@iconify/react/dist/offline'
-import { FormEvent, FormEventHandler, useContext, useState } from 'react'
-import { UserContext } from '../UserContext'
+import { FormEvent, FormEventHandler, useState } from 'react'
 import Button from '../components/UI/Button'
 import { trpc } from '../utils/trpc'
 import { handleError } from '../utils/helper'
 import jwtDecode from 'jwt-decode'
 import { UserWithRole } from '../types'
+import userStore from '../stores/userStore'
 
 const Auth = () => {
   const [inputShown, setInputShown] = useState('password')
   const [pending, setPending] = useState(false)
-  const { setUser } = useContext(UserContext)
+  const { setUser } = userStore()
 
   const login: FormEventHandler<HTMLFormElement> = async (
     e: FormEvent<HTMLFormElement>

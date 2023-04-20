@@ -1,21 +1,15 @@
-import {
-  useContext,
-  useRef,
-  useState,
-  FormEvent,
-  ChangeEvent,
-  useEffect
-} from 'react'
-import { UserContext } from '../UserContext'
+import { useRef, useState, FormEvent, ChangeEvent, useEffect } from 'react'
 import PageHeader from '../components/UI/PageHeader'
 import DropDown from '../components/UI/DropDown'
 import Button from '../components/UI/Button'
 import useAxios from '../hooks/useAxios'
 import { toast } from 'react-toastify'
 import { Navigate } from 'react-router-dom'
+import userStore from '../stores/userStore'
 
 const Account = () => {
-  const { user, setUser } = useContext(UserContext)
+  const { user, setUser } = userStore()
+
   const imgRef = useRef<HTMLImageElement | null>(null)
   const fileRef = useRef<HTMLInputElement | null>(null)
   const [pending, setPending] = useState(false)

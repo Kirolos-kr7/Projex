@@ -1,6 +1,5 @@
 import ReactDOM from 'react-dom/client'
 import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom'
-import { UserContext } from './UserContext'
 
 import './App.css'
 import Layout from './Layout'
@@ -18,7 +17,7 @@ import Notes from './pages/Notes'
 import Logs from './pages/Logs'
 
 export default function App() {
-  const { user, setUser, pending } = useUser()
+  const { user, pending } = useUser()
 
   const router = createBrowserRouter([
     {
@@ -69,9 +68,7 @@ export default function App() {
 
   return (
     <>
-      <UserContext.Provider value={{ user, setUser }}>
-        {!pending && <RouterProvider router={router} />}
-      </UserContext.Provider>
+      {!pending && <RouterProvider router={router} />}
 
       <Toastify></Toastify>
     </>

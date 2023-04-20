@@ -1,13 +1,14 @@
 import Account from '@iconify-icons/ic/account-box'
 import Logout from '@iconify-icons/ic/twotone-log-out'
 import { Icon } from '@iconify/react/dist/offline'
-import { useContext, useEffect, useRef, useState } from 'react'
-import { UserContext } from '../UserContext'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { trpc } from '../utils/trpc'
+import userStore from '../stores/userStore'
 
 const UserMenu = () => {
-  const { user, setUser } = useContext(UserContext)
+  const { user, setUser } = userStore()
+
   const [isOpened, setIsOpened] = useState(false)
   const imgRef = useRef<HTMLImageElement | null>(null)
 

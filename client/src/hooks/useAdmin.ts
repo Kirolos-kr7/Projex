@@ -1,8 +1,8 @@
-import { useContext } from 'react'
-import { UserContext } from '../UserContext'
+import userStore from '../stores/userStore'
 
 const useAdmin = () => {
-  const { user } = useContext(UserContext)
+  const { user } = userStore()
+
   const isAdmin = user?.role?.role == 'admin'
   return isAdmin
 }

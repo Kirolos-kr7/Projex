@@ -3,10 +3,11 @@ import jwt_decode from 'jwt-decode'
 import { trpc } from '../utils/trpc'
 import { handleError } from '../utils/helper'
 import { UserWithRole } from '../types'
+import userStore from '../stores/userStore'
 
 const useUser = () => {
   const [pending, setPending] = useState(true)
-  const [user, setUser] = useState<UserWithRole | null>(null)
+  const { user, setUser } = userStore()
 
   useEffect(() => {
     const auth = async () => {
@@ -25,7 +26,7 @@ const useUser = () => {
     auth()
   }, [])
 
-  return { user, setUser, pending }
+  return { user, pending }
 }
 
 export default useUser

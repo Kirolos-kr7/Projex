@@ -5,8 +5,7 @@ import { getUserICon } from '../utils/helper'
 import Delete from '@iconify-icons/mdi/delete'
 import Edit from '@iconify-icons/mdi/edit'
 import { Icon } from '@iconify/react/dist/offline'
-import { useContext } from 'react'
-import { UserContext } from '../UserContext'
+import userStore from '../stores/userStore'
 
 dayjs.extend(RelativeTime)
 
@@ -20,7 +19,7 @@ const Note = ({
   deleteNote: (id: number) => void
 }) => {
   const { content, createdAt, author, authorId, id } = note
-  const { user } = useContext(UserContext)
+  const { user } = userStore()
 
   return (
     <div className="bg-brand-800 border-brand-700 flex flex-col gap-1.5 rounded-md border p-3">
