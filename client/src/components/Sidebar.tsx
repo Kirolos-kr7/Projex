@@ -7,17 +7,93 @@ import Settings from '@iconify-icons/ic/twotone-settings'
 import Logs from '@iconify-icons/mdi/math-log'
 import { Icon } from '@iconify/react/dist/offline'
 import { NavLink } from 'react-router-dom'
+import { Dispatch, SetStateAction } from 'react'
 
-const Sidebar = ({ isExpanded }: { isExpanded: boolean }) => {
+type item = {
+  name: string
+  to: string
+  icon: any
+}
+
+const listItems: item[] = [
+  {
+    name: 'Project',
+    to: '/',
+    icon: Project
+  },
+  {
+    name: 'Board',
+    to: '/board',
+    icon: Board
+  },
+  {
+    name: 'Code',
+    to: '/code',
+    icon: Code
+  },
+  {
+    name: 'Team',
+    to: '/team',
+    icon: Team
+  },
+  {
+    name: 'Notes',
+    to: '/notes',
+    icon: Notes
+  },
+  {
+    name: 'Settings',
+    to: '/settings',
+    icon: Settings
+  },
+  {
+    name: 'Logs',
+    to: '/logs',
+    icon: Logs
+  }
+]
+
+const ListItem = ({
+  item,
+  isExpanded,
+  setIsExpanded
+}: {
+  item: item
+  isExpanded: boolean
+  setIsExpanded: Dispatch<SetStateAction<boolean>>
+}) => {
+  const { name, to, icon } = item
+
+  return (
+    <li className="h-fit md:w-full">
+      <NavLink
+        onClick={() => setIsExpanded(false)}
+        to={to}
+        className="my-1 flex h-28 w-28 flex-col items-center justify-center gap-2 rounded-md bg-gray-800 px-5 py-2 ring-inset transition-colors hover:bg-red-900/5 hover:text-red-400 md:h-auto md:w-full md:flex-row md:justify-start md:bg-transparent [&>*]:translate-x-0 md:[&>*]:translate-x-1"
+        title={name}
+      >
+        <Icon icon={icon} width={28} /> <span>{isExpanded && name}</span>
+      </NavLink>
+    </li>
+  )
+}
+
+const Sidebar = ({
+  isExpanded,
+  setIsExpanded
+}: {
+  isExpanded: boolean
+  setIsExpanded: Dispatch<SetStateAction<boolean>>
+}) => {
   return (
     <aside
-      className={`transition-color sidebar-scroller bg-brand-900 group fixed left-0 top-0 z-20 flex h-screen min-w-[70px] flex-col items-center transition-[min-width] ${
-        isExpanded && '!min-w-[250px]'
+      className={`transition-color sidebar-scroller bg-brand-900 group fixed left-0 top-0 z-20 flex h-screen w-0 flex-col items-center transition-[min-width] md:min-w-[90px] ${
+        isExpanded && '!w-full md:!max-w-[250px]'
       }`}
     >
       <div>
         <h1
-          className={`font-michroma flex h-[82px] items-center px-1 font-semibold transition-all ${
+          className={`font-michroma mt-14 flex h-[82px] items-center px-1 font-semibold transition-all md:mt-0 ${
             isExpanded && '!text-3xl'
           }`}
         >
@@ -25,48 +101,16 @@ const Sidebar = ({ isExpanded }: { isExpanded: boolean }) => {
         </h1>
       </div>
       <ul
-        className={`nav-links flex w-full flex-1 flex-col items-center p-2 [&>li>a:hover]:bg-red-900/5 [&>li>a:hover]:text-red-400 [&>li>a]:my-1 [&>li>a]:flex [&>li>a]:w-full [&>li>a]:items-center [&>li>a]:gap-2 [&>li>a]:rounded-md [&>li>a]:px-5 [&>li>a]:py-2 [&>li>a]:transition-colors [&>li>a]:sm:px-5 [&>li]:w-full`}
+        className={`nav-links flex w-full flex-row flex-wrap content-start items-start justify-center gap-x-3 gap-y-1.5 p-2 md:flex md:flex-1 md:flex-col md:items-center md:justify-start`}
       >
-        <li>
-          <NavLink to="/" className="ring-inset" title="Project">
-            <Icon icon={Project} width="28" /> {isExpanded && 'Project'}
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/board" className="ring-inset" title="Board">
-            <Icon icon={Board} width="28" /> {isExpanded && 'Board'}
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/code" className="ring-inset" title="Code">
-            <Icon icon={Code} width="28" />
-            {isExpanded && 'Code'}
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/team" className="ring-inset" title="Team">
-            <Icon icon={Team} width="28" />
-            {isExpanded && 'Team'}
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/notes" className="ring-inset" title="Notes">
-            <Icon icon={Notes} width="28" />
-            {isExpanded && 'Notes'}
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/settings" className="ring-inset" title="Settings">
-            <Icon icon={Settings} width="28" />
-            {isExpanded && 'Settings'}
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/logs" className="ring-inset" title="Logs">
-            <Icon icon={Logs} width="28" />
-            {isExpanded && 'Logs'}
-          </NavLink>
-        </li>
+        {listItems.map((item) => (
+          <ListItem
+            isExpanded={isExpanded}
+            setIsExpanded={setIsExpanded}
+            item={item}
+            key={item.name}
+          />
+        ))}
       </ul>
     </aside>
   )

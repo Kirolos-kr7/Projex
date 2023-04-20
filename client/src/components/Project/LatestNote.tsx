@@ -23,7 +23,9 @@ const LatestNote = () => {
     <div className="flex h-full flex-col justify-between">
       <div>
         <h2 className="mb-3 text-xl font-semibold">Latest Note</h2>
-        {!isLoading && note && <p className="text-gray-300">{note?.content}</p>}
+        {!isLoading && note && (
+          <p className="min-h-[100px] text-gray-300">{note?.content}</p>
+        )}
       </div>
 
       {!isLoading && note && (

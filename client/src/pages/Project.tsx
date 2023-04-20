@@ -10,15 +10,15 @@ const Project = () => {
     <>
       <PageHeader title="Project" sub="Dashboard" />
 
-      <div className="[&>div]:bg-brand-800 [&>div]:border-brand-700 grid grid-cols-3 gap-4 [&>div]:min-h-[200px] [&>div]:rounded-md [&>div]:border [&>div]:p-5">
+      <div className="[&>div]:bg-brand-800 [&>div]:border-brand-700 flex w-full flex-col gap-4 md:grid md:grid-cols-3 [&>div]:min-h-[200px] [&>div]:rounded-md [&>div]:border [&>div]:p-5">
         <Progress />
-        <div className="!p-0">
+        <div className="-order-1 !p-0 md:order-none">
           <WelcomeBack />
         </div>
-        <div className="row-span-2 h-[320px]">
+        <div className="md:row-span-2 md:h-[320px]">
           <BoardStatus />
         </div>
-        <div className="col-span-2 row-span-2">
+        <div className="order-last col-span-2 md:order-none md:row-span-2">
           <LatestNote />
         </div>
         <DailyWork />

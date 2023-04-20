@@ -9,11 +9,6 @@ function Layout() {
   useEffect(() => {
     const isOpened = localStorage.getItem('sidebar')
     isOpened == 'true' ? setSidsbarOpened(true) : setSidsbarOpened(false)
-
-    if (window.innerWidth < 600) setSidsbarOpened(false)
-    addEventListener('resize', () => {
-      if (window.innerWidth < 600) setSidsbarOpened(false)
-    })
   }, [])
 
   const toggleSidebar = () => {
@@ -23,10 +18,10 @@ function Layout() {
 
   return (
     <>
-      <Sidebar isExpanded={sidsbarOpened} />
+      <Sidebar isExpanded={sidsbarOpened} setIsExpanded={setSidsbarOpened} />
       <main
         className={`relative min-h-screen w-[stretch] flex-1 overflow-x-hidden ${
-          sidsbarOpened ? 'ml-[15.6rem]' : 'ml-[5.3rem]'
+          sidsbarOpened ? 'md:ml-[15.6rem]' : 'md:ml-[5.3rem]'
         }`}
       >
         <Navbar sidsbarOpened={sidsbarOpened} toggleSidebar={toggleSidebar} />

@@ -1,6 +1,6 @@
 const WelcomeBack = () => {
   return (
-    <div className="relative h-full overflow-hidden p-7">
+    <div className="relative min-h-[inherit] overflow-hidden p-7">
       <p className="text-3xl font-black">
         Welcome <br /> Back
       </p>
