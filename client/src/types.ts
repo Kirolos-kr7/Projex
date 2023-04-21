@@ -99,8 +99,9 @@ export interface DropDown {
   fn?: (value?: any) => void
   keyValue?: any
   keyName?: any
-  className?: string
   disabled?: boolean
+  buttonStyle?: string
+  listStyle?: string
 }
 
 export type SelectUserBoard = Pick<

@@ -124,7 +124,7 @@ const TaskDialog = ({
             <div>
               <label htmlFor="name">Status</label>
               <DropDown
-                className="w-full"
+                buttonStyle="w-full"
                 options={taskStatuses}
                 selected={newTask.status}
                 keyValue="id"
@@ -139,7 +139,7 @@ const TaskDialog = ({
             <div>
               <label htmlFor="name">Priority</label>
               <DropDown
-                className="w-full"
+                buttonStyle="w-full"
                 options={priorities}
                 selected={newTask.priority}
                 fn={(val) =>
@@ -152,7 +152,7 @@ const TaskDialog = ({
             <div>
               <label htmlFor="name">Type</label>
               <DropDown
-                className="w-full"
+                buttonStyle="w-full"
                 options={taskTypes}
                 selected={newTask.type}
                 fn={(val) =>

@@ -4,8 +4,16 @@ import { useEffect, useRef, useState } from 'react'
 import { DropDown as DropDownType } from '../../types'
 
 const DropDown = (props: DropDownType) => {
-  const { options, selected, keyValue, keyName, fn, className, disabled } =
-    props
+  const {
+    options,
+    selected,
+    keyValue,
+    keyName,
+    fn,
+    buttonStyle,
+    listStyle,
+    disabled
+  } = props
 
   const [isOpened, setIsOpened] = useState(false)
   const btn = useRef(null)
@@ -31,10 +39,7 @@ const DropDown = (props: DropDownType) => {
       <button
         type="button"
         ref={btn}
-        className={
-          'mb-1.5 flex items-center justify-between gap-2 rounded-md bg-gray-800 px-3 py-2 capitalize transition-colors hover:bg-gray-700/60 ' +
-          className
-        }
+        className={`flex items-center justify-between gap-2 rounded-md bg-gray-800 px-3 py-2 capitalize transition-colors hover:bg-gray-700/60 ${buttonStyle}`}
         onClick={() => {
           if (disabled || options.length == 0) return
           isOpened ? setIsOpened(false) : setIsOpened(true)
@@ -51,9 +56,9 @@ const DropDown = (props: DropDownType) => {
       {options.length > 0 && (
         <ul
           ref={menu}
-          className={`absolute z-[3] min-w-[180px] overflow-hidden rounded-md bg-gray-800 capitalize shadow-lg ring-1 ring-gray-700 ${
+          className={`absolute z-[3] mt-1.5 min-w-[180px] overflow-hidden rounded-md bg-gray-800 capitalize shadow-lg ring-1 ring-gray-700 ${
             !isOpened && 'hidden'
-          }`}
+          } ${listStyle}`}
         >
           {filteredVals().map((v) => {
             return (

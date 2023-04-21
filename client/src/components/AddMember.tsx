@@ -64,7 +64,7 @@ const AddMember = ({
       />
       <label>Role</label>
       <DropDown
-        className="!bg-brand-900 -m-px mb-3 !w-full !px-3.5 !py-2.5"
+        buttonStyle="!bg-brand-900 -m-px mb-3 !w-full !px-3.5 !py-2.5"
         selected={role.role}
         options={roles}
         keyValue="role"

@@ -130,7 +130,7 @@ const Account = () => {
         <div>
           <label>Role</label>
           <DropDown
-            className="!w-full"
+            buttonStyle="!w-full"
             selected={user.role?.role}
             options={[]}
             disabled
