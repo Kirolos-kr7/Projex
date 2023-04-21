@@ -23,7 +23,7 @@ const DailyWork = () => {
   }, [])
 
   return (
-    <div className="flex flex-col justify-between !bg-zinc-500">
+    <div className="flex flex-col justify-between ">
       <h2 className="text-xl font-semibold">Daily Progress</h2>
 
       <ResponsiveContainer className="mt-5" height={90}>

@@ -66,7 +66,7 @@ const Notes = () => {
     <>
       <PageHeader title="Notes" sub="Keep in touch with the team" />
 
-      <div className="mb-2 flex items-center justify-between">
+      <div className="xs:!justify-between mb-2 flex flex-wrap items-center justify-end gap-y-2">
         <Search
           placeholder="Search notes"
           // update={(val) => setSearchValue(val)}
@@ -83,7 +83,11 @@ const Notes = () => {
           </button>
         </div>{' '}
       </div>
-      <div className={`mt-4 grid gap-3 ${view == 'Grid' && 'grid-cols-3'} `}>
+      <div
+        className={`mt-4 grid gap-3 ${
+          view == 'Grid' && 'grid-cols-2 md:grid-cols-3'
+        } `}
+      >
         {pending
           ? 'Loading...'
           : notes && notes.length > 0

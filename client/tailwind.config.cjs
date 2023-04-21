@@ -1,7 +1,8 @@
 /* eslint-env node */
 /** @type {import('tailwindcss').Config} */
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const colors = require('tailwindcss/colors')
+import colors from 'tailwindcss/colors'
+import { screens } from 'tailwindcss/defaultTheme'
 
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
@@ -22,6 +23,10 @@ module.exports = {
         michroma: ['Michroma', 'Arial'],
         poppins: ['Poppins', 'Michroma']
       }
+    },
+    screens: {
+      xs: '475px',
+      ...screens
     }
   },
   plugins: []
