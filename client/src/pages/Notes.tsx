@@ -66,7 +66,7 @@ const Notes = () => {
     <>
       <PageHeader title="Notes" sub="Keep in touch with the team" />
 
-      <div className="xs:!justify-between mb-2 flex flex-wrap items-center justify-end gap-y-2">
+      <div className="mb-2 flex flex-wrap items-center justify-end gap-y-2 sm:!justify-between">
         <Search
           placeholder="Search notes"
           // update={(val) => setSearchValue(val)}

@@ -8,7 +8,12 @@ function Layout() {
 
   useEffect(() => {
     const isOpened = localStorage.getItem('sidebar')
-    isOpened == 'true' ? setSidsbarOpened(true) : setSidsbarOpened(false)
+
+    if (isOpened == 'true' && window.innerWidth > 768) setSidsbarOpened(true)
+    else {
+      setSidsbarOpened(false)
+      localStorage.setItem('sidebar', 'false')
+    }
   }, [])
 
   const toggleSidebar = () => {

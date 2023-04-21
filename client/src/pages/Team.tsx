@@ -81,36 +81,43 @@ const Team = () => {
     <>
       <PageHeader title="Team" sub="Manage your teammates" />
 
-      <div className="mb-2 flex items-center justify-between ">
+      <div className="mb-3 flex items-center justify-between ">
         <Search
           placeholder="Search members"
           update={(val) => setSearchValue(val)}
         />
       </div>
 
-      <div className="rounded-md, bg-gray-900 p-3">
+      <div className="rounded-md bg-gray-900">
         <table className="w-full">
           <thead className="text-xs text-gray-400">
-            <tr>
-              <td className="pb-2">Name</td>
-              <td className="pb-2">Email</td>
-              <td className="pb-2">Role</td>
-              <td className="pb-2">Actions</td>
+            <tr className="[&>*]:px-2 [&>*]:py-3 sm:[&>*]:px-3">
+              <td>Name</td>
+              <td>Email</td>
+              <td>Role</td>
+              <td>Actions</td>
             </tr>
           </thead>
           <tbody>
             {getFilteredMembers().map(({ id, fullName, email, role }) => {
               return (
-                <tr key={id}>
-                  <td className="flex items-center gap-2 py-1.5">
-                    <span className="grid h-8 w-8 place-content-center rounded-full bg-red-700 text-xs uppercase">
-                      {getUserICon(fullName)}
-                    </span>
-                    <h3>{fullName}</h3>
+                <tr
+                  key={id}
+                  className="odd:bg-gray-800/50 [&>*]:px-2 [&>*]:py-1 sm:[&>*]:px-3"
+                >
+                  <td>
+                    <div className="flex items-center gap-2 py-1.5">
+                      <span className="hidden h-8 w-8 shrink-0 place-content-center rounded-full bg-red-700 text-xs uppercase sm:grid">
+                        {getUserICon(fullName)}
+                      </span>
+                      <h3 className="text-sm sm:text-base">{fullName}</h3>
+                    </div>
                   </td>
-                  <td>{email}</td>
+                  <td className="text-sm sm:text-base">{email}</td>
                   <td>
                     <DropDown
+                      buttonStyle="text-xs sm:text-base"
+                      listStyle="text-xs sm:text-base"
                       selected={role?.role}
                       options={roles}
                       keyValue="role"

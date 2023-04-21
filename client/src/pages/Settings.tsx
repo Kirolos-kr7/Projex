@@ -13,7 +13,7 @@ const Settings = () => {
     <>
       <PageHeader title="Settings" sub="Twaek it the way you like" />
 
-      <ul className="mt-10 grid grid-cols-5 gap-5">
+      <ul className="mt-10 grid  grid-cols-2 gap-5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
         <li>
           <button
             className="btn w-full !px-5 !py-10"

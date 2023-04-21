@@ -263,7 +263,7 @@ const Board = () => {
     <>
       <PageHeader title="Board" sub="Work the tasks" />
 
-      <div className="mb-2 flex items-center justify-between ">
+      <div className="mb-2 flex flex-wrap items-center justify-end gap-3 sm:justify-between ">
         <Search
           placeholder="Search tasks"
           update={(val: string) => setSearchValue(val)}

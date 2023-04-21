@@ -16,7 +16,7 @@ const Search = ({
   const inputRef = useRef<HTMLInputElement>(null)
 
   return (
-    <div className={`xs:w-72 relative w-full ${className}`}>
+    <div className={`relative w-full sm:w-72 ${className}`}>
       <Icon
         icon={SearchIcon}
         width="22px"
