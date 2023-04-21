@@ -1,13 +1,13 @@
 {
   "name": "app",
   "scripts": {
-    "dev": "concurrently \"npm run dev --workspace=server\" \"npm run dev --workspace=client\""
+    "dev": "concurrently --names 'SERVER,CLIENT' -c 'bgRed.bold,bgMagenta.bold' 'npm run dev --workspace=server' 'npm run dev --workspace=client'"
   },
   "workspaces": [
     "client",
     "server"
   ],
   "devDependencies": {
-    "concurrently": "^7.6.0"
+    "concurrently": "^8.0.1"
   }
 }

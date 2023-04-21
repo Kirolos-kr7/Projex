@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev index.ts",
-    "dbInit": "ts-node-dev prisma/dbInit.ts"
+    "dev": "tsnd index.ts",
+    "dbInit": "tsnd prisma/dbInit.ts"
   },
   "dependencies": {
-    "@trpc/server": "^10.20.0",
+    "@trpc/server": "^10.21.1",
     "@types/cookie-parser": "^1.4.3",
     "@types/jsonwebtoken": "^9.0.1",
     "bcryptjs": "^2.4.3",
@@ -22,16 +22,14 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@prisma/client": "^4.12.0",
+    "@prisma/client": "^4.13.0",
     "@types/bcrypt": "^5.0.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/express": "^4.17.17",
     "@types/morgan": "^1.9.4",
     "@types/multer": "^1.4.7",
     "@types/sharp": "^0.31.1",
-    "i": "^0.3.7",
-    "npm": "^9.6.4",
-    "prisma": "^4.12.0",
+    "prisma": "^4.13.0",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.0.4"
   }
