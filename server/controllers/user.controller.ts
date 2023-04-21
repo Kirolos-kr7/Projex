@@ -69,8 +69,10 @@ export const UpdateProfile = async (
       user: cred,
       token
     })
-  } catch (err) {
+  } catch (err: any) {
     console.log(err)
+    if (err.code == 'P2002')
+      return res.status(400).send('Username is already taken.')
     res.status(400).send(err)
   }
 }
