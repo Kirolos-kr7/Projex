@@ -1,7 +1,7 @@
 {
   "name": "app",
   "scripts": {
-    "dev": "concurrently --names 'SERVER,CLIENT' -c 'bgRed.bold,bgMagenta.bold' 'npm run dev --workspace=server' 'npm run dev --workspace=client'"
+    "dev": "concurrently --names \"SERVER,CLIENT\" -c \"bgRed.bold,bgMagenta.bold\" \"npm run dev --workspace=server\" \"npm run dev --workspace=client\""
   },
   "workspaces": [
     "client",
