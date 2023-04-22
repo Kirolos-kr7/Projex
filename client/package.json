@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port 3000 --host",
+    "typecheck": "tsc",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext .tsx,.ts,.cjs --fix --ignore-path .gitignore"
