@@ -5,7 +5,7 @@ interface RouteError {
   statusText: string
 }
 
-const E404 = () => {
+const Err = () => {
   const { pathname } = useLocation()
 
   const error = useRouteError() as RouteError
@@ -26,4 +26,4 @@ const E404 = () => {
   )
 }
 
-export default E404
+export default Err

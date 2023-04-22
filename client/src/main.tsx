@@ -12,7 +12,7 @@ import Code from './pages/Code'
 import Project from './pages/Project'
 import Settings from './pages/Settings'
 import Team from './pages/Team'
-import ERR from './pages/ERR'
+import Err from './pages/Err'
 import Notes from './pages/Notes'
 import Logs from './pages/Logs'
 
@@ -23,12 +23,12 @@ export default function App() {
     {
       path: '/auth',
       element: user ? <Navigate to="/" /> : <Auth />,
-      errorElement: <ERR />
+      errorElement: <Err />
     },
     {
       path: '',
       element: user ? <Layout /> : <Navigate to="/auth" />,
-      errorElement: <ERR />,
+      errorElement: <Err />,
       children: [
         {
           path: '/',
