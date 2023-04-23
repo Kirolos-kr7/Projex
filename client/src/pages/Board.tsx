@@ -1,22 +1,27 @@
-import { MouseEvent as MouseEventX, useEffect, useMemo, useState } from 'react'
-import { SelectUserBoard } from '../types'
-import { type Task as TypeTask, type TaskStatus, type User } from '../types'
 import Add from '@iconify-icons/ic/add'
 import { Icon } from '@iconify/react/dist/offline'
-import Editable from '../components/UI/Editable'
-import Search from '../components/UI/Search'
+import { MouseEvent as MouseEventX, useEffect, useMemo, useState } from 'react'
+import { isMobile } from 'react-device-detect'
+import BoardMenu from '../components/Board/BoardMenu'
+import Priority from '../components/Board/Priority'
+import SelectUsers from '../components/Board/SelectUsers'
+import TaskType from '../components/Board/TaskType'
+import ConfirmationDialog from '../components/Dialogs/ConfirmationDialog'
 import SideDialog from '../components/Dialogs/SideDialog'
 import TaskDialog from '../components/Dialogs/TaskDialog'
+import Editable from '../components/UI/Editable'
 import PageHeader from '../components/UI/PageHeader'
-import Priority from '../components/Board/Priority'
-import TaskType from '../components/Board/TaskType'
-import { handleError, pulseAnim } from '../utils/helper'
-import Tooltip from '../components/UI/Tooltip'
-import { trpc } from '../utils/trpc'
-import BoardMenu from '../components/Board/BoardMenu'
-import ConfirmationDialog from '../components/Dialogs/ConfirmationDialog'
 import Popup from '../components/UI/Popup'
-import SelectUsers from '../components/Board/SelectUsers'
+import Search from '../components/UI/Search'
+import Tooltip from '../components/UI/Tooltip'
+import {
+  SelectUserBoard,
+  type TaskStatus,
+  type Task as TypeTask,
+  type User
+} from '../types'
+import { handleError, pulseAnim } from '../utils/helper'
+import { trpc } from '../utils/trpc'
 
 interface TaskWithUser extends TypeTask {
   assignedTo: User
@@ -272,9 +277,9 @@ const Board = () => {
       </div>
 
       <div
-        className={`-m-1 flex max-w-full gap-5 overflow-x-auto p-1 pb-2${
+        className={`-m-1  max-w-full gap-5 overflow-x-auto p-1 pb-2 ${
           popupOpened ? ' w-[calc(100%-450px)]' : ''
-        }`}
+        } ${!isMobile ? 'flex' : 'grid md:grid-cols-2'}`}
       >
         {taskStatuses
           ?.sort(({ order: a }, { order: b }) => a - b)
@@ -313,8 +318,12 @@ const Board = () => {
                         <div
                           key={id}
                           id={`task_${id}`}
-                          className="h-[70px] w-[270px] rounded-sm text-left"
+                          className={` w-[270px] rounded-sm text-left ${
+                            isMobile ? 'w-full' : 'w-[270px]'
+                          }`}
                           onMouseDown={(e) => {
+                            if (isMobile) return
+
                             const el = document.getElementById(
                               `task_${id}`
                             ) as HTMLElement
@@ -331,7 +340,11 @@ const Board = () => {
                             handleContextMenu(e, id)
                           }
                         >
-                          <button className="isolate z-30 h-[70px] w-[270px] rounded-sm bg-gray-800/75 p-2 text-left">
+                          <button
+                            className={`isolate z-30 h-[70px] w-[270px] rounded-sm bg-gray-800/75 p-2 text-left ${
+                              isMobile ? 'w-full' : 'w-[270px]'
+                            }`}
+                          >
                             <h3 className="truncate text-sm">{title}</h3>
                             <div className="mt-2 flex items-center justify-between gap-1">
                               <div
