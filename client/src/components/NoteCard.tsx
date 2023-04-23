@@ -1,4 +1,4 @@
-import { type Note as NoteType, type User } from '../types'
+import type { NoteWithUser } from '../types'
 import dayjs from 'dayjs'
 import RelativeTime from 'dayjs/plugin/relativeTime'
 import { getUserICon } from '../utils/helper'
@@ -14,7 +14,7 @@ const Note = ({
   editNote,
   deleteNote
 }: {
-  note: NoteType & { author: User }
+  note: NoteWithUser
   editNote: (id: number) => void
   deleteNote: (id: number) => void
 }) => {

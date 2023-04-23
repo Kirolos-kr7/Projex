@@ -11,7 +11,7 @@ export type User = {
 }
 
 export interface NoteWithUser extends Note {
-  author?: User
+  author: User
 }
 
 export interface UserWithRole extends User {

@@ -64,22 +64,35 @@ const logsRouter = router({
 })
 
 const notesRouter = router({
-  getAll: publicProcedure.query(async ({ input }) => {
-    const notes = await prisma.notes.findMany({
-      orderBy: { createdAt: 'desc' },
-      include: {
-        author: true
-      }
-    })
+  getAll: publicProcedure
+    .input(z.object({ query: z.string() }))
+    .query(async ({ input }) => {
+      const { query } = input
+      let where = {}
 
-    notes.forEach(({ author }) => {
-      if (author) delete (author as any).password
-    })
+      if (query)
+        where = {
+          content: {
+            contains: query
+          }
+        }
 
-    if (!notes) throw new TRPCError({ code: 'NOT_FOUND' })
+      const notes = await prisma.notes.findMany({
+        orderBy: { createdAt: 'desc' },
+        where,
+        include: {
+          author: true
+        }
+      })
 
-    return notes
-  }),
+      notes.forEach(({ author }) => {
+        if (author) delete (author as any).password
+      })
+
+      if (!notes) throw new TRPCError({ code: 'NOT_FOUND' })
+
+      return notes
+    }),
   getLatest: publicProcedure.query(async ({ input }) => {
     const note = await prisma.notes.findFirst({
       orderBy: { createdAt: 'desc' },

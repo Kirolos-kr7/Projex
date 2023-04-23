@@ -1,6 +1,6 @@
 import { FormEvent, useState } from 'react'
 import { toast } from 'react-toastify'
-import { type Note as Note, type User } from '../../types'
+import type { NoteWithUser } from '../../types'
 import { handleError } from '../../utils/helper'
 import { trpc } from '../../utils/trpc'
 
@@ -9,7 +9,7 @@ const AddNote = ({
   done,
   cancel
 }: {
-  note: (Note & { author: User }) | undefined
+  note: NoteWithUser | undefined
   done: () => void
   cancel: () => void
 }) => {

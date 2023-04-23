@@ -1,7 +1,7 @@
 import Search from '../components/UI/Search'
 import NoteCard from '../components/NoteCard'
-import { useState, useEffect } from 'react'
-import { type Note, type User } from '../types'
+import { useState } from 'react'
+import type { NoteWithUser } from '../types'
 import Popup from '../components/UI/Popup'
 import NoteDialog from '../components/Dialogs/NoteDialog'
 import { Icon } from '@iconify/react/dist/offline'
@@ -12,54 +12,54 @@ import PageHeader from '../components/UI/PageHeader'
 import { trpc } from '../utils/trpc'
 import { toast } from 'react-toastify'
 import { handleError } from '../utils/helper'
+import useDebounce from '../hooks/useDebounce'
 
 const Notes = () => {
-  // const [searchValue, setSearchValue] = useState('')
   const [popupOpened, setPopupOpened] = useState(false)
   const [deletePopup, setDeletePopup] = useState(false)
   const [view, setView] = useState('Grid')
   const [pending, setPending] = useState(true)
   const [editing, setEditing] = useState(false)
-  const [onEdit, setOnEdit] = useState<Note & { author: User }>()
-  const [onDelete, setOnDelete] = useState<Note & { author: User }>()
-  const [notes, setNotes] = useState<(Note & { author: User })[]>()
+  const [notes, setNotes] = useState<NoteWithUser[]>()
+  const [selected, setSelected] = useState<NoteWithUser>()
+  const [searchQuery, setSearchQuery] = useState('')
 
   const getNotes = async () => {
     setPopupOpened(false)
     setPending(true)
-    const data: any = await trpc.notes.getAll.query()
+    const data: any = await trpc.notes.getAll.query({ query: searchQuery })
     setNotes(data)
     setPending(false)
   }
 
-  useEffect(() => {
-    getNotes()
-  }, [])
+  useDebounce(searchQuery, getNotes, {
+    delay: 350
+  })
 
   const editNote = async (id: number) => {
     setEditing(true)
     setPopupOpened(true)
-    setOnEdit(notes?.find((n) => n.id == id))
+    setSelected(notes?.find((n) => n.id == id))
   }
 
   const cancel = () => {
     setPopupOpened(false)
     setDeletePopup(false)
     setEditing(false)
-    setOnEdit(undefined)
-    setOnDelete(undefined)
+    setSelected(undefined)
   }
 
   const deleteNote = async () => {
     try {
-      if (!onDelete?.id) return
-      await trpc.notes.delete.mutate(onDelete.id)
+      if (!selected?.id) return
+      await trpc.notes.delete.mutate(selected.id)
       toast.success('Note deleted sucessfully')
       cancel()
     } catch (err) {
       handleError(err)
     }
     getNotes()
+    setSelected(undefined)
   }
 
   return (
@@ -69,7 +69,7 @@ const Notes = () => {
       <div className="mb-2 flex flex-wrap items-center justify-end gap-y-2 sm:!justify-between">
         <Search
           placeholder="Search notes"
-          // update={(val) => setSearchValue(val)}
+          update={(val) => setSearchQuery(val)}
         />
         <div className="flex gap-1">
           <button
@@ -97,7 +97,7 @@ const Notes = () => {
                 key={note.id}
                 editNote={editNote}
                 deleteNote={(id) => {
-                  setOnDelete(notes.find((n) => n.id == id))
+                  setSelected(notes.find((n) => n.id == id))
                   setDeletePopup(true)
                 }}
               />
@@ -110,7 +110,14 @@ const Notes = () => {
         open={popupOpened}
         closePopup={cancel}
       >
-        <NoteDialog note={onEdit} done={getNotes} cancel={cancel} />
+        <NoteDialog
+          note={selected}
+          done={() => {
+            getNotes()
+            setSelected(undefined)
+          }}
+          cancel={cancel}
+        />
       </Popup>
 
       <Popup title="Delete Note" open={deletePopup} closePopup={cancel}>
