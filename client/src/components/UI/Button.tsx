@@ -3,14 +3,16 @@ type buttonType = 'danger'
 const Button = ({
   children,
   type,
-  pending
+  pending,
+  onClick
 }: {
   children: any
   type?: buttonType
   pending: boolean
+  onClick?: () => void
 }) => {
   return (
-    <button className={`btn ${type}`} disabled={pending}>
+    <button className={`btn ${type}`} disabled={pending} onClick={onClick}>
       {!pending ? children : 'loading...'}
     </button>
   )
