@@ -192,6 +192,14 @@ const rolesRouter = router({
     })
 })
 
+const sprintsRouter = router({
+  getAll: publicProcedure.query(async () => {
+    const sprints = await prisma.sprint.findMany()
+
+    return sprints
+  })
+})
+
 const tasksRouter = router({
   getAll: publicProcedure.query(async () => {
     const tasks = await prisma.task.findMany({
@@ -503,14 +511,38 @@ const githubRouter = router({
   })
 })
 
+const metaRouter = router({
+  getValue: publicProcedure.input(z.string()).query(async ({ input }) => {
+    const meta = await prisma.meta.findUnique({
+      where: {
+        key: input
+      }
+    })
+
+    return meta?.value
+  }),
+  setValue: publicProcedure
+    .input(z.object({ key: z.string(), value: z.string() }))
+    .mutation(async ({ input }) => {
+      const { key, value } = input
+
+      await prisma.meta.update({
+        where: { key },
+        data: { value }
+      })
+    })
+})
+
 export const appRouter = router({
   logs: logsRouter,
   roles: rolesRouter,
   notes: notesRouter,
+  sprints: sprintsRouter,
   tasks: tasksRouter,
   users: usersRouter,
   auth: authRouter,
-  github: githubRouter
+  github: githubRouter,
+  meta: metaRouter
 })
 
 export type AppRouter = typeof appRouter

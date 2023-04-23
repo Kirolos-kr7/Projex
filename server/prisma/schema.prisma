@@ -70,17 +70,30 @@ model TaskStatus {
   @@map("task status")
 }
 
+model Sprint {
+  id        Int      @id @default(autoincrement())
+  name      String
+  startDate DateTime @default(now())
+  endDate   DateTime
+  goal      String?  @db.VarChar(255)
+  Task      Task[]
+
+  @@map("sprints")
+}
+
 model Task {
   id           Int          @id @default(autoincrement())
   title        String
   priority     TaskPriority
   type         TaskType
-  assignedToId String?
   status       String
+  taskStatus   TaskStatus   @relation(fields: [status], references: [id])
+  assignedToId String?
+  assignedTo   User?        @relation(fields: [assignedToId], references: [id])
+  sprintId     Int?
+  sptint       Sprint?      @relation(fields: [sprintId], references: [id])
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @default(now()) @updatedAt
-  assignedTo   User?        @relation(fields: [assignedToId], references: [id])
-  taskStatus   TaskStatus   @relation(fields: [status], references: [id])
 
   @@index([status], map: "tasks_status_fkey")
   @@map("tasks")
@@ -109,4 +122,9 @@ enum TaskType {
   feature
   refactor
   other
+}
+
+model meta {
+  key   String @id
+  value String
 }

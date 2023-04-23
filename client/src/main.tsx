@@ -7,6 +7,7 @@ import Toastify from './components/Toast'
 import useUser from './hooks/useUser'
 import Account from './pages/Account'
 import Auth from './pages/Auth'
+import Sprint from './pages/Sprint'
 import Board from './pages/Board'
 import Code from './pages/Code'
 import Project from './pages/Project'
@@ -37,6 +38,10 @@ export default function App() {
         {
           path: '/account',
           element: <Account />
+        },
+        {
+          path: '/sprint',
+          element: <Sprint />
         },
         {
           path: '/board',

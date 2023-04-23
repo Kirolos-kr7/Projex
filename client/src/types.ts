@@ -60,6 +60,14 @@ export type TaskStatus = {
   order: number
 }
 
+export type Sprint = {
+  id: number
+  name: string
+  startDate: Date
+  endDate: Date
+  goal: string
+}
+
 export type Task = {
   id: number
   title: string

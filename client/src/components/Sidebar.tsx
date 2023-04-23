@@ -1,4 +1,5 @@
 import Project from '@iconify-icons/ic/twotone-home'
+import Sprint from '@iconify-icons/ph/person-simple-run-duotone'
 import Board from '@iconify-icons/ic/twotone-space-dashboard'
 import Code from '@iconify-icons/ic/twotone-code'
 import Team from '@iconify-icons/mdi/person-group-outline'
@@ -20,6 +21,11 @@ const listItems: item[] = [
     name: 'Project',
     to: '/',
     icon: Project
+  },
+  {
+    name: 'Sprint',
+    to: '/sprint',
+    icon: Sprint
   },
   {
     name: 'Board',
