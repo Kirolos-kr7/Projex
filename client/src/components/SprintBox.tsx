@@ -1,37 +1,53 @@
 import dayjs from 'dayjs'
 import type { Sprint } from '../types'
 import Button from './UI/Button'
+import { Icon } from '@iconify/react/dist/offline'
+import Delete from '@iconify-icons/ic/delete'
 
 interface SprintBoxProps {
   sprint: Sprint
   active: boolean
   cas: (value: string) => void
+  edit: (value: number) => void
+  remove: (value: number) => void
 }
 
-const SprintBox = ({ sprint, active, cas }: SprintBoxProps) => {
+const SprintBox = ({ sprint, active, cas, edit, remove }: SprintBoxProps) => {
   const { id, name, goal, startDate, endDate } = sprint
 
   const formatDate = (d: any) => dayjs(d).format('MMM D YYYY')
 
   return (
-    <div className="bg-brand-800 flex flex-col gap-1 rounded-md border border-gray-800 p-2.5">
-      <h2 className="text-lg font-semibold">{name}</h2>
-      {goal && <p className="mb-2 text-gray-400">{goal}</p>}
+    <div className="bg-brand-800 flex flex-col justify-between gap-1 rounded-md border border-gray-800 p-2.5">
+      <div>
+        <div className="flex items-start justify-between gap-2">
+          <div>
+            <h2 className="text-lg font-semibold">{name}</h2>
+            <p className="mb-2 text-sm text-gray-400">{goal}</p>
+          </div>
 
-      <div className="mb-3 grid grid-cols-[auto,1fr] gap-x-2">
-        <span className="font-semibold">From </span>
-        <span className="text-gray-400">{formatDate(startDate)}</span>
-        <span className="font-semibold">To </span>
-        <span className="text-gray-400">{formatDate(endDate)}</span>
+          <button className="icon-btn" onClick={() => remove(id)}>
+            <Icon icon={Delete} className="text-red-600" width="20" />
+          </button>
+        </div>
+
+        <div className="mb-3 grid grid-cols-[auto,1fr] gap-x-2 text-sm">
+          <span className="font-semibold">From </span>
+          <span className="text-gray-400">{formatDate(startDate)}</span>
+          <span className="font-semibold">To </span>
+          <span className="text-gray-400">{formatDate(endDate)}</span>
+        </div>
       </div>
 
-      <Button
-        pending={false}
-        type={active ? 'danger' : undefined}
-        onClick={() => cas(String(id))}
-      >
-        {active ? 'Deactivate' : 'Activate'}
-      </Button>
+      <div className="flex items-center gap-2 [&>button]:w-full">
+        <Button
+          type={active ? 'danger' : undefined}
+          onClick={() => cas(String(id))}
+        >
+          {active ? 'Deactivate' : 'Activate'}
+        </Button>
+        <Button onClick={() => edit(id)}>Edit</Button>
+      </div>
     </div>
   )
 }

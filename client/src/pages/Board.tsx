@@ -16,6 +16,7 @@ import Search from '../components/UI/Search'
 import Tooltip from '../components/UI/Tooltip'
 import {
   SelectUserBoard,
+  Sprint,
   type TaskStatus,
   type Task as TypeTask,
   type User
@@ -31,6 +32,7 @@ const Board = () => {
   const [searchValue, setSearchValue] = useState('')
   const [popupOpened, setPopupOpened] = useState(false)
   const [taskStatuses, setTaskStatuses] = useState<TaskStatus[]>([])
+  const [sprint, setSprint] = useState<Sprint>()
   const [tasks, setTasks] = useState<TaskWithUser[]>([])
   const [taskStatus, setTaskStatus] = useState('')
   const [dragging, setDragging] = useState<number | null>()
@@ -44,9 +46,10 @@ const Board = () => {
   const [deletePopup, setDeletePopup] = useState(false)
 
   const getTasks = async () => {
-    const data = await trpc.tasks.getAll.query()
+    const { tasks: t, sprint: s } = await trpc.tasks.getAll.query()
 
-    setTasks(data as any)
+    setTasks(t as any)
+    setSprint(s as any)
   }
 
   const getTaskStatuses = async () => {
@@ -266,14 +269,16 @@ const Board = () => {
 
   return (
     <>
-      <PageHeader title="Board" sub="Work the tasks" />
+      <PageHeader title="Board" sub={sprint ? sprint.name : 'Work the tasks'} />
 
       <div className="mb-2 flex flex-wrap items-center justify-end gap-3 sm:justify-between ">
         <Search
           placeholder="Search tasks"
           update={(val: string) => setSearchValue(val)}
         />
-        <SelectUsers users={getUsersList} setSelected={setSelectedUsers} />
+        {tasks.length > 0 && (
+          <SelectUsers users={getUsersList} setSelected={setSelectedUsers} />
+        )}
       </div>
 
       <div

@@ -8,6 +8,7 @@ import bcrypt from 'bcryptjs'
 import { signJwt, verifyJwt } from './utils/jwt'
 import { authExpiration } from '.'
 import { getMeta, setMeta } from './utils/meta'
+import moment from 'moment'
 
 export const createContext = ({ req, res }: CreateExpressContextOptions) => ({
   req,
@@ -194,19 +195,92 @@ const rolesRouter = router({
 })
 
 const sprintsRouter = router({
-  getAll: publicProcedure.query(async () => {
-    const sprints = await prisma.sprint.findMany()
+  getAll: publicProcedure
+    .input(z.object({ query: z.string() }))
+    .query(async ({ input }) => {
+      const { query } = input
 
-    return sprints
-  })
+      const sprints = await prisma.sprint.findMany({
+        where: {
+          name: {
+            contains: query
+          }
+        }
+      })
+
+      return sprints
+    }),
+  create: publicProcedure
+    .input(
+      z.object({
+        name: z.string(),
+        goal: z.string(),
+        startDate: z.string().transform((v) => moment(v).toDate()),
+        endDate: z.string().transform((v) => moment(v).toDate())
+      })
+    )
+    .mutation(async ({ input }) => {
+      const { id } = await prisma.sprint.create({
+        data: input
+      })
+
+      await setMeta('lastSprintId', id.toString())
+    }),
+  edit: publicProcedure
+    .input(
+      z.object({
+        name: z.string(),
+        goal: z.string(),
+        startDate: z.string().transform((v) => moment(v).toDate()),
+        endDate: z.string().transform((v) => moment(v).toDate()),
+        id: z.number()
+      })
+    )
+    .mutation(async ({ input }) => {
+      await prisma.sprint.update({
+        where: {
+          id: input.id
+        },
+        data: { ...input, id: undefined }
+      })
+    }),
+  remove: publicProcedure
+    .input(
+      z.object({
+        id: z.number()
+      })
+    )
+    .mutation(async ({ input }) => {
+      await prisma.sprint.delete({
+        where: {
+          id: input.id
+        }
+      })
+    })
 })
 
 const tasksRouter = router({
   getAll: publicProcedure.query(async () => {
+    let where, sprint
+    const activeSprint = await getMeta('activeSprint')
+
+    if (activeSprint && activeSprint != '') {
+      sprint = await prisma.sprint.findUnique({
+        where: {
+          id: parseInt(activeSprint)
+        }
+      })
+
+      where = {
+        sprintId: parseInt(activeSprint)
+      }
+    }
+
     const tasks = await prisma.task.findMany({
       include: {
         assignedTo: true
-      }
+      },
+      where
     })
 
     tasks.forEach(({ assignedTo }) => {
@@ -215,7 +289,7 @@ const tasksRouter = router({
 
     if (!tasks) throw new TRPCError({ code: 'NOT_FOUND' })
 
-    return tasks
+    return { tasks, sprint }
   }),
   getTaskStatuses: publicProcedure.query(async () => {
     const taskStatuses = await prisma.taskStatus.findMany({
