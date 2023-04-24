@@ -6,23 +6,42 @@ import Delete from '@iconify-icons/mdi/delete'
 import Edit from '@iconify-icons/mdi/edit'
 import { Icon } from '@iconify/react/dist/offline'
 import userStore from '../stores/userStore'
+import { motion } from 'framer-motion'
 
 dayjs.extend(RelativeTime)
 
 const Note = ({
   note,
+  i,
   editNote,
   deleteNote
 }: {
   note: NoteWithUser
+  i: number
   editNote: (id: number) => void
   deleteNote: (id: number) => void
 }) => {
   const { content, createdAt, author, authorId, id } = note
   const { user } = userStore()
 
+  const NoteVariant = {
+    hidden: { opacity: 0 },
+    visible: (i: number) => ({
+      opacity: 1,
+      transition: {
+        delay: 0.1 * i
+      }
+    })
+  }
+
   return (
-    <div className="bg-brand-800 border-brand-700 flex flex-col gap-1.5 rounded-md border p-3">
+    <motion.div
+      variants={NoteVariant}
+      custom={i}
+      initial="hidden"
+      animate="visible"
+      className="bg-brand-800 border-brand-700 flex flex-col gap-1.5 rounded-md border p-3"
+    >
       <p className="flex-1 whitespace-pre-wrap break-all">{content}</p>
       <span
         className="inline-block text-sm text-gray-400"
@@ -50,7 +69,7 @@ const Note = ({
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   )
 }
 

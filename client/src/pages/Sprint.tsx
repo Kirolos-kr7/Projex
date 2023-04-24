@@ -11,7 +11,7 @@ import { toast } from 'react-toastify'
 import { handleError } from '../utils/helper'
 import { AnimatePresence } from 'framer-motion'
 
-const Settings = () => {
+const Sprint = () => {
   const [sprintPopup, setSprintPopup] = useState(false)
   const [removePopup, setRemovePopup] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
@@ -98,10 +98,11 @@ const Settings = () => {
       </div>
 
       <div className="mt-3 grid  grid-cols-2 gap-5 sm:grid-cols-3">
-        {sprints.map((sprint) => (
+        {sprints.map((sprint, i) => (
           <SprintBox
             key={sprint.id}
             sprint={sprint}
+            i={i}
             active={activeSprint == String(sprint.id)}
             cas={changeActivatedSprint}
             edit={(id) => openDialog(id, 'sprint')}
@@ -137,7 +138,7 @@ const Settings = () => {
   )
 }
 
-export default Settings
+export default Sprint
 
 // *****************************************************************
 // Search Sprints

@@ -92,10 +92,11 @@ const Notes = () => {
         {pending
           ? 'Loading...'
           : notes && notes.length > 0
-          ? notes.map((note) => (
+          ? notes.map((note, i) => (
               <NoteCard
                 note={note}
                 key={note.id}
+                i={i}
                 editNote={editNote}
                 deleteNote={(id) => {
                   setSelected(notes.find((n) => n.id == id))

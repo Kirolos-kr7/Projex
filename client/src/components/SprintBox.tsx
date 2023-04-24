@@ -3,22 +3,47 @@ import type { Sprint } from '../types'
 import Button from './UI/Button'
 import { Icon } from '@iconify/react/dist/offline'
 import Delete from '@iconify-icons/ic/delete'
+import { motion } from 'framer-motion'
 
 interface SprintBoxProps {
   sprint: Sprint
   active: boolean
+  i: number
   cas: (value: string) => void
   edit: (value: number) => void
   remove: (value: number) => void
 }
 
-const SprintBox = ({ sprint, active, cas, edit, remove }: SprintBoxProps) => {
+const SprintVariant = {
+  hidden: { opacity: 0 },
+  visible: (i: number) => ({
+    opacity: 1,
+    transition: {
+      delay: 0.1 * i
+    }
+  })
+}
+
+const SprintBox = ({
+  sprint,
+  active,
+  i,
+  cas,
+  edit,
+  remove
+}: SprintBoxProps) => {
   const { id, name, goal, startDate, endDate } = sprint
 
   const formatDate = (d: any) => dayjs(d).format('MMM D YYYY')
 
   return (
-    <div className="bg-brand-800 flex flex-col justify-between gap-1 rounded-md border border-gray-800 p-2.5">
+    <motion.div
+      variants={SprintVariant}
+      custom={i}
+      initial="hidden"
+      animate="visible"
+      className="bg-brand-800 flex flex-col justify-between gap-1 rounded-md border border-gray-800 p-2.5"
+    >
       <div>
         <div className="flex items-start justify-between gap-2">
           <div>
@@ -48,7 +73,7 @@ const SprintBox = ({ sprint, active, cas, edit, remove }: SprintBoxProps) => {
         </Button>
         <Button onClick={() => edit(id)}>Edit</Button>
       </div>
-    </div>
+    </motion.div>
   )
 }
 
