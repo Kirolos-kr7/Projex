@@ -9,6 +9,7 @@ import Popup from '../components/UI/Popup'
 import ConfirmationDialog from '../components/Dialogs/ConfirmationDialog'
 import { toast } from 'react-toastify'
 import { handleError } from '../utils/helper'
+import { AnimatePresence } from 'framer-motion'
 
 const Settings = () => {
   const [sprintPopup, setSprintPopup] = useState(false)
@@ -109,29 +110,29 @@ const Settings = () => {
         ))}
       </div>
 
-      <Popup open={sprintPopup} title="New Sprint" closePopup={cancel}>
-        {sprintPopup ? (
-          <SprintDialog
-            sprint={selectedSprint}
-            lastSprintId={lastSprintId}
-            done={() => {
-              cancel()
-              getSprints()
-            }}
-            cancel={cancel}
-          />
-        ) : (
-          <div />
+      <AnimatePresence>
+        {sprintPopup && (
+          <Popup open={sprintPopup} title="New Sprint" closePopup={cancel}>
+            <SprintDialog
+              sprint={selectedSprint}
+              lastSprintId={lastSprintId}
+              done={() => {
+                cancel()
+                getSprints()
+              }}
+              cancel={cancel}
+            />
+          </Popup>
         )}
-      </Popup>
+      </AnimatePresence>
 
-      <Popup open={removePopup} title="Remove sprint" closePopup={cancel}>
-        {removePopup ? (
-          <ConfirmationDialog accept={remove} cancel={cancel} />
-        ) : (
-          <div />
+      <AnimatePresence>
+        {removePopup && (
+          <Popup open={removePopup} title="Remove sprint" closePopup={cancel}>
+            <ConfirmationDialog accept={remove} cancel={cancel} />
+          </Popup>
         )}
-      </Popup>
+      </AnimatePresence>
     </>
   )
 }

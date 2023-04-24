@@ -23,6 +23,7 @@ import {
 } from '../types'
 import { handleError, pulseAnim } from '../utils/helper'
 import { trpc } from '../utils/trpc'
+import { AnimatePresence } from 'framer-motion'
 
 interface TaskWithUser extends TypeTask {
   assignedTo: User
@@ -405,22 +406,25 @@ const Board = () => {
           })}
       </div>
 
-      <SideDialog
-        open={popupOpened}
-        title={selectedTask ? 'Edit Task' : 'New Task'}
-        closePopup={close}
-      >
-        <TaskDialog
-          task={selectedTask}
-          taskStatuses={taskStatuses}
-          taskStatus={taskStatus}
-          done={() => {
-            close()
-            getTasks()
-          }}
-          cancel={close}
-        />
-      </SideDialog>
+      <AnimatePresence>
+        {popupOpened && (
+          <SideDialog
+            title={selectedTask ? 'Edit Task' : 'New Task'}
+            closePopup={close}
+          >
+            <TaskDialog
+              task={selectedTask}
+              taskStatuses={taskStatuses}
+              taskStatus={taskStatus}
+              done={() => {
+                close()
+                getTasks()
+              }}
+              cancel={close}
+            />
+          </SideDialog>
+        )}
+      </AnimatePresence>
 
       <BoardMenu
         open={ctxOpen}
@@ -429,16 +433,20 @@ const Board = () => {
         delete={() => setDeletePopup(true)}
       />
 
-      <Popup
-        title="Delete Task"
-        open={deletePopup}
-        closePopup={() => setDeletePopup(false)}
-      >
-        <ConfirmationDialog
-          accept={deleteTask}
-          cancel={() => setDeletePopup(false)}
-        />
-      </Popup>
+      <AnimatePresence>
+        {deletePopup && (
+          <Popup
+            title="Delete Task"
+            open={deletePopup}
+            closePopup={() => setDeletePopup(false)}
+          >
+            <ConfirmationDialog
+              accept={deleteTask}
+              cancel={() => setDeletePopup(false)}
+            />
+          </Popup>
+        )}
+      </AnimatePresence>
 
       <Tooltip />
     </>

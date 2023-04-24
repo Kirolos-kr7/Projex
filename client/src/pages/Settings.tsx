@@ -5,6 +5,7 @@ import { toast } from 'react-toastify'
 import PageHeader from '../components/UI/PageHeader'
 import { trpc } from '../utils/trpc'
 import { handleError } from '../utils/helper'
+import { AnimatePresence } from 'framer-motion'
 
 const Settings = () => {
   const [popupOpened, setPopupOpened] = useState(false)
@@ -24,26 +25,28 @@ const Settings = () => {
         </li>
       </ul>
 
-      <div>
-        <Popup
-          title="Create New User"
-          open={popupOpened}
-          closePopup={() => setPopupOpened(false)}
-        >
-          <AddUser
-            add={async (user) => {
-              try {
-                await trpc.users.create.mutate(user)
-                toast.success('User created')
-                setPopupOpened(false)
-              } catch (err) {
-                handleError(err)
-              }
-            }}
-            cancel={() => setPopupOpened(false)}
-          />
-        </Popup>
-      </div>
+      <AnimatePresence>
+        {popupOpened && (
+          <Popup
+            title="Create New User"
+            open={popupOpened}
+            closePopup={() => setPopupOpened(false)}
+          >
+            <AddUser
+              add={async (user) => {
+                try {
+                  await trpc.users.create.mutate(user)
+                  toast.success('User created')
+                  setPopupOpened(false)
+                } catch (err) {
+                  handleError(err)
+                }
+              }}
+              cancel={() => setPopupOpened(false)}
+            />
+          </Popup>
+        )}
+      </AnimatePresence>
     </>
   )
 }

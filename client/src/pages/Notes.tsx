@@ -13,6 +13,7 @@ import { trpc } from '../utils/trpc'
 import { toast } from 'react-toastify'
 import { handleError } from '../utils/helper'
 import useDebounce from '../hooks/useDebounce'
+import { AnimatePresence } from 'framer-motion'
 
 const Notes = () => {
   const [popupOpened, setPopupOpened] = useState(false)
@@ -105,24 +106,32 @@ const Notes = () => {
           : 'No notes available'}
       </div>
 
-      <Popup
-        title={`${editing ? 'Edit' : 'Add'} Note`}
-        open={popupOpened}
-        closePopup={cancel}
-      >
-        <NoteDialog
-          note={selected}
-          done={() => {
-            getNotes()
-            setSelected(undefined)
-          }}
-          cancel={cancel}
-        />
-      </Popup>
+      <AnimatePresence>
+        {popupOpened && (
+          <Popup
+            title={`${editing ? 'Edit' : 'Add'} Note`}
+            open={popupOpened}
+            closePopup={cancel}
+          >
+            <NoteDialog
+              note={selected}
+              done={() => {
+                getNotes()
+                setSelected(undefined)
+              }}
+              cancel={cancel}
+            />
+          </Popup>
+        )}
+      </AnimatePresence>
 
-      <Popup title="Delete Note" open={deletePopup} closePopup={cancel}>
-        <ConfirmationDialog accept={deleteNote} cancel={cancel} />
-      </Popup>
+      <AnimatePresence>
+        {deletePopup && (
+          <Popup title="Delete Note" open={deletePopup} closePopup={cancel}>
+            <ConfirmationDialog accept={deleteNote} cancel={cancel} />
+          </Popup>
+        )}
+      </AnimatePresence>
     </>
   )
 }

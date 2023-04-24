@@ -12,6 +12,7 @@ import useAdmin from '../hooks/useAdmin'
 import ConfirmationDialog from '../components/Dialogs/ConfirmationDialog'
 import Popup from '../components/UI/Popup'
 import userStore from '../stores/userStore'
+import { AnimatePresence } from 'framer-motion'
 
 const Team = () => {
   const [deletePopup, setDeletePopup] = useState(false)
@@ -146,19 +147,21 @@ const Team = () => {
         </table>
       </div>
 
-      {deletePopup && (
-        <Popup
-          open={deletePopup}
-          title="Delete User"
-          closePopup={() => setDeletePopup(false)}
-        >
-          <ConfirmationDialog
-            message="Are you sure you want to delete this user?"
-            accept={removeUser}
-            cancel={() => setDeletePopup(false)}
-          />
-        </Popup>
-      )}
+      <AnimatePresence>
+        {deletePopup && (
+          <Popup
+            open={deletePopup}
+            title="Delete User"
+            closePopup={() => setDeletePopup(false)}
+          >
+            <ConfirmationDialog
+              message="Are you sure you want to delete this user?"
+              accept={removeUser}
+              cancel={() => setDeletePopup(false)}
+            />
+          </Popup>
+        )}
+      </AnimatePresence>
     </>
   )
 }

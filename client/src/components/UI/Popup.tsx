@@ -1,6 +1,7 @@
 import { ReactElement, useEffect, useRef } from 'react'
 import Close from '@iconify-icons/ic/close'
 import { Icon } from '@iconify/react/dist/offline'
+import { motion } from 'framer-motion'
 
 const Popup = ({
   children,
@@ -21,8 +22,7 @@ const Popup = ({
   }, [])
 
   useEffect(() => {
-    if (open) dialog.current.showModal()
-    else dialog.current.close()
+    open ? dialog.current?.showModal() : dialog.current?.close()
   }, [open])
 
   const handleClick = (event: MouseEvent) => {
@@ -32,9 +32,12 @@ const Popup = ({
   }
 
   return (
-    <dialog
+    <motion.dialog
       className="max-h-[80vh] rounded-md border border-gray-700 bg-gray-800 p-0 text-white"
       ref={dialog}
+      initial={{ scale: 0.25, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      exit={{ opacity: 0 }}
     >
       <div className="p-3">
         <div className="flex items-center justify-between">
@@ -48,7 +51,7 @@ const Popup = ({
 
         <div className="mt-2">{children}</div>
       </div>
-    </dialog>
+    </motion.dialog>
   )
 }
 
