@@ -1,0 +1,33 @@
+.rdrDateRangeWrapper {
+  border: 1px solid #1d1d1d !important;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.rdrDateDisplayWrapper,
+.rdrCalendarWrapper {
+  background: #1d1d1d !important;
+  width: 100%;
+}
+
+span.rdrDateInput {
+  border: 0 solid transparent !important;
+  background: transparent;
+}
+
+.rdrDateDisplay input {
+  background: #1a1a1a !important;
+  border: 1px solid #262626 !important;
+}
+
+.rdrMonthAndYearPickers select {
+  filter: invert(1);
+}
+
+.rdrDayNumber span {
+  color: white;
+}
+
+.rdrMonth {
+  width: 100%;
+}
