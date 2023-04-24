@@ -7,6 +7,7 @@ import { logThis } from './utils/logs'
 import bcrypt from 'bcryptjs'
 import { signJwt, verifyJwt } from './utils/jwt'
 import { authExpiration } from '.'
+import { getMeta, setMeta } from './utils/meta'
 
 export const createContext = ({ req, res }: CreateExpressContextOptions) => ({
   req,
@@ -512,24 +513,14 @@ const githubRouter = router({
 })
 
 const metaRouter = router({
-  getValue: publicProcedure.input(z.string()).query(async ({ input }) => {
-    const meta = await prisma.meta.findUnique({
-      where: {
-        key: input
-      }
-    })
-
-    return meta?.value
-  }),
+  getValue: publicProcedure
+    .input(z.string())
+    .query(async ({ input }) => await getMeta(input)),
   setValue: publicProcedure
     .input(z.object({ key: z.string(), value: z.string() }))
     .mutation(async ({ input }) => {
       const { key, value } = input
-
-      await prisma.meta.update({
-        where: { key },
-        data: { value }
-      })
+      return (await setMeta(key, value)).value
     })
 })
 
