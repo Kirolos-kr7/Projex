@@ -8,7 +8,7 @@ const Button = ({
 }: {
   children: any
   type?: buttonType
-  pending: boolean
+  pending?: boolean
   onClick?: () => void
 }) => {
   return (
