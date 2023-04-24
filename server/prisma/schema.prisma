@@ -91,7 +91,7 @@ model Task {
   assignedToId String?
   assignedTo   User?        @relation(fields: [assignedToId], references: [id])
   sprintId     Int?
-  sptint       Sprint?      @relation(fields: [sprintId], references: [id])
+  sprint       Sprint?      @relation(fields: [sprintId], references: [id])
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @default(now()) @updatedAt
 
