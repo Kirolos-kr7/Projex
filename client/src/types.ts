@@ -63,8 +63,8 @@ export type TaskStatus = {
 export type Sprint = {
   id: number
   name: string
-  startDate: Date
-  endDate: Date
+  startDate: string
+  endDate: string
   goal: string
 }
 
