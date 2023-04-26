@@ -18,7 +18,7 @@ const SideDialog = ({
         initial={{ x: 100, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         exit={{ x: 100, opacity: 0 }}
-        className="fixed bottom-0 right-0 top-20 z-[21] h-[calc(100vh-5rem)] w-[450px] flex-col rounded-tl-lg border border-b-0 border-r-0 border-gray-700 bg-gray-900"
+        className="fixed bottom-0 top-20 z-[21] flex h-[calc(100vh-5rem)] w-full !-translate-x-5 flex-col rounded-t-lg border border-gray-700 bg-gray-900 sm:right-0 sm:w-[450px] sm:!translate-x-0 sm:rounded-tr-none sm:border-b-0 sm:border-r-0"
       >
         <div className="flex items-center justify-between p-4">
           <h1 className="w-[95vw] text-xl font-medium sm:w-[300px] md:w-[40rem]">
