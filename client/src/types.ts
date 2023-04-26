@@ -66,6 +66,7 @@ export type Sprint = {
   startDate: string
   endDate: string
   goal: string
+  _count?: { Task: number }
 }
 
 export type Task = {

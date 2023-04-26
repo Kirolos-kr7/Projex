@@ -46,7 +46,7 @@ const Sprint = () => {
   }, [searchQuery])
 
   const changeActivatedSprint = async (value: string) => {
-    if (activeSprint == value) value = ''
+    if (activeSprint == value) value = '0'
     try {
       const data = await trpc.meta.setValue.mutate({
         key: 'activeSprint',
@@ -103,7 +103,7 @@ const Sprint = () => {
             key={sprint.id}
             sprint={sprint}
             i={i}
-            active={activeSprint == String(sprint.id)}
+            active={activeSprint == String(sprint.id) || activeSprint == ''}
             cas={changeActivatedSprint}
             edit={(id) => openDialog(id, 'sprint')}
             remove={(id) => openDialog(id, 'remove')}

@@ -205,8 +205,25 @@ const sprintsRouter = router({
           name: {
             contains: query
           }
+        },
+        include: { _count: true }
+      })
+
+      const unassignedTasks = await prisma.task.count({
+        where: {
+          sprintId: null
         }
       })
+
+      if (query == '' || 'unassigned'.includes(query.toLowerCase()))
+        sprints.unshift({
+          id: 0,
+          name: 'Unassigned',
+          startDate: new Date(),
+          endDate: new Date(),
+          goal: null,
+          _count: { Task: unassignedTasks }
+        })
 
       return sprints
     }),

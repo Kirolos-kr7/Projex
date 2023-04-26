@@ -32,9 +32,11 @@ const SprintBox = ({
   edit,
   remove
 }: SprintBoxProps) => {
-  const { id, name, goal, startDate, endDate } = sprint
+  const { id, name, goal, startDate, endDate, _count } = sprint
 
   const formatDate = (d: any) => dayjs(d).format('MMM D YYYY')
+
+  const isUnassigned = sprint.id == 0
 
   return (
     <motion.div
@@ -47,20 +49,33 @@ const SprintBox = ({
       <div>
         <div className="flex items-start justify-between gap-2">
           <div>
-            <h2 className="text-lg font-semibold">{name}</h2>
+            <h2 className="text-lg font-semibold">
+              {name}{' '}
+              <span className="text-xs text-gray-400">
+                {isUnassigned && '[default]'}
+              </span>
+            </h2>
             <p className="mb-2 text-sm text-gray-400">{goal}</p>
           </div>
 
-          <button className="icon-btn" onClick={() => remove(id)}>
-            <Icon icon={Delete} className="text-red-600" width="20" />
-          </button>
+          {!isUnassigned && (
+            <button className="icon-btn" onClick={() => remove(id)}>
+              <Icon icon={Delete} className="text-red-600" width="20" />
+            </button>
+          )}
         </div>
 
         <div className="mb-3 grid grid-cols-[auto,1fr] gap-x-2 text-sm">
-          <span className="font-semibold">From </span>
-          <span className="text-gray-400">{formatDate(startDate)}</span>
-          <span className="font-semibold">To </span>
-          <span className="text-gray-400">{formatDate(endDate)}</span>
+          <span className="font-semibold">Tasks </span>
+          <span className="text-gray-400">{_count?.Task}</span>
+          {!isUnassigned && (
+            <>
+              <span className="font-semibold">From </span>
+              <span className="text-gray-400">{formatDate(startDate)}</span>
+              <span className="font-semibold">To </span>
+              <span className="text-gray-400">{formatDate(endDate)}</span>
+            </>
+          )}
         </div>
       </div>
 
@@ -68,10 +83,11 @@ const SprintBox = ({
         <Button
           type={active ? 'danger' : undefined}
           onClick={() => cas(String(id))}
+          disabled={active && isUnassigned}
         >
           {active ? 'Deactivate' : 'Activate'}
         </Button>
-        <Button onClick={() => edit(id)}>Edit</Button>
+        {!isUnassigned && <Button onClick={() => edit(id)}>Edit</Button>}
       </div>
     </motion.div>
   )
