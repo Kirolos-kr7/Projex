@@ -69,15 +69,21 @@ export type Sprint = {
   _count?: { Task: number }
 }
 
-export type Task = {
+export interface Task {
   id: number
   title: string
   priority: TaskPriority
   type: TaskType
   assignedToId: string | null
+  createdById: string | null
   status: string
   createdAt: Date
   updatedAt: Date
+}
+
+export interface TaskWithIncludes extends Task {
+  assignedTo?: User
+  createdBy?: User
 }
 
 export type Note = {

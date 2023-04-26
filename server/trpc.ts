@@ -281,7 +281,7 @@ const tasksRouter = router({
     let where, sprint
     const activeSprint = await getMeta('activeSprint')
 
-    if (activeSprint && activeSprint != '') {
+    if (activeSprint && activeSprint != '' && activeSprint != '0') {
       sprint = await prisma.sprint.findUnique({
         where: {
           id: parseInt(activeSprint)
@@ -291,17 +291,23 @@ const tasksRouter = router({
       where = {
         sprintId: parseInt(activeSprint)
       }
+    } else {
+      where = {
+        sprintId: null
+      }
     }
 
     const tasks = await prisma.task.findMany({
       include: {
-        assignedTo: true
+        assignedTo: true,
+        createdBy: true
       },
       where
     })
 
-    tasks.forEach(({ assignedTo }) => {
+    tasks.forEach(({ assignedTo, createdBy }) => {
       if (assignedTo) delete (assignedTo as any).password
+      if (createdBy) delete (createdBy as any).password
     })
 
     if (!tasks) throw new TRPCError({ code: 'NOT_FOUND' })
@@ -394,7 +400,14 @@ const tasksRouter = router({
       const { title, priority, type, status, assignedToId } = input
 
       const newTask = await prisma.task.create({
-        data: { title, priority, status, type, assignedToId }
+        data: {
+          title,
+          priority,
+          status,
+          type,
+          assignedToId,
+          createdById: userId
+        }
       })
 
       logThis('tasks', 'Added task w/ id: ' + newTask.id, userId)
@@ -419,7 +432,7 @@ const tasksRouter = router({
         data: { title, priority, status, type, assignedToId }
       })
 
-      logThis('tasks', 'Added task w/ id: ' + newTask.id, userId)
+      logThis('tasks', 'Edited task w/ id: ' + newTask.id, userId)
     }),
   delete: publicProcedure
     .input(

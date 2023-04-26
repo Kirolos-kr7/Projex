@@ -18,32 +18,27 @@ import {
   SelectUserBoard,
   Sprint,
   type TaskStatus,
-  type Task as TypeTask,
-  type User
+  type TaskWithIncludes
 } from '../types'
 import { handleError, pulseAnim } from '../utils/helper'
 import { trpc } from '../utils/trpc'
-import { AnimatePresence } from 'framer-motion'
-
-interface TaskWithUser extends TypeTask {
-  assignedTo: User
-}
+import { AnimatePresence, motion } from 'framer-motion'
 
 const Board = () => {
   const [searchValue, setSearchValue] = useState('')
   const [popupOpened, setPopupOpened] = useState(false)
   const [taskStatuses, setTaskStatuses] = useState<TaskStatus[]>([])
   const [sprint, setSprint] = useState<Sprint>()
-  const [tasks, setTasks] = useState<TaskWithUser[]>([])
+  const [tasks, setTasks] = useState<TaskWithIncludes[]>([])
   const [taskStatus, setTaskStatus] = useState('')
   const [dragging, setDragging] = useState<number | null>()
   const [offset, setOffset] = useState({ x: 0, y: 0 })
   const [selectedUsers, setSelectedUsers] = useState<string[]>([])
   const [ctxOpen, setCtxOpen] = useState(false)
   const [cords, setCords] = useState({ x: 0, y: 0 })
-  const [selectedTask, setSelectedTask] = useState<TaskWithUser | undefined>(
-    undefined
-  )
+  const [selectedTask, setSelectedTask] = useState<
+    TaskWithIncludes | undefined
+  >(undefined)
   const [deletePopup, setDeletePopup] = useState(false)
 
   const getTasks = async () => {
@@ -268,6 +263,16 @@ const Board = () => {
     return Object.values(ul) as SelectUserBoard[]
   }, [tasks, selectedUsers])
 
+  const StatusVariant = {
+    hidden: { opacity: 0 },
+    visible: (i: number) => ({
+      opacity: 1,
+      transition: {
+        delay: 0.1 * i
+      }
+    })
+  }
+
   return (
     <>
       <PageHeader title="Board" sub={sprint ? sprint.name : 'Work the tasks'} />
@@ -289,9 +294,13 @@ const Board = () => {
       >
         {taskStatuses
           ?.sort(({ order: a }, { order: b }) => a - b)
-          ?.map(({ name, id: statusId }) => {
+          ?.map(({ name, id: statusId }, i) => {
             return (
-              <div
+              <motion.div
+                variants={StatusVariant}
+                initial="hidden"
+                animate="visible"
+                custom={i}
                 key={statusId}
                 id={`dropzone_${statusId}`}
                 data-dropzone={statusId}
@@ -317,7 +326,7 @@ const Board = () => {
                 <div className="grid gap-1">
                   {taskList?.map((task) => {
                     const { id, assignedTo, type, priority, title } =
-                      task as TypeTask & { assignedTo?: User }
+                      task as TaskWithIncludes
 
                     if (task.status == statusId)
                       return (
@@ -401,7 +410,7 @@ const Board = () => {
                 >
                   <Icon icon={Add} width="24px" /> Create Task
                 </button>
-              </div>
+              </motion.div>
             )
           })}
       </div>

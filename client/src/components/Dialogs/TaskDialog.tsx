@@ -1,5 +1,10 @@
 import DropDown from '../UI/DropDown'
-import { type TaskStatus, type Task, type User } from '../../types'
+import {
+  type TaskStatus,
+  type Task,
+  type User,
+  TaskWithIncludes
+} from '../../types'
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import Search from '../UI/Search'
 import { getUserICon, handleError } from '../../utils/helper'
@@ -12,7 +17,7 @@ const TaskDialog = ({
   done,
   cancel
 }: {
-  task?: Task
+  task?: TaskWithIncludes
   taskStatuses: TaskStatus[]
   taskStatus: string
   done: () => void
@@ -197,6 +202,14 @@ const TaskDialog = ({
           </div>
         )}
       </form>
+
+      {task?.createdBy && (
+        <div className="w-full px-3">
+          <span className="block w-full rounded-md border border-gray-600 bg-gray-700 p-2 text-sm">
+            Task created by: {task?.createdBy?.userName}
+          </span>
+        </div>
+      )}
 
       <div className="flex w-full justify-end gap-2 p-4">
         {step == 1 && (

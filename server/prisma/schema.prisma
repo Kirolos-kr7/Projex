@@ -20,8 +20,9 @@ model User {
   hasProfileImage Boolean  @default(false)
   Logs            Logs[]
   Notes           Notes[]
-  Task            Task[]
   role            Role     @relation(fields: [roleId], references: [id])
+  TasksCreated    Task[]   @relation("Creator")
+  TasksAssigned   Task[]   @relation("Assignee")
 
   @@index([roleId], map: "users_roleId_fkey")
   @@map("users")
@@ -89,7 +90,9 @@ model Task {
   status       String
   taskStatus   TaskStatus   @relation(fields: [status], references: [id])
   assignedToId String?
-  assignedTo   User?        @relation(fields: [assignedToId], references: [id])
+  assignedTo   User?        @relation("Assignee", fields: [assignedToId], references: [id])
+  createdById  String?
+  createdBy    User?        @relation("Creator", fields: [createdById], references: [id])
   sprintId     Int?
   sprint       Sprint?      @relation(fields: [sprintId], references: [id])
   createdAt    DateTime     @default(now())
