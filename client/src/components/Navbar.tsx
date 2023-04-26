@@ -31,7 +31,7 @@ const Navbar = ({
               }`}
             >
               <NavLink className="rounded-md p-1.5" to="/">
-                DASH
+                PROJEX
               </NavLink>
             </h1>
           </li>

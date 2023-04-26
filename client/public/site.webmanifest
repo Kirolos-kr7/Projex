@@ -1,7 +1,7 @@
 {
-  "name": "DASH",
-  "short_name": "DASH",
-  "description": "DASHBOARD",
+  "name": "PROJEX",
+  "short_name": "PRJX",
+  "description": "PROJEX a web application for project management",
   "icons": [
     {
       "src": "./icons/android-chrome-192x192.png",
@@ -15,6 +15,7 @@
     }
   ],
   "start_url": "/",
+  "scope": ".",
   "display": "standalone",
   "background_color": "#101010",
   "theme_color": "#171717",

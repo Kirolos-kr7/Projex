@@ -103,7 +103,7 @@ const Sidebar = ({
             isExpanded && '!text-3xl'
           }`}
         >
-          DASH
+          {isExpanded ? 'PROJEX' : 'PRJX'}
         </h1>
       </div>
       <ul
