@@ -289,8 +289,8 @@ const Board = () => {
 
       <div
         className={`-m-1  max-w-full gap-5 overflow-x-auto p-1 pb-2 ${
-          popupOpened ? ' w-[calc(100%-450px)]' : ''
-        } ${!isMobile ? 'flex' : 'grid md:grid-cols-2'}`}
+          !isMobile ? 'flex' : 'grid md:grid-cols-2'
+        }`}
       >
         {taskStatuses
           ?.sort(({ order: a }, { order: b }) => a - b)

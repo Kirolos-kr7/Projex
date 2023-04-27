@@ -15,10 +15,11 @@ const SideDialog = ({
   return (
     <>
       <motion.div
-        initial={{ x: 100, opacity: 0 }}
+        initial={{ x: 250, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
-        exit={{ x: 100, opacity: 0 }}
-        className="fixed bottom-0 top-20 z-[21] flex h-[calc(100vh-5rem)] w-full !-translate-x-5 flex-col rounded-t-lg border border-gray-700 bg-gray-900 sm:right-0 sm:w-[450px] sm:!translate-x-0 sm:rounded-tr-none sm:border-b-0 sm:border-r-0"
+        exit={{ x: 250, opacity: 0 }}
+        transition={{ type: 'tween', ease: 'easeInOut' }}
+        className="fixed bottom-0 left-0 top-20 z-[21] flex h-[calc(100vh-5rem)] w-full flex-col rounded-t-lg border border-gray-700 bg-gray-900 sm:left-auto sm:right-0 sm:w-[450px] sm:rounded-tr-none sm:border-b-0 sm:border-r-0 "
       >
         <div className="flex items-center justify-between p-4">
           <h1 className="w-[95vw] text-xl font-medium sm:w-[300px] md:w-[40rem]">

@@ -9,6 +9,17 @@ import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import Search from '../UI/Search'
 import { getUserICon, handleError } from '../../utils/helper'
 import { trpc } from '../../utils/trpc'
+import { motion, AnimatePresence } from 'framer-motion'
+
+enum STEPS {
+  BASE,
+  USERS
+}
+
+const TaskVariant = {
+  visible: { y: 0, opacity: 1 },
+  hidden: { y: 10, opacity: 0 }
+}
 
 const TaskDialog = ({
   task,
@@ -23,7 +34,7 @@ const TaskDialog = ({
   done: () => void
   cancel: () => void
 }) => {
-  const [step, setStep] = useState(1)
+  const [step, setStep] = useState<STEPS>(STEPS.BASE)
   const [users, setUsers] = useState<User[]>()
   const taskTypes = ['bugfix', 'feature', 'refactor', 'other']
   const priorities = [
@@ -83,7 +94,7 @@ const TaskDialog = ({
       <div className="my-3 flex items-center justify-center">
         <span
           className={`flex h-4 w-4 items-center justify-center rounded-full bg-red-600 p-2.5 text-xs ${
-            step == 1 &&
+            step == STEPS.BASE &&
             'ring-2 ring-orange-400 ring-offset-2 ring-offset-black transition-all'
           }`}
         >
@@ -92,7 +103,7 @@ const TaskDialog = ({
         <span className="-z-10 h-px w-7 rounded-full bg-red-600"></span>
         <span
           className={`flex h-4 w-4 items-center justify-center rounded-full bg-red-600 p-2.5 text-xs ${
-            step == 2 &&
+            step == STEPS.USERS &&
             'ring-2 ring-orange-400 ring-offset-2 ring-offset-black transition-all'
           }`}
         >
@@ -100,108 +111,122 @@ const TaskDialog = ({
         </span>
       </div>
 
-      <form
-        className="sidedialog-scroller flex max-h-full flex-1 flex-col gap-3 p-4"
+      <motion.form
+        transition={{ staggerChildren: 1 }}
+        initial="hidden"
+        animate="visible"
+        exit="hidden"
+        className="flex max-h-full flex-1 flex-col gap-3 overflow-hidden p-4"
         onSubmit={saveTask}
       >
-        {step == 1 && (
-          <>
-            <div>
-              <label htmlFor="name">Title</label>
-              <input
-                className="px-3 text-sm"
-                type="text"
-                name="name"
-                id="name"
-                required
-                value={newTask.title}
-                onChange={(e: ChangeEvent) =>
-                  setNewTask((prev) => {
-                    return {
-                      ...prev,
-                      title: (e.target as HTMLInputElement).value
-                    }
-                  })
-                }
-                autoFocus
-              />
-            </div>
-            <div>
-              <label htmlFor="name">Status</label>
-              <DropDown
-                buttonStyle="w-full"
-                options={taskStatuses}
-                selected={newTask.status}
-                keyValue="id"
-                keyName="name"
-                fn={(val: TaskStatus) =>
-                  setNewTask((prev) => {
-                    return { ...prev, status: val.name }
-                  })
-                }
-              />
-            </div>
-            <div>
-              <label htmlFor="name">Priority</label>
-              <DropDown
-                buttonStyle="w-full"
-                options={priorities}
-                selected={newTask.priority}
-                fn={(val) =>
-                  setNewTask((prev) => {
-                    return { ...prev, priority: val }
-                  })
-                }
-              />
-            </div>
-            <div>
-              <label htmlFor="name">Type</label>
-              <DropDown
-                buttonStyle="w-full"
-                options={taskTypes}
-                selected={newTask.type}
-                fn={(val) =>
-                  setNewTask((prev) => {
-                    return { ...prev, type: val }
-                  })
-                }
-              />
-            </div>
-          </>
-        )}
-
-        {step == 2 && (
-          <div>
-            <Search placeholder="Search Users" className="!w-full" />
-
-            <div className="bg-brand-800 border-brand-700 mt-2 grid grid-cols-3 gap-2 rounded-lg border p-2">
-              {users?.map(({ id, userName, fullName }) => (
-                <button
-                  type="button"
-                  key={id}
-                  className={`bg-brand-700 border-brand-800 flex flex-col items-center justify-center gap-1 rounded-md border px-2 py-3 text-center shadow ${
-                    newTask.assignedToId == id && 'ring ring-red-600'
-                  }`}
-                  onClick={() =>
+        <AnimatePresence>
+          {step == STEPS.BASE && (
+            <motion.div
+              variants={TaskVariant}
+              className="sidedialog-scroller -mx-1 flex flex-col gap-3 px-1"
+            >
+              <div>
+                <label htmlFor="name">Title</label>
+                <input
+                  className="px-3 text-sm"
+                  type="text"
+                  name="name"
+                  id="name"
+                  required
+                  value={newTask.title}
+                  onChange={(e: ChangeEvent) =>
                     setNewTask((prev) => {
                       return {
                         ...prev,
-                        assignedToId: newTask.assignedToId == id ? null : id
+                        title: (e.target as HTMLInputElement).value
                       }
                     })
                   }
-                >
-                  <span className="grid h-11 w-11 place-content-center rounded-full bg-red-700 uppercase">
-                    {getUserICon('KR')}
-                  </span>
-                  <span className="mt-1 text-sm leading-5">{fullName}</span>
-                  <p className="-mt-1 text-xs text-gray-400">{userName}</p>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-      </form>
+                  autoFocus
+                />
+              </div>
+              <div>
+                <label htmlFor="name">Status</label>
+                <DropDown
+                  buttonStyle="w-full"
+                  options={taskStatuses}
+                  selected={newTask.status}
+                  keyValue="id"
+                  keyName="name"
+                  fn={(val: TaskStatus) =>
+                    setNewTask((prev) => {
+                      return { ...prev, status: val.name }
+                    })
+                  }
+                />
+              </div>
+              <div>
+                <label htmlFor="name">Priority</label>
+                <DropDown
+                  buttonStyle="w-full"
+                  options={priorities}
+                  selected={newTask.priority}
+                  fn={(val) =>
+                    setNewTask((prev) => {
+                      return { ...prev, priority: val }
+                    })
+                  }
+                />
+              </div>
+              <div>
+                <label htmlFor="name">Type</label>
+                <DropDown
+                  buttonStyle="w-full"
+                  options={taskTypes}
+                  selected={newTask.type}
+                  fn={(val) =>
+                    setNewTask((prev) => {
+                      return { ...prev, type: val }
+                    })
+                  }
+                />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {step == STEPS.USERS && (
+            <motion.div
+              variants={TaskVariant}
+              className="flex h-full flex-1 flex-col"
+            >
+              <Search placeholder="Search Users" className="!w-full" />
+
+              <div className="bg-brand-800 sidedialog-scroller border-brand-700 mt-2 grid grid-cols-3 items-start gap-2 rounded-lg border p-2">
+                {users?.map(({ id, userName, fullName }) => (
+                  <button
+                    type="button"
+                    key={id}
+                    className={`bg-brand-700 border-brand-800 flex flex-col items-center justify-center gap-1 rounded-md border px-2 py-3 text-center shadow ${
+                      newTask.assignedToId == id && 'ring ring-red-600'
+                    }`}
+                    onClick={() =>
+                      setNewTask((prev) => {
+                        return {
+                          ...prev,
+                          assignedToId: newTask.assignedToId == id ? null : id
+                        }
+                      })
+                    }
+                  >
+                    <span className="grid h-11 w-11 place-content-center rounded-full bg-red-700 uppercase">
+                      {getUserICon('KR')}
+                    </span>
+                    <span className="mt-1 text-sm leading-5">{fullName}</span>
+                    <p className="-mt-1 text-xs text-gray-400">{userName}</p>
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.form>
 
       {task?.createdBy && (
         <div className="w-full px-3">
@@ -212,14 +237,22 @@ const TaskDialog = ({
       )}
 
       <div className="flex w-full justify-end gap-2 p-4">
-        {step == 1 && (
-          <button className="btn" type="button" onClick={() => setStep(2)}>
+        {step == STEPS.BASE && (
+          <button
+            className="btn"
+            type="button"
+            onClick={() => setStep(STEPS.USERS)}
+          >
             Next
           </button>
         )}
-        {step == 2 && (
+        {step == STEPS.USERS && (
           <>
-            <button className="btn" type="button" onClick={() => setStep(1)}>
+            <button
+              className="btn"
+              type="button"
+              onClick={() => setStep(STEPS.BASE)}
+            >
               Back
             </button>
             <button className="btn" onClick={saveTask}>
